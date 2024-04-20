@@ -1,6 +1,8 @@
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -8,11 +10,13 @@ import java.sql.ResultSet;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Patrick
  */
+
 public class AboutM extends javax.swing.JPanel {
 
     public static String fileName = ValidateForm.fileName;
@@ -62,7 +66,6 @@ public class AboutM extends javax.swing.JPanel {
 
         jButton2.setBackground(new java.awt.Color(255, 204, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Contact Support");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,7 +189,7 @@ public class AboutM extends javax.swing.JPanel {
 
                             String daysLeft = rs.getString("days_left");
 
-                            AboutM.expirationDate.setText(daysLeft+" Days");
+                            AboutM.expirationDate.setText(daysLeft + " Days");
 
                             return true;
                         }
@@ -205,10 +208,15 @@ public class AboutM extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Login LoginFrame = new Login();
-        LoginFrame.setVisible(true);
-
-        this.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Call us on (+250) 791 517 585");
+        String url = "https://tech.happylight.rw/";
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "An error occurred while opening the website: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
