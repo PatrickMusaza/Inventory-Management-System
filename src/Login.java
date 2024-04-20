@@ -304,24 +304,6 @@ public class Login extends javax.swing.JFrame {
                                 insertInitialDataStmt.executeUpdate();
 
                                 DynamicSyncUpload.synchronize(con, conCloud);
-                            } else {
-                                // Check if the user has opened the app today
-                                PreparedStatement checkOpenedStmt = con.prepareStatement("SELECT * FROM user WHERE DateUsed = CURRENT_DATE");
-                                rs = checkOpenedStmt.executeQuery();
-
-                                // If there are no results, it means the user hasn't opened the app today
-                                if (!rs.next()) {
-                                    // Set Found as 1 for the first time
-                                    PreparedStatement setFoundStmt = con.prepareStatement("UPDATE user SET Found =? , DateUsed = CURRENT_DATE");
-                                    setFoundStmt.setInt(1, 1);
-                                    setFoundStmt.executeUpdate();
-
-                                    DynamicSyncUpload.synchronize(conCloud, con);
-                                }
-
-                                // Update the LastOpenedDate to today's date
-                                PreparedStatement updateLastOpenedStmt = con.prepareStatement("UPDATE user SET LastOpenedDate = CURRENT_DATE WHERE DateUsed = CURRENT_DATE");
-                                updateLastOpenedStmt.executeUpdate();
                             }
 
                         } catch (SQLException ex) {
