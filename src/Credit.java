@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -204,6 +206,9 @@ public class Credit extends javax.swing.JPanel {
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable3MouseEntered(evt);
             }
         });
         jScrollPane3.setViewportView(jTable3);
@@ -460,10 +465,7 @@ public class Credit extends javax.swing.JPanel {
     private void ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportActionPerformed
         // TODO add your handling code here:    
         File file = createExcelFile();
-
-        exportToCSV(jTable2, file, true);
-
-        exportToCSV(jTable1, file, true);
+        exportToCSV(jTable2, jTable1, file, true);
 
     }//GEN-LAST:event_ExportActionPerformed
 
@@ -488,37 +490,78 @@ public class Credit extends javax.swing.JPanel {
         }
     }
 
-    private static void exportToCSV(JTable table, File file, boolean writeHeaders) {
+    private void exportToCSV(JTable table1, JTable table2, File file, boolean writeHeaders) {
         FileWriter writer = null;
+
+        DefaultTableModel tab = (DefaultTableModel) jTable3.getModel();
+        int index = jTable3.getSelectedRow();
+
+        String CustID = tab.getValueAt(index, 0).toString();
+        String CustName = tab.getValueAt(index, 1).toString();
+
         try {
             writer = new FileWriter(file, true);
 
+            writer.write("""
+                             Salam Trading Company Ltd
+                             Gisenyi, Rubavu, Rwanda
+                             (+250) 788 888 888
+                             
+                             Customer ID:""" + CustID
+                    + "\nCustomer Name:" + CustName
+                    + "\n\n\n");
+
+            // Write header for jTable2 only
             if (writeHeaders) {
-                for (int i = 0; i < table.getColumnCount(); i++) {
-                    writer.write(table.getColumnName(i));
-                    if (i < table.getColumnCount() - 1) {
+                for (int i = 0; i < table1.getColumnCount(); i++) {
+                    writer.write(table1.getColumnName(i));
+                    if (i < table1.getColumnCount() - 1) {
                         writer.write(",");
                     }
                 }
                 writer.write("\n");
             }
 
-            for (int i = 0; i < table.getRowCount(); i++) {
-                for (int j = 0; j < table.getColumnCount(); j++) {
-                    Object value = table.getValueAt(i, j);
+            // Export jTable2
+            for (int i = 0; i < table1.getRowCount(); i++) {
+                for (int j = 0; j < table1.getColumnCount(); j++) {
+                    Object value = table1.getValueAt(i, j);
                     if (value != null) {
-                        writer.write(value.toString());
+                        // Check if the value is a number and format it accordingly
+                        if (value.toString().contains(",")) {
+                            writer.write(value.toString().replace(',', ' '));
+                        } else {
+                            writer.write(value.toString());
+                        }
                     }
-                    if (j < table.getColumnCount() - 1) {
+                    if (j < table1.getColumnCount() - 1) {
                         writer.write(",");
                     }
                 }
                 writer.write("\n");
             }
 
-            writer.write("\n\n");
+            writer.write("\nItems Information Details\n\n");
 
-            writer.close();
+            // Export jTable1
+            for (int i = 0; i < table2.getRowCount(); i++) {
+                for (int j = 0; j < table2.getColumnCount(); j++) {
+                    Object value = table2.getValueAt(i, j);
+                    if (value != null) {
+                        // Check if the value is a number and format it accordingly
+                        if (value.toString().contains(",")) {
+                            writer.write(value.toString().replace(',', ' '));
+                        } else {
+                            writer.write(value.toString());
+                        }
+                    }
+                    if (j < table2.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
+            JOptionPane.showMessageDialog(null, file.getName() + " exported to CSV file successfully.", "File Exported", JOptionPane.PLAIN_MESSAGE);
 
         } catch (IOException ex) {
             Logger.getLogger(Credit.class.getName()).log(Level.SEVERE, null, ex);
@@ -531,8 +574,30 @@ public class Credit extends javax.swing.JPanel {
                 Logger.getLogger(Credit.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        JOptionPane.showMessageDialog(null, file.getName() + " exported to CSV file successfully.", "File Exported", JOptionPane.PLAIN_MESSAGE);
     }
+
+    public static String customFormat(double value) {
+        DecimalFormat myFormatter = new DecimalFormat("###,###.##");
+        String formattedValue = myFormatter.format(value);
+
+        // If the formatted value contains commas, remove them
+        formattedValue = formattedValue.replace(",", "");
+
+        // Insert apostrophes as thousand separators
+        StringBuilder result = new StringBuilder();
+        int length = formattedValue.length();
+        int count = 0;
+        for (int i = length - 1; i >= 0; i--) {
+            result.insert(0, formattedValue.charAt(i));
+            count++;
+            if (count == 3 && i != 0 && formattedValue.charAt(i - 1) != '-') {
+                result.insert(0, '\'');
+                count = 0;
+            }
+        }
+        return result.toString();
+    }
+
 
     private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
         // TODO add your handling code here:
@@ -649,10 +714,10 @@ public class Credit extends javax.swing.JPanel {
 
                     v2.add(rs.getString("ItemCode"));
                     v2.add(rs.getString("ItemName"));
-                    v2.add(rs.getString("SalesQty"));
-                    v2.add(rs.getString("UnitPrice"));
-                    v2.add(rs.getString("TotalPrice"));
-                    v2.add(rs.getString("vAT"));
+                    v2.add(formatter.format(rs.getDouble("SalesQty")));
+                    v2.add(formatter.format(rs.getDouble("UnitPrice")));
+                    v2.add(formatter.format(rs.getDouble("TotalPrice")));
+                    v2.add(formatter.format(rs.getDouble("vAT")));
 
                 }
 
@@ -738,7 +803,7 @@ public class Credit extends javax.swing.JPanel {
                             String Code = generateInvoiceCode();
 
                             if (amountInput != null) {
-                                if (Double.parseDouble(amountInput)-1 < Double.parseDouble(amou)) {
+                                if (Double.parseDouble(amountInput) - 1 < Double.parseDouble(amou)) {
                                     // Inserting the sale record
                                     insert = con.prepareStatement("INSERT INTO sales (CustomerID, InvoiceID, SaleDate, Method, SIN, Ref_Inv, Type, CustomerName, CreatedBy, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                                     insert.setString(1, CustomerID);
@@ -838,10 +903,10 @@ public class Credit extends javax.swing.JPanel {
                     Vector v3 = new Vector();
                     v3.add(itemRs.getString("ItemCode"));
                     v3.add(itemRs.getString("ItemName"));
-                    v3.add(itemRs.getString("SalesQty"));
-                    v3.add(itemRs.getString("UnitPrice"));
-                    v3.add(itemRs.getString("TotalPrice"));
-                    v3.add(itemRs.getString("vAT"));
+                    v3.add(formatter.format(itemRs.getDouble("SalesQty")));
+                    v3.add(formatter.format(itemRs.getDouble("UnitPrice")));
+                    v3.add(formatter.format(itemRs.getDouble("TotalPrice")));
+                    v3.add(formatter.format(itemRs.getDouble("vAT")));
                     Df3.addRow(v3);
                 }
             }
@@ -849,6 +914,10 @@ public class Credit extends javax.swing.JPanel {
             java.util.logging.Logger.getLogger(Credit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jTable3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable3MouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -684,7 +684,13 @@ public class SaleM extends javax.swing.JPanel {
             for (int i = 0; i < table.getRowCount(); i++) {
                 for (int j = 0; j < table.getColumnCount(); j++) {
                     Object value = table.getValueAt(i, j);
-                    writer.write(value.toString());
+                    if(value!=null){
+                        if (value.toString().contains(",")) {
+                            writer.write(value.toString().replace(',', ' '));
+                        } else {
+                            writer.write(value.toString());
+                        }
+                    }
                     if (j < table.getColumnCount() - 1) {
                         writer.write(",");
                     }
