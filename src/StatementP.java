@@ -54,11 +54,9 @@ public class StatementP extends javax.swing.JPanel {
         gross = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         sales = new javax.swing.JLabel();
         creditors = new javax.swing.JLabel();
         grossProfit = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         purchases = new javax.swing.JLabel();
         overall = new javax.swing.JLabel();
@@ -74,15 +72,23 @@ public class StatementP extends javax.swing.JPanel {
         clStock = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         opStock = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         TotRevenue = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         TotCost = new javax.swing.JLabel();
         net = new javax.swing.JLabel();
         NetBfr = new javax.swing.JLabel();
         VAT = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        returns = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        TotRevenue1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        netAll1 = new javax.swing.JLabel();
+        decision1 = new javax.swing.JLabel();
+        overall1 = new javax.swing.JLabel();
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -224,35 +230,25 @@ public class StatementP extends javax.swing.JPanel {
         gross.setText("TOTAL GROSS PROFIT");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setText("TOTAL SALES");
+        jLabel3.setText("SALES");
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel4.setText("TOTAL CREDITORS");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel5.setText("REVENUE");
+        jLabel4.setText("CREDITORS");
 
         sales.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        sales.setForeground(new java.awt.Color(0, 102, 102));
         sales.setText("TOTAL SALES");
 
         creditors.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        creditors.setForeground(new java.awt.Color(0, 102, 102));
         creditors.setText("TOTAL CREDITORS");
 
         grossProfit.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
         grossProfit.setForeground(new java.awt.Color(0, 103, 0));
         grossProfit.setText("TOTAL GROSS PROFIT");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel9.setText("EXPENSES");
-
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel10.setText("TOTAL PURCHASES");
 
         purchases.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        purchases.setForeground(new java.awt.Color(0, 102, 102));
         purchases.setText("TOTAL PURCHASES");
 
         overall.setFont(new java.awt.Font("Segoe UI Symbol", 1, 36)); // NOI18N
@@ -280,184 +276,222 @@ public class StatementP extends javax.swing.JPanel {
         totExpenses.setText("TOTAL EXPENSES");
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel12.setText("CLOSING STOCK");
+        jLabel12.setText("- CLOSING STOCK");
 
         clStock.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        clStock.setForeground(new java.awt.Color(0, 102, 102));
         clStock.setText("(TOTAL CLOSING STOCK)");
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel17.setText("OPENING STOCK");
 
         opStock.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        opStock.setForeground(new java.awt.Color(0, 102, 102));
         opStock.setText("TOTAL OPENING STOCK");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 255));
-        jLabel7.setText("TOTAL REVENUE");
-
         TotRevenue.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        TotRevenue.setForeground(new java.awt.Color(102, 102, 255));
         TotRevenue.setText("TOTAL REVENUE");
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel18.setText("COST OF SALES");
-
         jLabel19.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(102, 102, 255));
         jLabel19.setText("TOTAL COST OF SALES");
 
         TotCost.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        TotCost.setForeground(new java.awt.Color(102, 102, 255));
         TotCost.setText("TOTAL COST");
 
         net.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        net.setForeground(new java.awt.Color(102, 102, 255));
         net.setText("NET PROFIT BEFORE TAX");
 
         NetBfr.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        NetBfr.setForeground(new java.awt.Color(102, 102, 255));
         NetBfr.setText("NET PROFIT BEFORE TAX");
 
         VAT.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        VAT.setForeground(new java.awt.Color(255, 153, 51));
         VAT.setText("TOTAL VAT TAX");
 
         jLabel21.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 153, 51));
         jLabel21.setText("VAT TAX");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel2.setText("RWF");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel5.setText("RWF");
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel6.setText("- RETURN INWARD");
+
+        returns.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        returns.setText("TOTAL RETURN SALES");
+
+        jLabel8.setText("_____________________________________");
+
+        TotRevenue1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
+        TotRevenue1.setText("TOTAL REVENUE");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel7.setText("PARTICULARS");
+
+        netAll1.setFont(new java.awt.Font("Segoe UI Symbol", 1, 36)); // NOI18N
+        netAll1.setText("NET");
+
+        decision1.setFont(new java.awt.Font("Segoe UI Symbol", 1, 36)); // NOI18N
+        decision1.setText("PROFIT");
+
+        overall1.setFont(new java.awt.Font("Segoe UI Symbol", 1, 36)); // NOI18N
+        overall1.setText("0");
 
         javax.swing.GroupLayout AllLayout = new javax.swing.GroupLayout(All);
         All.setLayout(AllLayout);
         AllLayout.setHorizontalGroup(
             AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AllLayout.createSequentialGroup()
-                .addGap(434, 434, 434)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 283, Short.MAX_VALUE))
-            .addGroup(AllLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AllLayout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel7))
-                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel17)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel12))))
-                    .addComponent(gross)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel18)
-                    .addGroup(AllLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
                         .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel21)
-                            .addComponent(net)
-                            .addComponent(jLabel11)
                             .addGroup(AllLayout.createSequentialGroup()
+                                .addGap(87, 87, 87)
                                 .addComponent(netAll)
                                 .addGap(7, 7, 7)
-                                .addComponent(decision)))))
-                .addGap(18, 18, 18)
+                                .addComponent(decision))
+                            .addGroup(AllLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(AllLayout.createSequentialGroup()
+                                        .addComponent(netAll1)
+                                        .addGap(7, 7, 7)
+                                        .addComponent(decision1))
+                                    .addComponent(gross))))
+                        .addGap(38, 38, 38))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AllLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel19)
+                            .addComponent(TotRevenue1)
+                            .addComponent(jLabel7))
+                        .addGap(26, 26, 26)))
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AllLayout.createSequentialGroup()
-                        .addComponent(overall)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(AllLayout.createSequentialGroup()
                         .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(overall)
+                            .addComponent(purchases)
+                            .addComponent(opStock)
+                            .addComponent(clStock))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AllLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TotCost)
                             .addGroup(AllLayout.createSequentialGroup()
-                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TotRevenue)
+                                    .addComponent(jLabel5)
                                     .addComponent(sales)
-                                    .addComponent(creditors)
-                                    .addComponent(TotRevenue))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(creditors, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(returns)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(143, 143, 143)
+                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(AllLayout.createSequentialGroup()
                                         .addComponent(to, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(AllLayout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AllLayout.createSequentialGroup()
                                         .addComponent(from1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(frmDate, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(AllLayout.createSequentialGroup()
-                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(totExpenses)
-                                    .addComponent(grossProfit)
-                                    .addComponent(TotCost)
-                                    .addComponent(purchases)
-                                    .addComponent(opStock)
-                                    .addComponent(clStock)
-                                    .addComponent(NetBfr)
-                                    .addComponent(VAT))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(120, 120, 120))))
+                            .addComponent(grossProfit)
+                            .addComponent(totExpenses)
+                            .addComponent(NetBfr)
+                            .addComponent(VAT)
+                            .addComponent(overall1))))
+                .addContainerGap())
+            .addGroup(AllLayout.createSequentialGroup()
+                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AllLayout.createSequentialGroup()
+                        .addGap(328, 328, 328)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AllLayout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(net)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel21))))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         AllLayout.setVerticalGroup(
             AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AllLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(AllLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(sales))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(creditors))
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(AllLayout.createSequentialGroup()
+                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(frmDate, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(from1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(TotRevenue)))
+                                    .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(to, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(AllLayout.createSequentialGroup()
-                                .addGap(52, 52, 52)
-                                .addComponent(jLabel18))))
+                                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(AllLayout.createSequentialGroup()
+                                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(58, 58, 58)
+                                        .addComponent(creditors))
+                                    .addGroup(AllLayout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(sales)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(returns)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AllLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(TotRevenue))
+                            .addGroup(AllLayout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(purchases)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(opStock)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(clStock)))
+                        .addGap(33, 33, 33))
                     .addGroup(AllLayout.createSequentialGroup()
-                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(frmDate, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(from1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addGap(32, 32, 32)
+                        .addComponent(TotRevenue1)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(to, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(purchases))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(opStock))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(clStock))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TotCost)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel19)
+                            .addComponent(TotCost))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(gross)
                     .addComponent(grossProfit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(totExpenses))
@@ -470,6 +504,11 @@ public class StatementP extends javax.swing.JPanel {
                     .addComponent(jLabel21)
                     .addComponent(VAT))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(netAll1)
+                    .addComponent(overall1)
+                    .addComponent(decision1))
+                .addGap(25, 25, 25)
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(netAll)
                     .addComponent(overall)
@@ -513,7 +552,7 @@ public class StatementP extends javax.swing.JPanel {
             double grossProfit;
             double revenue = 0;
             double cost = 0;
-            double totExp;
+            double Return = 0;
             double TotExpense = 0;
             double Begin = 0;
             double Close = 0;
@@ -536,6 +575,17 @@ public class StatementP extends javax.swing.JPanel {
                 this.sales.setText(String.valueOf(formattedSales));
             }
 
+            selectSales = con.prepareStatement("select SUM(TotalAmount) as TotSales from sales where Type=? and Status=?");
+            selectSales.setString(1, Type);
+            selectSales.setString(2, "Refunded");
+            ResultSet rss = selectSales.executeQuery();
+
+            if (rss.next()) {
+                Return = rss.getDouble("TotSales");
+                String formattedReturn = formatter.format(Return);
+                this.returns.setText(String.valueOf(formattedReturn));
+            }
+
             selectCreditors = con.prepareStatement("select SUM(SIN) as TotCredit from sales");
             ResultSet rs1 = selectCreditors.executeQuery();
 
@@ -545,7 +595,7 @@ public class StatementP extends javax.swing.JPanel {
                 this.creditors.setText(String.valueOf(formattedCredit));
             }
 
-            revenue = TotSales + TotCredit;
+            revenue = TotSales + TotCredit-Return;
             String formattedRevenue = formatter.format(revenue);
             this.TotRevenue.setText(String.valueOf(formattedRevenue));
 
@@ -697,7 +747,7 @@ public class StatementP extends javax.swing.JPanel {
             double grossProfit;
             double revenue = 0;
             double cost = 0;
-            double totExp;
+            double Return = 0;
             double TotExpense = 0;
             double Begin = 0;
             double Close = 0;
@@ -722,6 +772,19 @@ public class StatementP extends javax.swing.JPanel {
                 this.sales.setText(String.valueOf(formattedSales));
             }
 
+            selectSales = con.prepareStatement("select SUM(TotalAmount) as TotSales from sales where Type=? and Status=? AND SaleDate >= ? AND SaleDate <= ?");
+            selectSales.setString(1, Type);
+            selectSales.setString(2, "Refunded");
+            selectSales.setString(3, startDateStr);
+            selectSales.setString(4, endDateStr);
+            ResultSet rss = selectSales.executeQuery();
+
+            if (rss.next()) {
+                Return = rss.getDouble("TotSales");
+                String formattedReturn = formatter.format(Return);
+                this.returns.setText(String.valueOf(formattedReturn));
+            }
+
             selectCreditors = con.prepareStatement("select SUM(SIN) as TotCredit from sales where SaleDate >= ? AND SaleDate <= ?");
             selectCreditors.setString(1, startDateStr);
             selectCreditors.setString(2, endDateStr);
@@ -733,7 +796,7 @@ public class StatementP extends javax.swing.JPanel {
                 this.creditors.setText(String.valueOf(formattedCredit));
             }
 
-            revenue = TotSales + TotCredit;
+            revenue = TotSales + TotCredit-Return;
             String formattedRevenue = formatter.format(revenue);
             this.TotRevenue.setText(String.valueOf(formattedRevenue));
 
@@ -875,10 +938,12 @@ public class StatementP extends javax.swing.JPanel {
     private javax.swing.JLabel NetBfr;
     private javax.swing.JLabel TotCost;
     private javax.swing.JLabel TotRevenue;
+    private javax.swing.JLabel TotRevenue1;
     private javax.swing.JLabel VAT;
     private javax.swing.JLabel clStock;
     private javax.swing.JLabel creditors;
     private javax.swing.JLabel decision;
+    private javax.swing.JLabel decision1;
     private com.toedter.calendar.JDateChooser endDate2;
     private javax.swing.JLabel frmDate;
     private javax.swing.JLabel from1;
@@ -894,21 +959,25 @@ public class StatementP extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel net;
     private javax.swing.JLabel netAll;
+    private javax.swing.JLabel netAll1;
     private javax.swing.JLabel opStock;
     private javax.swing.JLabel overall;
+    private javax.swing.JLabel overall1;
     private javax.swing.JLabel purchases;
+    private javax.swing.JLabel returns;
     private javax.swing.JLabel sales;
     private javax.swing.JButton searchBetween2;
     private com.toedter.calendar.JDateChooser startDate2;
