@@ -1064,15 +1064,13 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                     CurrentStock currentStock = new CurrentStock();
                     int current = currentStock.getCurrentStock(Codes)[0];
-                    int amount = currentStock.getCurrentStock(Codes)[1];
 
-                    Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
+                    Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
                     Current.setInt(1, current);
-                    Current.setInt(2, amount);
-                    Current.setString(3, Codes);
+                    Current.setString(2, Codes);
 
                     Current.executeUpdate();
-                    
+
                     Current = con.prepareStatement("update item set PurchaseUnit=(((PurchaseUnit*CurrentStock)+(?*?))/(CurrentStock+?)) where ItemCode=?");
                     Current.setString(1, UnitPrice);
                     Current.setString(2, SalesQty);
@@ -1081,12 +1079,19 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
+                    int amount = currentStock.getCurrentStock(Codes)[1];
+
+                    Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
+                    Current.setInt(1, amount);
+                    Current.setString(2, Codes);
+
+                    Current.executeUpdate();
+
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
                     Current.setInt(1, current);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
-
 
                     JOptionPane.showMessageDialog(this, "Item Recorded");
 
@@ -1302,7 +1307,7 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     stock.setString(2, id);
 
                     stock.executeUpdate();
-                    
+
                     stock = con.prepareStatement("update stock set PurchasePrice=(((PurchasePrice*(CurrentStock))-(?*?))/(CurrentStock-?)) where ItemCode=?");
                     stock.setString(1, Qty);
                     stock.setString(2, Prch);
@@ -1314,12 +1319,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                     CurrentStock currentStock = new CurrentStock();
                     int current = currentStock.getCurrentStock(id)[0];
-                    int amount = currentStock.getCurrentStock(id)[1];
 
-                    Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
+                    Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
                     Current.setInt(1, current);
-                    Current.setInt(2, amount);
-                    Current.setString(3, id);
+                    Current.setString(2, id);
 
                     Current.executeUpdate();
 
@@ -1328,6 +1331,14 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     Current.setString(2, Prch);
                     Current.setString(3, Qty);
                     Current.setString(4, id);
+
+                    Current.executeUpdate();
+
+                    int amount = currentStock.getCurrentStock(id)[1];
+
+                    Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
+                    Current.setInt(1, amount);
+                    Current.setString(2, id);
 
                     Current.executeUpdate();
 
@@ -1396,12 +1407,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                         CurrentStock currentStock = new CurrentStock();
                         int current = currentStock.getCurrentStock(id)[0];
-                        int amount = currentStock.getCurrentStock(id)[1];
 
-                        Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
+                        Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
                         Current.setInt(1, current);
-                        Current.setInt(2, amount);
-                        Current.setString(3, id);
+                        Current.setString(2, id);
 
                         Current.executeUpdate();
 
@@ -1410,6 +1419,14 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                         Current.setString(2, Prc);
                         Current.setString(3, Qty);
                         Current.setString(4, id);
+
+                        Current.executeUpdate();
+
+                        int amount = currentStock.getCurrentStock(id)[1];
+
+                        Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
+                        Current.setInt(1, amount);
+                        Current.setString(2, id);
 
                         Current.executeUpdate();
 
