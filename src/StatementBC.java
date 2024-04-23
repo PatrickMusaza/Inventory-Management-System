@@ -28,7 +28,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Patrick
  */
-public class StatementC extends javax.swing.JPanel {
+public class StatementBC extends javax.swing.JPanel {
 
     JpanelLoaderMain jpload = new JpanelLoaderMain();
     String Met = "Cash";
@@ -36,7 +36,7 @@ public class StatementC extends javax.swing.JPanel {
     /**
      * Creates new form Statement
      */
-    public StatementC() {
+    public StatementBC() {
         initComponents();
         this.status2.requestFocus();
 
@@ -49,10 +49,11 @@ public class StatementC extends javax.swing.JPanel {
         try {
             Connection con = Connect.getConnection();
 
-            PreparedStatement Method = con.prepareStatement("SELECT Method FROM Payment WHERE not(Method LIKE ?)");
+            PreparedStatement Method = con.prepareStatement("SELECT Method FROM Payment WHERE (Method LIKE ?)");
             Method.setString(1, "%bank%");
-            
+
             ResultSet met = Method.executeQuery();
+
             List<String> methods = new ArrayList<>();
 
             while (met.next()) {
@@ -106,6 +107,7 @@ public class StatementC extends javax.swing.JPanel {
         status2.setBackground(new java.awt.Color(0, 153, 102));
         status2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         status2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash On Hand", "Cash At Bank", "Bank", "Profit and Loss" }));
+        status2.setSelectedIndex(1);
         status2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 status2statusMouseClicked(evt);
@@ -328,7 +330,7 @@ public class StatementC extends javax.swing.JPanel {
             Date now = new Date();
             String today = dateFormat.format(now);
 
-            insert = con.prepareStatement("select * from sales where not(status=?) and not(method=?) and not(Method like ?)");
+            insert = con.prepareStatement("select * from sales where not(status=?) and not(method=?) and (Method like ?)");
             insert.setString(1, "Refunded");
             insert.setString(2, "");
             insert.setString(3, "%Bank%");
@@ -368,7 +370,7 @@ public class StatementC extends javax.swing.JPanel {
                 Df.addRow(v2);
             }
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate=? AND NOT (method LIKE ?)");
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate=? AND (method LIKE ?)");
             totC.setString(1, "Refunded");
             totC.setString(2, "Cash");
             totC.setString(3, today);
@@ -544,13 +546,13 @@ public class StatementC extends javax.swing.JPanel {
             String startDateStr = sdf.format(startDate.getDate());
             String endDateStr = sdf.format(endDate.getDate());
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? AND NOT (method LIKE ?)");
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? AND (method LIKE ?)");
             totC.setString(1, "Refunded");
             totC.setString(2, Method.getSelectedItem().toString());
             totC.setString(3, startDateStr);
             totC.setString(4, endDateStr);
             totC.setString(5, "%Bank%");
-
+            
             String amount = null;
             ResultSet rsC = totC.executeQuery();
             if (rsC.next()) {
@@ -657,7 +659,7 @@ CashTxn.setModel(DbUtils.resultSetToTableModel(rs));
 
             Connection con = Connect.getConnection();
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? and not(method LIKE ?)");
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? and (method LIKE ?)");
             totC.setString(1, "Refunded");
             totC.setString(2, Method.getSelectedItem().toString());
             totC.setString(3, today);
@@ -669,7 +671,7 @@ CashTxn.setModel(DbUtils.resultSetToTableModel(rs));
             if (rsC.next()) {
                 amount = rsC.getString("TotC");
             }
-            totC = con.prepareStatement("select sum(SIN) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? and not(method LIKE ?)");
+            totC = con.prepareStatement("select sum(SIN) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? and (method LIKE ?)");
             totC.setString(1, "Refunded");
             totC.setString(2, Method.getSelectedItem().toString());
             totC.setString(3, today);
