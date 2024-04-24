@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -364,7 +363,7 @@ public class Credit extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert;
+    PreparedStatement insert, Bal;
     NumberFormat formatter = NumberFormat.getInstance();
 
     public String generateInvoiceCode() {
@@ -841,6 +840,38 @@ public class Credit extends javax.swing.JPanel {
                                         updateBalance.setDouble(1, balance);
                                         updateBalance.setString(2, Code);
                                         updateBalance.executeUpdate();
+
+                                    }
+
+                                    if (selectedMethod.contains("Bank")) {
+
+                                        insert = con.prepareStatement("update bank set Purpose=?,GivenBy=?,ReceivedBy=?,BIN=?,Balance=?,Bank=? where TxnId=?");
+                                        insert.setString(1, "Paid Credit");
+                                        insert.setString(2, CustomerName);
+                                        insert.setString(3, Login.Username.getText());
+                                        insert.setString(4, amountInput);
+                                        insert.setString(5, amountInput);
+                                        insert.setString(6, selectedMethod);
+                                        insert.setString(7, InvoiceID);
+
+                                        insert.executeUpdate();
+
+                                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                                        Bal.setString(1, selectedMethod);
+
+                                        ResultSet rs = Bal.executeQuery();
+                                        float IN, OUT, bal = 0;
+                                        if (rs.next()) {
+                                            IN = rs.getFloat("BIN");
+                                            OUT = rs.getFloat("BOUT");
+                                            bal = IN - OUT;
+                                        }
+
+                                        insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                                        insert.setFloat(1, bal);
+                                        insert.setString(2, InvoiceID);
+
+                                        insert.executeUpdate();
 
                                     }
 
