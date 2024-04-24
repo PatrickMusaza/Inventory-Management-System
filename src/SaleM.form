@@ -565,8 +565,8 @@
                 <Column editable="false" title="Item Name" type="java.lang.String"/>
                 <Column editable="false" title="Qty" type="java.lang.String"/>
                 <Column editable="false" title="Unit Price" type="java.lang.String"/>
-                <Column editable="false" title="Amount" type="java.lang.String"/>
-                <Column editable="false" title="VAT" type="java.lang.String"/>
+                <Column editable="false" title="Purchase Price" type="java.lang.String"/>
+                <Column editable="false" title="Total Amount" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

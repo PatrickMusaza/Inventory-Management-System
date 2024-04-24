@@ -412,7 +412,7 @@ public class SaleM extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Qty", "Unit Price", "Amount", "VAT"
+                "Item Code", "Item Name", "Qty", "Unit Price", "Purchase Price", "Total Amount"
             }
         ) {
             Class[] types = new Class [] {
