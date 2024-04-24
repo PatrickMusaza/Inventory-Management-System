@@ -39,15 +39,8 @@ public class NewCustomer extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        itemFrame = new javax.swing.JButton();
         customerFrame = new javax.swing.JButton();
-        saleFrame = new javax.swing.JButton();
-        purchaseFrame = new javax.swing.JButton();
-        stockFrame = new javax.swing.JButton();
-        importFrame = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         addNew = new javax.swing.JButton();
@@ -101,22 +94,7 @@ public class NewCustomer extends javax.swing.JFrame {
         setForeground(java.awt.Color.green);
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Franklin Gothic Book", 1, 14)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/dot.png"))); // NOI18N
-        jLabel1.setText("Environment");
-
         jPanel1.setBackground(new java.awt.Color(0, 51, 0));
-
-        itemFrame.setBackground(new java.awt.Color(0, 51, 0));
-        itemFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        itemFrame.setForeground(new java.awt.Color(255, 255, 255));
-        itemFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/shopping-bag.png"))); // NOI18N
-        itemFrame.setText("Item");
-        itemFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemFrameActionPerformed(evt);
-            }
-        });
 
         customerFrame.setBackground(new java.awt.Color(0, 51, 0));
         customerFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
@@ -129,95 +107,21 @@ public class NewCustomer extends javax.swing.JFrame {
             }
         });
 
-        saleFrame.setBackground(new java.awt.Color(0, 51, 0));
-        saleFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        saleFrame.setForeground(new java.awt.Color(255, 255, 255));
-        saleFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/sale-tag.png"))); // NOI18N
-        saleFrame.setText("Sales");
-        saleFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saleFrameActionPerformed(evt);
-            }
-        });
-
-        purchaseFrame.setBackground(new java.awt.Color(0, 51, 0));
-        purchaseFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        purchaseFrame.setForeground(new java.awt.Color(255, 255, 255));
-        purchaseFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/document.png"))); // NOI18N
-        purchaseFrame.setText("Purchase");
-        purchaseFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                purchaseFrameActionPerformed(evt);
-            }
-        });
-
-        stockFrame.setBackground(new java.awt.Color(0, 51, 0));
-        stockFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        stockFrame.setForeground(new java.awt.Color(255, 255, 255));
-        stockFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/packages.png"))); // NOI18N
-        stockFrame.setText("Stock");
-        stockFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stockFrameActionPerformed(evt);
-            }
-        });
-
-        importFrame.setBackground(new java.awt.Color(0, 51, 0));
-        importFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        importFrame.setForeground(new java.awt.Color(255, 255, 255));
-        importFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/import.png"))); // NOI18N
-        importFrame.setText("Import");
-        importFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importFrameActionPerformed(evt);
-            }
-        });
-
-        jButton1.setBackground(new java.awt.Color(0, 51, 0));
-        jButton1.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 51, 51));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/power.png"))); // NOI18N
-        jButton1.setText("Log Out");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(itemFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(customerFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saleFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(purchaseFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stockFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(importFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(itemFrame)
-                    .addComponent(customerFrame)
-                    .addComponent(saleFrame)
-                    .addComponent(purchaseFrame)
-                    .addComponent(stockFrame)
-                    .addComponent(importFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(customerFrame)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -524,7 +428,7 @@ public class NewCustomer extends javax.swing.JFrame {
                 .addComponent(srcActive, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(71, 71, 71)
                 .addComponent(Search)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -576,25 +480,19 @@ public class NewCustomer extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 816, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -604,7 +502,7 @@ public class NewCustomer extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -662,14 +560,6 @@ public class NewCustomer extends javax.swing.JFrame {
     }
 
 
-    private void itemFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFrameActionPerformed
-        // TODO add your handling code here:
-
-        //new ItemM().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_itemFrameActionPerformed
-
     private void customerFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerFrameActionPerformed
         // TODO add your handling code here:
 
@@ -677,37 +567,6 @@ public class NewCustomer extends javax.swing.JFrame {
         //this.setVisible(false);
 
     }//GEN-LAST:event_customerFrameActionPerformed
-
-    private void saleFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saleFrameActionPerformed
-        // TODO add your handling code here:
-
-        //  new Sale().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_saleFrameActionPerformed
-
-    private void purchaseFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseFrameActionPerformed
-        // TODO add your handling code here:
-
-        // new Purchase().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_purchaseFrameActionPerformed
-
-    private void stockFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockFrameActionPerformed
-        // TODO add your handling code here:
-
-        //new Stock().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_stockFrameActionPerformed
-
-    private void importFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFrameActionPerformed
-        // TODO add your handling code here:
-
-        //new Import().setVisible(true);
-
-    }//GEN-LAST:event_importFrameActionPerformed
 
     private void addNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewActionPerformed
         // TODO add your handling code here:
@@ -1014,14 +873,6 @@ public class NewCustomer extends javax.swing.JFrame {
 
     }//GEN-LAST:event_TINKeyTyped
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        new Login().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -1080,10 +931,6 @@ public class NewCustomer extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton customerFrame;
-    private javax.swing.JButton importFrame;
-    private javax.swing.JButton itemFrame;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1109,11 +956,8 @@ public class NewCustomer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JButton purchaseFrame;
-    private javax.swing.JButton saleFrame;
     private javax.swing.JCheckBox srcActive;
     private javax.swing.JTextField srcCode;
     private javax.swing.JTextField srcName;
-    private javax.swing.JButton stockFrame;
     // End of variables declaration//GEN-END:variables
 }
