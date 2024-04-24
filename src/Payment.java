@@ -517,6 +517,7 @@ public class Payment extends javax.swing.JPanel {
 
                         this.Method.setText("");
                         this.Code.setText("");
+                        this.Amount.setText("");
                         generateTxnCode();
 
                     } catch (SQLException ex) {
@@ -589,6 +590,7 @@ public class Payment extends javax.swing.JPanel {
 
                         this.Method.setText("");
                         this.Code.setText("");
+                        this.Amount.setText("");
                         generateTxnCode();
 
                     } catch (SQLException ex) {
@@ -604,6 +606,7 @@ public class Payment extends javax.swing.JPanel {
 
         this.Method.setText("");
         this.Code.setText("");
+        this.Amount.setText("");
 
         generateTxnCode();
 
