@@ -957,9 +957,13 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                     insert.setString(12, Method);
                     insert.setString(13, SOUT);
                     insert.setString(14, InvoiceID);
+
                     insert.executeUpdate();
 
-                    String BankPaid = this.Method.getSelectedItem().toString();
+                    String BankPaid = null;
+                    if (this.Method.getSelectedItem() != null) {
+                        BankPaid = this.Method.getSelectedItem().toString();
+                    }
 
                     if (this.Credit.isSelected()) {
                         PreparedStatement selectSOUT = con.prepareStatement("SELECT SUM(SOUT) AS TotalSOUT,SUM(SIN) AS TotalSIN FROM sales WHERE CustomerID = ?");
