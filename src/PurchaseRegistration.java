@@ -882,7 +882,7 @@ public class PurchaseRegistration extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current;
+    PreparedStatement insert, stock, Current,Bal;
 
     private void savePurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePurchaseActionPerformed
         // TODO add your handling code here:
@@ -955,6 +955,41 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     insert.setString(13, Status);
                     insert.setString(14, Method);
                     insert.executeUpdate();
+
+
+                    String BankPaid = this.Method.getSelectedItem().toString();
+
+                    if (BankPaid.contains("Bank")) {
+
+                        insert = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BOUT,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
+                        insert.setString(1, "Purchase");
+                        insert.setString(2, SupplierName);
+                        insert.setString(3, Username);
+                        insert.setString(4, TotalAmount);
+                        insert.setString(5, TotalAmount);
+                        insert.setString(6, BankPaid);
+                        insert.setString(7, PurchaseID);
+
+                        insert.executeUpdate();
+
+                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                        Bal.setString(1, BankPaid);
+
+                        ResultSet rs = Bal.executeQuery();
+                        float IN, OUT, bal = 0;
+                        if (rs.next()) {
+                            IN = rs.getFloat("BIN");
+                            OUT = rs.getFloat("BOUT");
+                            bal = IN - OUT;
+                        }
+
+                        insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                        insert.setFloat(1, bal);
+                        insert.setString(2, PurchaseID);
+
+                        insert.executeUpdate();
+
+                    }
 
                     JOptionPane.showMessageDialog(this, "New Purchase Recorded");
 
@@ -1063,10 +1098,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     stock.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    int current = currentStock.getCurrentStock(Codes)[0];
+                    float current = currentStock.getCurrentStock(Codes)[0];
 
                     Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                    Current.setInt(1, current);
+                    Current.setFloat(1, current);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
@@ -1079,16 +1114,16 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
-                    int amount = currentStock.getCurrentStock(Codes)[1];
+                    float amount = currentStock.getCurrentStock(Codes)[1];
 
                     Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                    Current.setInt(1, amount);
+                    Current.setFloat(1, amount);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setInt(1, current);
+                    Current.setFloat(1, current);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
@@ -1318,10 +1353,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     insert.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    int current = currentStock.getCurrentStock(id)[0];
+                    float current = currentStock.getCurrentStock(id)[0];
 
                     Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                    Current.setInt(1, current);
+                    Current.setFloat(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();
@@ -1334,16 +1369,16 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
-                    int amount = currentStock.getCurrentStock(id)[1];
+                    float amount = currentStock.getCurrentStock(id)[1];
 
                     Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                    Current.setInt(1, amount);
+                    Current.setFloat(1, amount);
                     Current.setString(2, id);
 
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setInt(1, current);
+                    Current.setFloat(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();
@@ -1406,10 +1441,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                         insert.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        int current = currentStock.getCurrentStock(id)[0];
+                        float current = currentStock.getCurrentStock(id)[0];
 
                         Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1422,16 +1457,16 @@ public class PurchaseRegistration extends javax.swing.JFrame {
 
                         Current.executeUpdate();
 
-                        int amount = currentStock.getCurrentStock(id)[1];
+                        float amount = currentStock.getCurrentStock(id)[1];
 
                         Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                        Current.setInt(1, amount);
+                        Current.setFloat(1, amount);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();

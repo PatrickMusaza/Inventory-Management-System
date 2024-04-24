@@ -91,7 +91,7 @@ public class Connect {
                           SalePrice float DEFAULT NULL,
                           TaxType text  ,
                           BeginningStock int DEFAULT NULL,
-                          CurrentStock int DEFAULT 0,
+                          CurrentStock float DEFAULT 0,
                           SafetyStock int DEFAULT NULL,
                           Description text  DEFAULT NULL,
                           Active text  ,
@@ -292,6 +292,7 @@ public class Connect {
                                    id INT AUTO_INCREMENT PRIMARY KEY,
                                    Code text,
                                    Method text,
+                                   Amount text,
                                    CreatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
                  """;
 

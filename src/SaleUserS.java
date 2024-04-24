@@ -428,7 +428,7 @@ public class SaleUserS extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, tot, stock, Current;
+    PreparedStatement insert, tot, stock, Current, totC;
 
     public void table_updates() {
 
@@ -448,9 +448,29 @@ public class SaleUserS extends javax.swing.JPanel {
             ResultSet total = tot.executeQuery();
 
             if (total.next()) {
-                totAmount.setText(total.getString("Total"));
                 totVAT.setText(total.getString("VAT"));
             }
+
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?)");
+            totC.setString(1, "Refunded");
+
+            double amount = 0;
+            ResultSet rsC = totC.executeQuery();
+            if (rsC.next()) {
+                amount = rsC.getDouble("TotC");
+            }
+
+            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?)");
+            totC.setString(1, "Paid");
+
+            double SIN = 0;
+            ResultSet rsCC = totC.executeQuery();
+            if (rsCC.next()) {
+                SIN = rsCC.getDouble("SIN");
+            }
+
+            double totA = SIN + amount;
+            this.totAmount.setText(String.valueOf(totA));
 
             DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
             Df.setRowCount(0);
@@ -727,16 +747,41 @@ public class SaleUserS extends javax.swing.JPanel {
             String startDateStr = sdf.format(startDate.getDate());
             String endDateStr = sdf.format(endDate.getDate());
 
-            tot = con.prepareStatement("select sum(TotalAmount) as Total, sum(VAT) as VAT from sales where SaleDate>=? and SaleDate<=?");
+            tot = con.prepareStatement("select sum(TotalAmount) as Total, sum(VAT) as VAT from sales where SaleDate>=? and SaleDate<=? and not(status=?)");
             tot.setString(1, startDateStr);
             tot.setString(2, endDateStr);
+            tot.setString(3,"Refunded");
             ResultSet total = tot.executeQuery();
 
             if (total.next()) {
-                totAmount.setText(total.getString("Total"));
                 totVAT.setText(total.getString("VAT"));
             }
 
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and SaleDate>=? and SaleDate<=?");
+            totC.setString(1, "Refunded");
+            totC.setString(2, startDateStr);
+            totC.setString(3, endDateStr);
+
+            double amount = 0;
+            ResultSet rsC = totC.executeQuery();
+            if (rsC.next()) {
+                amount = rsC.getDouble("TotC");
+            }
+
+            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and SaleDate>=? and SaleDate<=?");
+            totC.setString(1, "Paid");
+            totC.setString(2, startDateStr);
+            totC.setString(3, endDateStr);
+
+            double SIN = 0;
+            ResultSet rsCC = totC.executeQuery();
+            if (rsCC.next()) {
+                SIN = rsCC.getDouble("SIN");
+            }
+
+            double totA = SIN + amount;
+            this.totAmount.setText(String.valueOf(totA));
+            
             /*
             try {
             
@@ -904,18 +949,18 @@ public class SaleUserS extends javax.swing.JPanel {
                             insert.executeUpdate();
 
                             CurrentStock currentStock = new CurrentStock();
-                            int current = currentStock.getCurrentStock(id)[0];
-                            int amount = currentStock.getCurrentStock(id)[1];
+                            float current = currentStock.getCurrentStock(id)[0];
+                            float amount = currentStock.getCurrentStock(id)[1];
 
                             Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                            Current.setInt(1, current);
-                            Current.setInt(2, amount);
+                            Current.setFloat(1, current);
+                            Current.setFloat(2, amount);
                             Current.setString(3, id);
 
                             Current.executeUpdate();
 
                             Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                            Current.setInt(1, current);
+                            Current.setFloat(1, current);
                             Current.setString(2, id);
 
                             Current.executeUpdate();

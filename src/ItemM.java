@@ -197,7 +197,8 @@ public class ItemM extends javax.swing.JPanel {
 
         jLabel14.setText("Current Stock");
 
-        Origin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rwanda", "China", "USA", "Germany", "Eritrea", "Ethiopia", "Zambia", "India" }));
+        Origin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Democratic Republic of the", "Congo", "Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor (Timor-Leste)", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini (formerly Swaziland)", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea", "North", "Korea", "South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia (formerly Macedonia)", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City (Holy See)", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe" }));
+        Origin.setSelectedItem("Rwanda");
         Origin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OriginActionPerformed(evt);
@@ -723,12 +724,12 @@ public class ItemM extends javax.swing.JPanel {
                         stock.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        int current = currentStock.getCurrentStock(generateItemCode())[0];
-                        int amount = currentStock.getCurrentStock(generateItemCode())[1];
+                        float current = currentStock.getCurrentStock(generateItemCode())[0];
+                        float amount = currentStock.getCurrentStock(generateItemCode())[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setInt(1, current);
-                        Current.setInt(2, amount);
+                        Current.setFloat(1, current);
+                        Current.setFloat(2, amount);
                         Current.setString(3, generateItemCode());
 
                         Current.executeUpdate();
@@ -754,7 +755,7 @@ public class ItemM extends javax.swing.JPanel {
                         insert.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, Code);
 
                         Current.executeUpdate();
@@ -898,18 +899,18 @@ public class ItemM extends javax.swing.JPanel {
                         stock.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        int current = currentStock.getCurrentStock(id)[0];
-                        int amount = currentStock.getCurrentStock(id)[1];
+                        float current = currentStock.getCurrentStock(id)[0];
+                        float amount = currentStock.getCurrentStock(id)[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setInt(1, current);
-                        Current.setInt(2, amount);
+                        Current.setFloat(1, current);
+                        Current.setFloat(2, amount);
                         Current.setString(3, id);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1096,9 +1097,17 @@ public class ItemM extends javax.swing.JPanel {
         String QTY = Df.getValueAt(selectedIndex, 5).toString();
         this.QTY.setSelectedItem(QTY);
 
-        this.Purchase.setText(Df.getValueAt(selectedIndex, 6).toString());
-        this.Sale.setText(Df.getValueAt(selectedIndex, 7).toString());
-        this.Beginning.setText(Df.getValueAt(selectedIndex, 8).toString());
+        // Remove commas from the purchase price
+        String purchasePrice = Df.getValueAt(selectedIndex, 6).toString().replaceAll(",", "");
+        this.Purchase.setText(purchasePrice);
+
+        // Remove commas from the sale price
+        String salePrice = Df.getValueAt(selectedIndex, 7).toString().replaceAll(",", "");
+        this.Sale.setText(salePrice);
+        
+        // Remove commas from the beginning
+        String beginning = Df.getValueAt(selectedIndex, 8).toString().replaceAll(",", "");
+        this.Beginning.setText(beginning);
 
         PreparedStatement select;
 

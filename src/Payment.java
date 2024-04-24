@@ -27,6 +27,7 @@ public class Payment extends javax.swing.JPanel {
 
         this.Method.setEditable(false);
         this.Code.setEditable(false);
+        this.Amount.setEditable(false);
     }
 
     /**
@@ -58,6 +59,8 @@ public class Payment extends javax.swing.JPanel {
         Method = new javax.swing.JTextField();
         jLabel41 = new javax.swing.JLabel();
         Code = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        Amount = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel46 = new javax.swing.JLabel();
         TxnSrc1 = new javax.swing.JTextField();
@@ -225,6 +228,16 @@ public class Payment extends javax.swing.JPanel {
 
         Code.setEditable(false);
 
+        jLabel42.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel42.setText("Initial Amount");
+
+        Amount.setEditable(false);
+        Amount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                AmountKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -235,10 +248,15 @@ public class Payment extends javax.swing.JPanel {
                     .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel41, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Method, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-                    .addComponent(Code))
-                .addGap(394, 394, 394))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Method, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(Code, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel42)
+                        .addGap(18, 18, 18)
+                        .addComponent(Amount, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,7 +268,10 @@ public class Payment extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel41)
-                    .addComponent(Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel42)
+                        .addComponent(Amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -303,11 +324,11 @@ public class Payment extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Method"
+                "ID", "Method", "Initial Amount"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -348,7 +369,7 @@ public class Payment extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert;
+    PreparedStatement insert, Bal;
 
     public final String generateTxnCode() {
         String Code = "";
@@ -393,6 +414,7 @@ public class Payment extends javax.swing.JPanel {
 
                     v2.add(rs.getString("Code"));
                     v2.add(rs.getString("Method"));
+                    v2.add(rs.getString("Amount"));
 
                 }
 
@@ -414,6 +436,7 @@ public class Payment extends javax.swing.JPanel {
 
         this.Method.setEditable(true);
         this.Code.setEditable(false);
+        this.Amount.setEditable(true);
 
         generateTxnCode();
         isNew = true;
@@ -445,16 +468,48 @@ public class Payment extends javax.swing.JPanel {
 
                     String Method = this.Method.getText();
                     String Code = this.Code.getText();
+                    String Amount = this.Amount.getText();
                     try {
 
                         Connection con = Connect.getConnection();
 
-                        insert = con.prepareStatement("insert into Payment (Method,Code) values (?,?)");
+                        insert = con.prepareStatement("insert into Payment (Method,Code,Amount) values (?,?,?)");
 
                         insert.setString(1, Method);
                         insert.setString(2, Code);
+                        insert.setString(3, Amount);
 
                         insert.executeUpdate();
+
+                        if (!Amount.isBlank() && Method.contains("Bank")) {
+
+                            insert = con.prepareStatement("insert into bank(Purpose,BIN,Balance,Bank,TxnId) values (?,?,?,?,?)");
+                            insert.setString(1, "Initial Amount");
+                            insert.setString(2, Amount);
+                            insert.setString(3, Amount);
+                            insert.setString(4, Method);
+                            insert.setString(5, Code);
+
+                            insert.executeUpdate();
+
+                            Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                            Bal.setString(1, Method);
+
+                            ResultSet rs = Bal.executeQuery();
+                            float IN, OUT, bal = 0;
+                            if (rs.next()) {
+                                IN = rs.getFloat("BIN");
+                                OUT = rs.getFloat("BOUT");
+                                bal = IN - OUT;
+                            }
+
+                            insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                            insert.setFloat(1, bal);
+                            insert.setString(2, Code);
+
+                            insert.executeUpdate();
+
+                        }
 
                         JOptionPane.showMessageDialog(null, "New Payment Method Recorded");
                         table_update();
@@ -479,17 +534,54 @@ public class Payment extends javax.swing.JPanel {
 
                     String Method = this.Method.getText();
                     String Code = this.Code.getText();
+                    String Amount = this.Amount.getText();
 
                     try {
 
                         Connection con = Connect.getConnection();
 
-                        insert = con.prepareStatement("update Payment set Method=? where Code=?");
+                        insert = con.prepareStatement("update Payment set Method=?,Amount=? where Code=?");
 
                         insert.setString(1, Method);
-                        insert.setString(2, Code);
+                        insert.setString(2, Amount);
+                        insert.setString(3, Code);
 
                         insert.executeUpdate();
+
+                        if (!Amount.isBlank() && Method.contains("Bank")) {
+
+                            insert = con.prepareStatement("update bank set Purpose=?,BIN=?,Balance=?,Bank=? where TxnId=?");
+                            insert.setString(1, "Initial Amount");
+                            insert.setString(2, Amount);
+                            insert.setString(3, Amount);
+                            insert.setString(4, Method);
+                            insert.setString(5, Code);
+
+                            insert.executeUpdate();
+
+                            Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                            Bal.setString(1, Method);
+
+                            ResultSet rs = Bal.executeQuery();
+                            float IN, OUT, bal = 0;
+                            if (rs.next()) {
+                                IN = rs.getFloat("BIN");
+                                OUT = rs.getFloat("BOUT");
+                                bal = IN - OUT;
+                            }
+
+                            insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                            insert.setFloat(1, bal);
+                            insert.setString(2, Code);
+
+                            insert.executeUpdate();
+
+                        } else {
+
+                            insert = con.prepareStatement("delete from bank where TxnId=?");
+                            insert.setString(1, Code);
+
+                        }
 
                         JOptionPane.showMessageDialog(null, "Payment Method Updated!");
                         table_update();
@@ -570,8 +662,23 @@ public class Payment extends javax.swing.JPanel {
         this.Method.setText(Df.getValueAt(selectedIndex, 1).toString());
     }//GEN-LAST:event_PYTMouseClicked
 
+    private void AmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmountKeyReleased
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }/*
+        
+        if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
+        evt.consume();
+        }*/
+
+    }//GEN-LAST:event_AmountKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Amount;
     private javax.swing.JTextField Code;
     private javax.swing.JButton Exit;
     private javax.swing.JTextField Method;
@@ -584,6 +691,7 @@ public class Payment extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;

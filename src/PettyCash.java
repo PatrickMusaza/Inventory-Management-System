@@ -612,6 +612,16 @@ public class PettyCash extends javax.swing.JPanel {
 
                             insert.executeUpdate();
 
+                            insert = con.prepareStatement("insert into expense(ID,Name,Description,Source,Ref,Amount) values (?,?,?,?,?,?)");
+                            insert.setString(1, TxnId);
+                            insert.setString(2, Purpose);
+                            insert.setString(3, GivenBy);
+                            insert.setString(4, "Cash");
+                            insert.setString(5, RefNo);
+                            insert.setString(6, Amount);
+
+                            insert.executeUpdate();
+                            
                             JOptionPane.showMessageDialog(null, "New Petty Cash Transaction Recorded");
                             table_update();
 
@@ -762,6 +772,16 @@ public class PettyCash extends javax.swing.JPanel {
 
                             insert.executeUpdate();
 
+                            insert = con.prepareStatement("update expense set Name=?,Description=?,Source=?,Ref=?,Amount=? where ID=?");
+                            insert.setString(1, Purpose);
+                            insert.setString(2, GivenBy);
+                            insert.setString(3, "Cash");
+                            insert.setString(4, RefNo);
+                            insert.setString(5, Amount);
+                            insert.setString(6, TxnId);
+
+                            insert.executeUpdate();
+                            
                             JOptionPane.showMessageDialog(null, "Petty Cash Transaction Updated!");
                             table_update();
 

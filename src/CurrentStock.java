@@ -10,10 +10,10 @@ public class CurrentStock {
 
     private PreparedStatement select;
 
-    public int[] getCurrentStock(String code) {
-        int currentStock = 0;
-        int amount = 0;
-        int[] result = new int[2];
+    public float[] getCurrentStock(String code) {
+        float currentStock = 0;
+        float amount = 0;
+        float[] result = new float[2];
 
         try {
             Connection con = Connect.getConnection();
@@ -26,10 +26,10 @@ public class CurrentStock {
             try {
                 if (rs.next()) {
 
-                    int purchase = rs.getInt("Purchase");
-                    int sales = rs.getInt("Sales");
-                    int beginningStock = rs.getInt("BeginningStock");
-                    int price = rs.getInt("PurchasePrice");
+                    float purchase = rs.getFloat("Purchase");
+                    float sales = rs.getFloat("Sales");
+                    float beginningStock = rs.getFloat("BeginningStock");
+                    float price = rs.getFloat("PurchasePrice");
 
                     currentStock = beginningStock + purchase - sales;
                     amount = price * currentStock;

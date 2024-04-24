@@ -206,7 +206,7 @@ public class InventoryM extends javax.swing.JPanel {
 
         Status.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
 
-        ItemCode.setForeground(new java.awt.Color(245, 245, 245));
+        ItemCode.setForeground(new java.awt.Color(242, 242, 242));
         ItemCode.setText("Item Code");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

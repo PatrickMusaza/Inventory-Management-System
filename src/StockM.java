@@ -38,6 +38,8 @@ public class StockM extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         srcName = new javax.swing.JTextField();
         Search = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -68,6 +70,10 @@ public class StockM extends javax.swing.JPanel {
             }
         });
 
+        jLabel21.setText("Total Stock Amount");
+
+        total.setText("Total");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -83,7 +89,11 @@ public class StockM extends javax.swing.JPanel {
                 .addComponent(srcName, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(74, 74, 74)
                 .addComponent(Search)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,7 +104,9 @@ public class StockM extends javax.swing.JPanel {
                     .addComponent(srcName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Search)
                     .addComponent(srcCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel21)
+                    .addComponent(total))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -133,7 +145,7 @@ public class StockM extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 633, Short.MAX_VALUE)
+            .addGap(0, 955, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -194,7 +206,15 @@ public class StockM extends javax.swing.JPanel {
 
                 Df.addRow(v2);
             }
-
+            
+            insert = con.prepareStatement("select sum(StockAmount) as Total from stock");
+            ResultSet tot = insert.executeQuery();
+            
+            if(tot.next()){
+                double sum=tot.getDouble("Total");
+                this.total.setText(String.valueOf(sum));
+            }
+            
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StockM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -239,10 +259,12 @@ public class StockM extends javax.swing.JPanel {
     private javax.swing.JButton Search;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField srcCode;
     private javax.swing.JTextField srcName;
+    private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
 }

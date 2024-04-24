@@ -57,7 +57,6 @@ public class HomeA extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ELECTRONIC BILLING MACHINE");
-        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 0));
 

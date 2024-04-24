@@ -374,12 +374,25 @@ public class StatementC extends javax.swing.JPanel {
             totC.setString(3, today);
             totC.setString(4, "%Bank%");
 
-            String amount = null;
+            double amount = 0;
             ResultSet rsC = totC.executeQuery();
             if (rsC.next()) {
-                amount = rsC.getString("TotC");
+                amount = rsC.getDouble("TotC");
             }
-            this.totAmount.setText(amount);
+            
+            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and method=? and SaleDate=?");
+            totC.setString(1, "Paid");
+            totC.setString(2, "Cash");
+            totC.setString(3, today);
+
+            double SIN = 0;
+            ResultSet rsCC = totC.executeQuery();
+            if (rsCC.next()) {
+                SIN = rsCC.getDouble("SIN");
+            }
+            
+            double tot=SIN+amount;
+            this.totAmount.setText(String.valueOf(tot));
 
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StatementC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

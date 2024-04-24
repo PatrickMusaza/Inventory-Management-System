@@ -877,7 +877,7 @@ public class SalesTransaction extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current;
+    PreparedStatement insert, stock, Current, Bal;
 
     private void saveSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSaleActionPerformed
         // TODO add your handling code here:
@@ -939,7 +939,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                 }
                 try {
                     Connection con = Connect.getConnection();
-                    
+
                     insert = con.prepareStatement("insert into sales (CustomerID,CustomerName,ReleaseDate,SaleDate,Remark,VAT,InvoiceID,TotalAmount,PurchaseCode,Type,createdBy, Status,Method,SOUT) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                     insert.setString(1, CustomerID);
                     insert.setString(2, CustomerName);
@@ -955,6 +955,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                     insert.setString(12, Status);
                     insert.setString(13, Method);
                     insert.setString(14, SOUT);
+
                     insert.executeUpdate();
 
                     if (this.Credit.isSelected()) {
@@ -975,27 +976,61 @@ public class SalesTransaction extends javax.swing.JFrame {
                         }
                     }
 
-                        JOptionPane.showMessageDialog(this, "New Sale Recorded");
+                    String BankPaid = this.Method.getSelectedItem().toString();
 
-                        this.TotalAmount.setText("");
-                        this.InvoiceID.setText("");
-                        this.Remark.setText("");
-                        this.SaleDate.setDate(null);
-                        this.ReleaseDate.setDate(null);
-                        this.CustomerName.setText(null);
-                        this.CustomerID.setText(null);
-                        this.PurchaseCode.setText("");
-                        this.Sale.setText("Sale");
+                    if (BankPaid.contains("Bank")) {
 
-                        SaleM sale = new SaleM();
-                        sale.table_updates();
-                        this.dispose();
+                        insert = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
+                        insert.setString(1, "Sale");
+                        insert.setString(2, CustomerName);
+                        insert.setString(3, Username);
+                        insert.setString(4, TotalAmount);
+                        insert.setString(5, TotalAmount);
+                        insert.setString(6, BankPaid);
+                        insert.setString(7, InvoiceID);
 
-                    }catch (SQLException ex) {
+                        insert.executeUpdate();
+
+                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                        Bal.setString(1, BankPaid);
+
+                        ResultSet rs = Bal.executeQuery();
+                        float IN, OUT, bal = 0;
+                        if (rs.next()) {
+                            IN = rs.getFloat("BIN");
+                            OUT = rs.getFloat("BOUT");
+                            bal = IN - OUT;
+                        }
+
+                        insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                        insert.setFloat(1, bal);
+                        insert.setString(2, InvoiceID);
+
+                        insert.executeUpdate();
+
+                    }
+
+                    JOptionPane.showMessageDialog(this, "New Sale Recorded");
+
+                    this.TotalAmount.setText("");
+                    this.InvoiceID.setText("");
+                    this.Remark.setText("");
+                    this.SaleDate.setDate(null);
+                    this.ReleaseDate.setDate(null);
+                    this.CustomerName.setText(null);
+                    this.CustomerID.setText(null);
+                    this.PurchaseCode.setText("");
+                    this.Sale.setText("Sale");
+
+                    SaleM sale = new SaleM();
+                    sale.table_updates();
+                    this.dispose();
+
+                } catch (SQLException ex) {
                     java.util.logging.Logger.getLogger(SalesTransaction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                }
             }
+        }
     }//GEN-LAST:event_saveSaleActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -1126,18 +1161,18 @@ public class SalesTransaction extends javax.swing.JFrame {
                         stock.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        int current = currentStock.getCurrentStock(Codes)[0];
-                        int amount = currentStock.getCurrentStock(Codes)[1];
+                        float current = currentStock.getCurrentStock(Codes)[0];
+                        float amount = currentStock.getCurrentStock(Codes)[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setInt(1, current);
-                        Current.setInt(2, amount);
+                        Current.setFloat(1, current);
+                        Current.setFloat(2, amount);
                         Current.setString(3, Codes);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, Codes);
 
                         Current.executeUpdate();
@@ -1360,18 +1395,18 @@ public class SalesTransaction extends javax.swing.JFrame {
                         insert.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        int current = currentStock.getCurrentStock(id)[0];
-                        int amount = currentStock.getCurrentStock(id)[1];
+                        float current = currentStock.getCurrentStock(id)[0];
+                        float amount = currentStock.getCurrentStock(id)[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setInt(1, current);
-                        Current.setInt(2, amount);
+                        Current.setFloat(1, current);
+                        Current.setFloat(2, amount);
                         Current.setString(3, id);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setInt(1, current);
+                        Current.setFloat(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1429,18 +1464,18 @@ public class SalesTransaction extends javax.swing.JFrame {
                     insert.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    int current = currentStock.getCurrentStock(id)[0];
-                    int amount = currentStock.getCurrentStock(id)[1];
+                    float current = currentStock.getCurrentStock(id)[0];
+                    float amount = currentStock.getCurrentStock(id)[1];
 
                     Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                    Current.setInt(1, current);
-                    Current.setInt(2, amount);
+                    Current.setFloat(1, current);
+                    Current.setFloat(2, amount);
                     Current.setString(3, id);
 
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setInt(1, current);
+                    Current.setFloat(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();

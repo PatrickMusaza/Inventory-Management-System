@@ -1,8 +1,13 @@
 
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,13 +56,13 @@ public class HomeM extends javax.swing.JFrame {
         statementFrame = new javax.swing.JButton();
         inventoryFrame = new javax.swing.JButton();
         expenseFrame = new javax.swing.JButton();
+        expenseFrame1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         MainFrame = new javax.swing.JPanel();
         User = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ELECTRONIC BILLING MACHINE");
-        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 0));
 
@@ -182,6 +187,17 @@ public class HomeM extends javax.swing.JFrame {
             }
         });
 
+        expenseFrame1.setBackground(new java.awt.Color(0, 102, 204));
+        expenseFrame1.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        expenseFrame1.setForeground(new java.awt.Color(255, 255, 255));
+        expenseFrame1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/update.png"))); // NOI18N
+        expenseFrame1.setText("Upload");
+        expenseFrame1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expenseFrame1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -207,7 +223,9 @@ public class HomeM extends javax.swing.JFrame {
                 .addComponent(inventoryFrame)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(expenseFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(expenseFrame1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LogOut)
                 .addContainerGap())
         );
@@ -226,8 +244,9 @@ public class HomeM extends javax.swing.JFrame {
                     .addComponent(pettyFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(statementFrame)
                     .addComponent(inventoryFrame)
-                    .addComponent(expenseFrame))
-                .addContainerGap(9, Short.MAX_VALUE))
+                    .addComponent(expenseFrame)
+                    .addComponent(expenseFrame1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Franklin Gothic Book", 1, 14)); // NOI18N
@@ -467,6 +486,31 @@ public class HomeM extends javax.swing.JFrame {
         
     }//GEN-LAST:event_expenseFrameActionPerformed
 
+    private void expenseFrame1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expenseFrame1ActionPerformed
+        // TODO add your handling code here:
+        
+        if (!ValidateForm.isInternetReachable()) {
+            try {
+                Connection con = Connect.getConnection();
+                con.close();
+                JOptionPane.showMessageDialog(null, "There is no internet Connection!", "Internet Connectivity", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+
+            try {
+                Connection con = Connect.getConnection();
+                Connection conCloud = Connect.getCloudConnection();
+                JOptionPane.showMessageDialog(null, "Wait Until All the files are synced on the cloud Database");
+                DynamicSyncUpload.synchronize(con, conCloud);
+                JOptionPane.showMessageDialog(null, "Database Uploaded");
+            } catch (SQLException ex) {
+                Logger.getLogger(ManagementM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_expenseFrame1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -511,6 +555,7 @@ public class HomeM extends javax.swing.JFrame {
     private javax.swing.JButton creditorFrame;
     private javax.swing.JButton customerFrame;
     private javax.swing.JButton expenseFrame;
+    private javax.swing.JButton expenseFrame1;
     private javax.swing.JButton inventoryFrame;
     private javax.swing.JButton itemFrame;
     private javax.swing.JLabel jLabel1;

@@ -327,8 +327,8 @@
                 <Column editable="false" title="Invoice ID" type="java.lang.String"/>
                 <Column editable="false" title="Sale Date" type="java.lang.String"/>
                 <Column editable="false" title="Method" type="java.lang.String"/>
-                <Column editable="false" title="IN" type="java.lang.String"/>
-                <Column editable="false" title="OUT" type="java.lang.String"/>
+                <Column editable="false" title="Debited" type="java.lang.String"/>
+                <Column editable="false" title="Credited" type="java.lang.String"/>
                 <Column editable="false" title="Balance" type="java.lang.String"/>
               </Table>
             </Property>

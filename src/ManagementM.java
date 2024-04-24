@@ -301,25 +301,9 @@ public class ManagementM extends javax.swing.JPanel {
             try {
                 Connection con = Connect.getConnection();
                 Connection conCloud = Connect.getCloudConnection();
-
-                /*// Check if the user has opened the app today
-PreparedStatement checkOpenedStmt = con.prepareStatement("SELECT * FROM user WHERE DateUsed = CURRENT_DATE");
-ResultSet rs = checkOpenedStmt.executeQuery();
-
-// If there are no results, it means the user hasn't opened the app today
-if (!rs.next()) {
-// Set Found as 1 for the first time
-PreparedStatement setFoundStmt = con.prepareStatement("UPDATE user SET Found =? , DateUsed = CURRENT_DATE");
-setFoundStmt.setInt(1, 1);
-setFoundStmt.executeUpdate();*/
                 JOptionPane.showMessageDialog(null, "Wait Until All the files are synced on your local Database");
                 DynamicSyncUpload.synchronize(conCloud, con);
                 JOptionPane.showMessageDialog(null, "Database Downloaded");
-                /* }
-                    
-                    // Update the LastOpenedDate to today's date
-                    PreparedStatement updateLastOpenedStmt = con.prepareStatement("UPDATE user SET LastOpenedDate = CURRENT_DATE WHERE DateUsed = CURRENT_DATE");
-                    updateLastOpenedStmt.executeUpdate();*/
             } catch (SQLException ex) {
                 Logger.getLogger(ManagementM.class.getName()).log(Level.SEVERE, null, ex);
             }

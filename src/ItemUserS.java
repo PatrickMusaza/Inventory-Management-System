@@ -672,12 +672,12 @@ public class ItemUserS extends javax.swing.JPanel {
                 stock.executeUpdate();
 
                 CurrentStock currentStock = new CurrentStock();
-                int current = currentStock.getCurrentStock(generateItemCode())[0];
-                int amount = currentStock.getCurrentStock(generateItemCode())[1];
+                float current = currentStock.getCurrentStock(generateItemCode())[0];
+                float amount = currentStock.getCurrentStock(generateItemCode())[1];
 
                 Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                Current.setInt(1, current);
-                Current.setInt(2, amount);
+                Current.setFloat(1, current);
+                Current.setFloat(2, amount);
                 Current.setString(3, generateItemCode());
 
                 Current.executeUpdate();
@@ -703,7 +703,7 @@ public class ItemUserS extends javax.swing.JPanel {
                 insert.executeUpdate();
 
                 Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                Current.setInt(1, current);
+                Current.setFloat(1, current);
                 Current.setString(2, Code);
 
                 Current.executeUpdate();
@@ -842,18 +842,18 @@ public class ItemUserS extends javax.swing.JPanel {
                 stock.executeUpdate();
 
                 CurrentStock currentStock = new CurrentStock();
-                int current = currentStock.getCurrentStock(id)[0];
-                int amount = currentStock.getCurrentStock(id)[1];
+                float current = currentStock.getCurrentStock(id)[0];
+                float amount = currentStock.getCurrentStock(id)[1];
 
                 Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                Current.setInt(1, current);
-                Current.setInt(2, amount);
+                Current.setFloat(1, current);
+                Current.setFloat(2, amount);
                 Current.setString(3, id);
 
                 Current.executeUpdate();
 
                 Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                Current.setInt(1, current);
+                Current.setFloat(1, current);
                 Current.setString(2, id);
 
                 Current.executeUpdate();

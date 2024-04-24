@@ -241,7 +241,7 @@ public class Credit extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Invoice ID", "Sale Date", "Method", "IN", "OUT", "Balance"
+                "Invoice ID", "Sale Date", "Method", "Debited", "Credited", "Balance"
             }
         ) {
             Class[] types = new Class [] {
@@ -504,14 +504,13 @@ public class Credit extends javax.swing.JPanel {
 
             writer.write("""
                              Salam Trading Company Ltd
-                             Gisenyi, Rubavu, Rwanda
+                             Gisenyi-Rubavu-Rwanda
                              (+250) 788 888 888
                              
                              Customer ID:""" + CustID
                     + "\nCustomer Name:" + CustName
                     + "\n\n\n");
 
-            // Write header for jTable2 only
             if (writeHeaders) {
                 for (int i = 0; i < table1.getColumnCount(); i++) {
                     writer.write(table1.getColumnName(i));
@@ -542,6 +541,16 @@ public class Credit extends javax.swing.JPanel {
             }
 
             writer.write("\nItems Information Details\n\n");
+
+            if (writeHeaders) {
+                for (int i = 0; i < table2.getColumnCount(); i++) {
+                    writer.write(table2.getColumnName(i));
+                    if (i < table2.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
 
             // Export jTable1
             for (int i = 0; i < table2.getRowCount(); i++) {
