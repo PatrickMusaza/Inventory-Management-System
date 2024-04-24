@@ -1103,9 +1103,8 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                     float amount = currentStock.getCurrentStock(Codes)[1];
 
-                    Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                    Current.setFloat(1, amount);
-                    Current.setString(2, Codes);
+                    Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
+                    Current.setString(1, Codes);
 
                     Current.executeUpdate();
 
@@ -1349,9 +1348,8 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                     float amount = currentStock.getCurrentStock(id)[1];
 
-                    Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                    Current.setFloat(1, amount);
-                    Current.setString(2, id);
+                    Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
+                    Current.setString(1, id);
 
                     Current.executeUpdate();
 
@@ -1438,9 +1436,8 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                         float amount = currentStock.getCurrentStock(id)[1];
 
-                        Current = con.prepareStatement("update stock set  StockAmount=? where ItemCode=?");
-                        Current.setFloat(1, amount);
-                        Current.setString(2, id);
+                        Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
+                        Current.setString(1, id);
 
                         Current.executeUpdate();
 
