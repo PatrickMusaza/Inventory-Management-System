@@ -941,7 +941,7 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                 try {
                     Connection con = Connect.getConnection();
                     insert = con.prepareStatement("update sales set CustomerID=?, CustomerName=?, ReleaseDate=?, SaleDate=?, Remark=?, VAT=?, "
-                            + " TotalAmount=?, PurchaseCode=?, Type=?, createdBy=?,  Status=?, Method=?,SOUT=? where InvoiceID=?");
+                            + " TotalAmount=?, PurchaseCode=?, Type=?, createdBy=?,  Status=?, Method=?,SOUT=?,Balance=? where InvoiceID=?");
 
                     insert.setString(1, CustomerID);
                     insert.setString(2, CustomerName);
@@ -956,7 +956,8 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                     insert.setString(11, Status);
                     insert.setString(12, Method);
                     insert.setString(13, SOUT);
-                    insert.setString(14, InvoiceID);
+                    insert.setString(14, TotalAmount);
+                    insert.setString(15, InvoiceID);
 
                     insert.executeUpdate();
 

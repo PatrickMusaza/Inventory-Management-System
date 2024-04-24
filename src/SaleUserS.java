@@ -490,6 +490,17 @@ public class SaleUserS extends javax.swing.JPanel {
                         v2.add(formatter.format(rs.getDouble("VAT")));
                         v2.add(rs.getString("Remark"));
 
+                    } else if (rs.getString("Type").equals("Paid")) {
+                        v2.add(rs.getString("Status"));
+                        v2.add(rs.getString("Type"));
+                        v2.add(rs.getString("InvoiceID"));
+                        v2.add(rs.getString("CustomerName"));
+                        v2.add(rs.getString("SaleDate"));
+                        v2.add(rs.getString("ReleaseDate"));
+                        v2.add(formatter.format(rs.getDouble("SIN")));
+                        v2.add(formatter.format(rs.getDouble("VAT")));
+                        v2.add(rs.getString("Remark"));
+
                     } else {
                         v2.add(rs.getString("Status"));
                         v2.add("Credit");
@@ -497,7 +508,7 @@ public class SaleUserS extends javax.swing.JPanel {
                         v2.add(rs.getString("CustomerName"));
                         v2.add(rs.getString("SaleDate"));
                         v2.add(rs.getString("ReleaseDate"));
-                        v2.add(formatter.format(rs.getDouble("TotalAmount")));
+                        v2.add(formatter.format(rs.getDouble("Balance")));
                         v2.add(formatter.format(rs.getDouble("VAT")));
                         v2.add(rs.getString("Remark"));
 
@@ -653,7 +664,7 @@ public class SaleUserS extends javax.swing.JPanel {
             for (int i = 0; i < table.getRowCount(); i++) {
                 for (int j = 0; j < table.getColumnCount(); j++) {
                     Object value = table.getValueAt(i, j);
-                    if(value!=null){
+                    if (value != null) {
                         if (value.toString().contains(",")) {
                             writer.write(value.toString().replace(',', ' '));
                         } else {
@@ -750,7 +761,7 @@ public class SaleUserS extends javax.swing.JPanel {
             tot = con.prepareStatement("select sum(TotalAmount) as Total, sum(VAT) as VAT from sales where SaleDate>=? and SaleDate<=? and not(status=?)");
             tot.setString(1, startDateStr);
             tot.setString(2, endDateStr);
-            tot.setString(3,"Refunded");
+            tot.setString(3, "Refunded");
             ResultSet total = tot.executeQuery();
 
             if (total.next()) {
@@ -781,7 +792,7 @@ public class SaleUserS extends javax.swing.JPanel {
 
             double totA = SIN + amount;
             this.totAmount.setText(String.valueOf(totA));
-            
+
             /*
             try {
             

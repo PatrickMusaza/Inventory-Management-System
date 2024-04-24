@@ -940,7 +940,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                 try {
                     Connection con = Connect.getConnection();
 
-                    insert = con.prepareStatement("insert into sales (CustomerID,CustomerName,ReleaseDate,SaleDate,Remark,VAT,InvoiceID,TotalAmount,PurchaseCode,Type,createdBy, Status,Method,SOUT) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    insert = con.prepareStatement("insert into sales (CustomerID,CustomerName,ReleaseDate,SaleDate,Remark,VAT,InvoiceID,TotalAmount,PurchaseCode,Type,createdBy, Status,Method,SOUT,Balance) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                     insert.setString(1, CustomerID);
                     insert.setString(2, CustomerName);
                     insert.setDate(3, sqlReleaseDate);
@@ -955,6 +955,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                     insert.setString(12, Status);
                     insert.setString(13, Method);
                     insert.setString(14, SOUT);
+                    insert.setString(15, TotalAmount);
 
                     insert.executeUpdate();
                     String BankPaid=null;

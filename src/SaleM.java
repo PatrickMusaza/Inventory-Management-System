@@ -547,7 +547,7 @@ public class SaleM extends javax.swing.JPanel {
                         v2.add(rs.getString("CustomerName"));
                         v2.add(rs.getString("SaleDate"));
                         v2.add(rs.getString("ReleaseDate"));
-                        v2.add(formatter.format(rs.getDouble("TotalAmount")));
+                        v2.add(formatter.format(rs.getDouble("Balance")));
                         v2.add(formatter.format(rs.getDouble("VAT")));
                         v2.add(rs.getString("Remark"));
 
