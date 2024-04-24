@@ -879,7 +879,7 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current,Bal;
+    PreparedStatement insert, stock, Current, Bal;
 
     private void saveSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSaleActionPerformed
         // TODO add your handling code here:
@@ -919,10 +919,9 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                 String VAT = SalesTransactionEdit.VAT.getText();
                 String Sale = null;
                 String Method = (String) SalesTransactionEdit.Method.getSelectedItem();
-                String SOUT=null;
+                String SOUT = null;
 
                 String Username = Login.Username.getText();
-
 
                 java.sql.Date sqlReleaseDate = new java.sql.Date(ReleaseDate.getTime());
                 java.sql.Date sqlSaleDate = new java.sql.Date(SaleDate.getTime());
@@ -930,13 +929,13 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                 String Status = "Waiting Approval";
 
                 this.totalAmount();
-                
+
                 if (SalesTransactionEdit.Sale.isSelected()) {
                     Sale = "Sale";
                 } else if (SalesTransactionEdit.Credit.isSelected()) {
                     Sale = "Credit";
                     Method = null;
-                    SOUT=TotalAmount;
+                    SOUT = TotalAmount;
                 }
 
                 try {
@@ -960,6 +959,8 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                     insert.setString(14, InvoiceID);
                     insert.executeUpdate();
 
+                    String BankPaid = this.Method.getSelectedItem().toString();
+
                     if (this.Credit.isSelected()) {
                         PreparedStatement selectSOUT = con.prepareStatement("SELECT SUM(SOUT) AS TotalSOUT,SUM(SIN) AS TotalSIN FROM sales WHERE CustomerID = ?");
                         selectSOUT.setString(1, CustomerID);
@@ -976,12 +977,7 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                             updateBalance.setString(2, InvoiceID);
                             updateBalance.executeUpdate();
                         }
-                    }
-
-
-                    String BankPaid = this.Method.getSelectedItem().toString();
-
-                    if (BankPaid.contains("Bank")) {
+                    } else if (BankPaid.contains("Bank")) {
 
                         insert = con.prepareStatement("update bank set Purpose=?,GivenBy=?,ReceivedBy=?,BIN=?,Balance=?,Bank=? where TxnId=?");
                         insert.setString(1, "Sale");

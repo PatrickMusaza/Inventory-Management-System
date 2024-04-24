@@ -957,6 +957,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                     insert.setString(14, SOUT);
 
                     insert.executeUpdate();
+                    String BankPaid = this.Method.getSelectedItem().toString();
 
                     if (this.Credit.isSelected()) {
                         PreparedStatement selectSOUT = con.prepareStatement("SELECT SUM(SOUT) AS TotalSOUT,SUM(SIN) AS TotalSIN FROM sales WHERE CustomerID = ?");
@@ -974,11 +975,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                             updateBalance.setString(2, InvoiceID);
                             updateBalance.executeUpdate();
                         }
-                    }
-
-                    String BankPaid = this.Method.getSelectedItem().toString();
-
-                    if (BankPaid.contains("Bank")) {
+                    }else if(BankPaid.contains("Bank")){
 
                         insert = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
                         insert.setString(1, "Sale");
