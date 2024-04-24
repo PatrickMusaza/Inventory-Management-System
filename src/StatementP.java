@@ -101,8 +101,8 @@ public class StatementP extends javax.swing.JPanel {
 
         status2.setBackground(new java.awt.Color(0, 153, 102));
         status2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        status2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash On Hand", "Cash At Bank", "Bank", "Profit and Loss" }));
-        status2.setSelectedIndex(3);
+        status2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash On Hand", "Bank", "Profit and Loss" }));
+        status2.setSelectedIndex(2);
         status2.setToolTipText("");
         status2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

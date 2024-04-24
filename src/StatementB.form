@@ -116,14 +116,13 @@
               <Font name="Segoe UI" size="14" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
+              <StringArray count="3">
                 <StringItem index="0" value="Cash On Hand"/>
-                <StringItem index="1" value="Cash At Bank"/>
-                <StringItem index="2" value="Bank"/>
-                <StringItem index="3" value="Profit and Loss"/>
+                <StringItem index="1" value="Bank"/>
+                <StringItem index="2" value="Profit and Loss"/>
               </StringArray>
             </Property>
-            <Property name="selectedIndex" type="int" value="2"/>
+            <Property name="selectedIndex" type="int" value="1"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
