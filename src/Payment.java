@@ -266,12 +266,13 @@ public class Payment extends javax.swing.JPanel {
                     .addComponent(jLabel35)
                     .addComponent(Method, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel41)
-                    .addComponent(Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel42)
-                        .addComponent(Amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel41)
+                        .addComponent(Code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -660,6 +661,7 @@ public class Payment extends javax.swing.JPanel {
 
         this.Code.setText(Df.getValueAt(selectedIndex, 0).toString());
         this.Method.setText(Df.getValueAt(selectedIndex, 1).toString());
+        this.Amount.setText(Df.getValueAt(selectedIndex, 2).toString());
     }//GEN-LAST:event_PYTMouseClicked
 
     private void AmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmountKeyReleased
