@@ -497,15 +497,15 @@ public class Payment extends javax.swing.JPanel {
                             Bal.setString(1, Method);
 
                             ResultSet rs = Bal.executeQuery();
-                            float IN, OUT, bal = 0;
+                            double IN, OUT, bal = 0;
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, Code);
 
                             insert.executeUpdate();
@@ -565,15 +565,15 @@ public class Payment extends javax.swing.JPanel {
                             Bal.setString(1, Method);
 
                             ResultSet rs = Bal.executeQuery();
-                            float IN, OUT, bal = 0;
+                            double IN, OUT, bal = 0;
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, Code);
 
                             insert.executeUpdate();

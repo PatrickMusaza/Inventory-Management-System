@@ -437,11 +437,11 @@ public class InventoryA extends javax.swing.JPanel {
             java.util.logging.Logger.getLogger(InventoryA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        float qty, price;
+        double qty, price;
         double tot;
         try {
-            qty = Float.parseFloat(this.UpdatedQty.getText());
-            price = Float.parseFloat(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText());
+            price = Double.parseDouble(this.AvgPrch.getText());
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -469,11 +469,11 @@ public class InventoryA extends javax.swing.JPanel {
 
     private void UpdatedQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UpdatedQtyKeyReleased
         // TODO add your handling code here:
-        float qty, price;
+        double qty, price;
         double tot;
         try {
-            qty = Float.parseFloat(this.UpdatedQty.getText());
-            price = Float.parseFloat(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText());
+            price = Double.parseDouble(this.AvgPrch.getText());
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -500,8 +500,8 @@ public class InventoryA extends javax.swing.JPanel {
             String Qty = this.UpdatedQty.getText();
             String current = this.CurrentQty.getText();
 
-            float qtyNow = Float.parseFloat(Qty);
-            float qtyOld = Float.parseFloat(current);
+            double qtyNow = Double.parseDouble(Qty);
+            double qtyOld = Double.parseDouble(current);
 
             if (Qty.isBlank() && (current.equals(Qty))) {
                 JOptionPane.showMessageDialog(null, "Please enter the updated quantity", "Enter New Quantity", JOptionPane.ERROR_MESSAGE);
@@ -560,8 +560,8 @@ public class InventoryA extends javax.swing.JPanel {
             String Qty = this.UpdatedQty.getText();
             String current = this.CurrentQty.getText();
 
-            float qtyNow = Float.parseFloat(Qty);
-            float qtyOld = Float.parseFloat(current);
+            double qtyNow = Double.parseDouble(Qty);
+            double qtyOld = Double.parseDouble(current);
 
             if (Qty.isBlank() && (current.equals(Qty))) {
                 JOptionPane.showMessageDialog(null, "Please enter the updated quantity", "Enter New Quantity", JOptionPane.ERROR_MESSAGE);
@@ -575,7 +575,7 @@ public class InventoryA extends javax.swing.JPanel {
 
                 try {
                     String Code = this.ItemCode.getText();
-                    float Change, now = 0, old = 0;
+                    double Change, now = 0, old = 0;
                     String amount = this.StockAmount.getText();
 
                     Connection con = Connect.getConnection();
@@ -584,8 +584,8 @@ public class InventoryA extends javax.swing.JPanel {
 
                     ResultSet rs = select.executeQuery();
                     while (rs.next()) {
-                        now = rs.getFloat("NewQuantity");
-                        old = rs.getFloat("CurrentStock");
+                        now = rs.getDouble("NewQuantity");
+                        old = rs.getDouble("CurrentStock");
                     }
 
                     Change = old - now;
@@ -643,8 +643,8 @@ public class InventoryA extends javax.swing.JPanel {
             String Qty = this.UpdatedQty.getText();
             String current = this.CurrentQty.getText();
 
-            float qtyNow = Float.parseFloat(Qty);
-            float qtyOld = Float.parseFloat(current);
+            double qtyNow = Double.parseDouble(Qty);
+            double qtyOld = Double.parseDouble(current);
 
             if (Qty.isBlank() && (current.equals(Qty))) {
                 JOptionPane.showMessageDialog(null, "Please enter the updated quantity", "Enter New Quantity", JOptionPane.ERROR_MESSAGE);

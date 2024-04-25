@@ -973,8 +973,8 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                         double soutTotal = 0, sinTotal = 0;
                         double balance = 0;
                         if (rsSOUT.next()) {
-                            soutTotal = rsSOUT.getFloat("TotalSOUT");
-                            sinTotal = rsSOUT.getFloat("TotalSIN");
+                            soutTotal = rsSOUT.getDouble("TotalSOUT");
+                            sinTotal = rsSOUT.getDouble("TotalSIN");
                             balance = soutTotal - sinTotal;
 
                             PreparedStatement updateBalance = con.prepareStatement("UPDATE sales SET TotalAmount = ? WHERE InvoiceID = ?");
@@ -999,15 +999,15 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                         Bal.setString(1, BankPaid);
 
                         ResultSet rs = Bal.executeQuery();
-                        float IN, OUT, bal = 0;
+                        double IN, OUT, bal = 0;
                         if (rs.next()) {
-                            IN = rs.getFloat("BIN");
-                            OUT = rs.getFloat("BOUT");
+                            IN = rs.getDouble("BIN");
+                            OUT = rs.getDouble("BOUT");
                             bal = IN - OUT;
                         }
 
                         insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                        insert.setFloat(1, bal);
+                        insert.setDouble(1, bal);
                         insert.setString(2, InvoiceID);
 
                         insert.executeUpdate();
@@ -1157,18 +1157,18 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                         stock.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        float current = currentStock.getCurrentStock(Codes)[0];
-                        float amount = currentStock.getCurrentStock(Codes)[1];
+                        double current = currentStock.getCurrentStock(Codes)[0];
+                        double amount = currentStock.getCurrentStock(Codes)[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setFloat(1, current);
-                        Current.setFloat(2, amount);
+                        Current.setDouble(1, current);
+                        Current.setDouble(2, amount);
                         Current.setString(3, Codes);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setFloat(1, current);
+                        Current.setDouble(1, current);
                         Current.setString(2, Codes);
 
                         Current.executeUpdate();
@@ -1265,13 +1265,13 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int Qty = Integer.parseInt(this.SalesQty.getText());
-        float UnitPrice = Float.parseFloat(this.UnitPrice.getText());
-        float total;
+        double UnitPrice = Double.parseDouble(this.UnitPrice.getText());
+        double total;
         total = Qty * UnitPrice;
 
         String type = "B-18%";
         if (Tax.getSelectedItem().equals(type)) {
-            float vat = (float) (total * 0.18);
+            double vat = (double) (total * 0.18);
             DecimalFormat df = new DecimalFormat("#.##");
             VAT_Item.setText(df.format(vat));
         }
@@ -1394,18 +1394,18 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                         insert.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        float current = currentStock.getCurrentStock(id)[0];
-                        float amount = currentStock.getCurrentStock(id)[1];
+                        double current = currentStock.getCurrentStock(id)[0];
+                        double amount = currentStock.getCurrentStock(id)[1];
 
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                        Current.setFloat(1, current);
-                        Current.setFloat(2, amount);
+                        Current.setDouble(1, current);
+                        Current.setDouble(2, amount);
                         Current.setString(3, id);
 
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setFloat(1, current);
+                        Current.setDouble(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1463,18 +1463,18 @@ public class SalesTransactionEdit extends javax.swing.JFrame {
                     insert.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    float current = currentStock.getCurrentStock(id)[0];
-                    float amount = currentStock.getCurrentStock(id)[1];
+                    double current = currentStock.getCurrentStock(id)[0];
+                    double amount = currentStock.getCurrentStock(id)[1];
 
                     Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                    Current.setFloat(1, current);
-                    Current.setFloat(2, amount);
+                    Current.setDouble(1, current);
+                    Current.setDouble(2, amount);
                     Current.setString(3, id);
 
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setFloat(1, current);
+                    Current.setDouble(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();

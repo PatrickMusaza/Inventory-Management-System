@@ -424,8 +424,8 @@ public class Credit extends javax.swing.JPanel {
                 double soutTotal = 0, sinTotal = 0;
                 double balance = 0;
                 if (rsSOUT.next()) {
-                    soutTotal = rsSOUT.getFloat("TotalSOUT");
-                    sinTotal = rsSOUT.getFloat("TotalSIN");
+                    soutTotal = rsSOUT.getDouble("TotalSOUT");
+                    sinTotal = rsSOUT.getDouble("TotalSIN");
                     balance = soutTotal - sinTotal;
                 }
 
@@ -832,8 +832,8 @@ public class Credit extends javax.swing.JPanel {
                                     double soutTotal = 0, sinTotal = 0;
                                     double balance = 0;
                                     if (rsSOUT.next()) {
-                                        soutTotal = rsSOUT.getFloat("TotalSOUT");
-                                        sinTotal = rsSOUT.getFloat("TotalSIN");
+                                        soutTotal = rsSOUT.getDouble("TotalSOUT");
+                                        sinTotal = rsSOUT.getDouble("TotalSIN");
                                         balance = soutTotal - sinTotal;
 
                                         PreparedStatement updateBalance = con.prepareStatement("UPDATE sales SET TotalAmount = ? WHERE InvoiceID = ?");
@@ -860,15 +860,15 @@ public class Credit extends javax.swing.JPanel {
                                         Bal.setString(1, selectedMethod);
 
                                         ResultSet rs = Bal.executeQuery();
-                                        float IN, OUT, bal = 0;
+                                        double IN, OUT, bal = 0;
                                         if (rs.next()) {
-                                            IN = rs.getFloat("BIN");
-                                            OUT = rs.getFloat("BOUT");
+                                            IN = rs.getDouble("BIN");
+                                            OUT = rs.getDouble("BOUT");
                                             bal = IN - OUT;
                                         }
 
                                         insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                                        insert.setFloat(1, bal);
+                                        insert.setDouble(1, bal);
                                         insert.setString(2, InvoiceID);
 
                                         insert.executeUpdate();

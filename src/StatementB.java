@@ -893,7 +893,7 @@ public class StatementB extends javax.swing.JPanel {
                     String TxnId = this.TxnId.getText();
                     String InvoiceNo = this.InvoiceNo.getText();
                     String Path = this.Preview.getText();
-                    float bal = 0, IN, OUT;
+                    double bal = 0, IN, OUT;
                     String Bank = this.Bank.getSelectedItem().toString();
 
                     if (input7 == true) {
@@ -911,7 +911,7 @@ public class StatementB extends javax.swing.JPanel {
                             insert.setString(5, Bank);
                             insert.setString(6, TxnId);
                             insert.setString(7, InvoiceNo);
-                            insert.setFloat(8, bal);
+                            insert.setDouble(8, bal);
                             insert.setString(9, Path);
 
                             insert.executeUpdate();
@@ -922,13 +922,13 @@ public class StatementB extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -968,7 +968,7 @@ public class StatementB extends javax.swing.JPanel {
                             insert.setString(5, Bank);
                             insert.setString(6, TxnId);
                             insert.setString(7, InvoiceNo);
-                            insert.setFloat(8, bal);
+                            insert.setDouble(8, bal);
                             insert.setString(9, Path);
 
                             insert.executeUpdate();
@@ -979,13 +979,13 @@ public class StatementB extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -1042,7 +1042,7 @@ public class StatementB extends javax.swing.JPanel {
                     String TxnId = this.TxnId.getText();
                     String InvoiceNo = this.InvoiceNo.getText();
                     String Path = this.Preview.getText();
-                    float bal = 0, IN, OUT;
+                    double bal = 0, IN, OUT;
                     String Bank = this.Bank.getSelectedItem().toString();
 
                                      if (input7 == true) {
@@ -1070,13 +1070,13 @@ public class StatementB extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -1124,13 +1124,13 @@ public class StatementB extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                IN = rs.getFloat("BIN");
-                                OUT = rs.getFloat("BOUT");
+                                IN = rs.getDouble("BIN");
+                                OUT = rs.getDouble("BOUT");
                                 bal = IN - OUT;
                             }
 
                             insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();

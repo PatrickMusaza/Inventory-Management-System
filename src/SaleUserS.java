@@ -960,18 +960,18 @@ public class SaleUserS extends javax.swing.JPanel {
                             insert.executeUpdate();
 
                             CurrentStock currentStock = new CurrentStock();
-                            float current = currentStock.getCurrentStock(id)[0];
-                            float amount = currentStock.getCurrentStock(id)[1];
+                            double current = currentStock.getCurrentStock(id)[0];
+                            double amount = currentStock.getCurrentStock(id)[1];
 
                             Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
-                            Current.setFloat(1, current);
-                            Current.setFloat(2, amount);
+                            Current.setDouble(1, current);
+                            Current.setDouble(2, amount);
                             Current.setString(3, id);
 
                             Current.executeUpdate();
 
                             Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                            Current.setFloat(1, current);
+                            Current.setDouble(1, current);
                             Current.setString(2, id);
 
                             Current.executeUpdate();

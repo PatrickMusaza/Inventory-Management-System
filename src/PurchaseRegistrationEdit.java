@@ -926,7 +926,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                 try {
                     Connection con = Connect.getConnection();
-                    insert = con.prepareStatement("update purchase SupplierID=?,SupplierName=?,ReleaseDate=?,SupplierReceipt=?,Remark=?,VAT=?,InvoiceID=?,"
+                    insert = con.prepareStatement("update purchase set SupplierID=?,SupplierName=?,ReleaseDate=?,SupplierReceipt=?,Remark=?,VAT=?,InvoiceID=?,"
                             + "TotalAmount=?,Type=?,createdBy=?,SupplierSDCD=?,Status=?,Method=? where PurchaseCode=?");
                     insert.setString(1, SupplierID);
                     insert.setString(2, SupplierName);
@@ -963,15 +963,15 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                         Bal.setString(1, BankPaid);
 
                         ResultSet rs = Bal.executeQuery();
-                        float IN, OUT, bal = 0;
+                        double IN, OUT, bal = 0;
                         if (rs.next()) {
-                            IN = rs.getFloat("BIN");
-                            OUT = rs.getFloat("BOUT");
+                            IN = rs.getDouble("BIN");
+                            OUT = rs.getDouble("BOUT");
                             bal = IN - OUT;
                         }
 
                         insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                        insert.setFloat(1, bal);
+                        insert.setDouble(1, bal);
                         insert.setString(2, PurchaseID);
 
                         insert.executeUpdate();
@@ -1085,10 +1085,10 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     stock.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    float current = currentStock.getCurrentStock(Codes)[0];
+                    double current = currentStock.getCurrentStock(Codes)[0];
 
                     Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                    Current.setFloat(1, current);
+                    Current.setDouble(1, current);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
@@ -1101,15 +1101,16 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
-                    float amount = currentStock.getCurrentStock(Codes)[1];
+                    double amount = currentStock.getCurrentStock(Codes)[1];
 
-                    Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
-                    Current.setString(1, Codes);
+                    Current = con.prepareStatement("update stock set StockAmount=? where ItemCode=?");
+                    Current.setDouble(1, amount);
+                    Current.setString(2, Codes);
 
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setFloat(1, current);
+                    Current.setDouble(1, current);
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
@@ -1247,13 +1248,13 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int Qty = Integer.parseInt(this.SalesQty.getText());
-        float UnitPrice = Float.parseFloat(PurchaseRegistrationEdit.UnitPrice.getText());
-        float total;
+        double UnitPrice = Double.parseDouble(PurchaseRegistrationEdit.UnitPrice.getText());
+        double total;
         total = Qty * UnitPrice;
 
         String type = "B-18%";
         if (Tax.getSelectedItem().equals(type)) {
-            float vat = (float) (total * 0.18);
+            double vat = (double) (total * 0.18);
             DecimalFormat df = new DecimalFormat("#.##");
             VAT_Item.setText(df.format(vat));
         }
@@ -1330,10 +1331,10 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     insert.executeUpdate();
 
                     CurrentStock currentStock = new CurrentStock();
-                    float current = currentStock.getCurrentStock(id)[0];
+                    double current = currentStock.getCurrentStock(id)[0];
 
                     Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                    Current.setFloat(1, current);
+                    Current.setDouble(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();
@@ -1346,7 +1347,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
-                    float amount = currentStock.getCurrentStock(id)[1];
+                    double amount = currentStock.getCurrentStock(id)[1];
 
                     Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
                     Current.setString(1, id);
@@ -1354,7 +1355,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                    Current.setFloat(1, current);
+                    Current.setDouble(1, current);
                     Current.setString(2, id);
 
                     Current.executeUpdate();
@@ -1418,10 +1419,10 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                         insert.executeUpdate();
 
                         CurrentStock currentStock = new CurrentStock();
-                        float current = currentStock.getCurrentStock(id)[0];
+                        double current = currentStock.getCurrentStock(id)[0];
 
                         Current = con.prepareStatement("update stock set CurrentStock=? where ItemCode=?");
-                        Current.setFloat(1, current);
+                        Current.setDouble(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1434,7 +1435,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                         Current.executeUpdate();
 
-                        float amount = currentStock.getCurrentStock(id)[1];
+                        double amount = currentStock.getCurrentStock(id)[1];
 
                         Current = con.prepareStatement("update stock set  StockAmount=(CurrentStock*PurchasePrice) where ItemCode=?");
                         Current.setString(1, id);
@@ -1442,7 +1443,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                         Current.executeUpdate();
 
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
-                        Current.setFloat(1, current);
+                        Current.setDouble(1, current);
                         Current.setString(2, id);
 
                         Current.executeUpdate();
@@ -1478,13 +1479,13 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
     private void UnitPriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UnitPriceKeyReleased
         // TODO add your handling code here:
         int Qty = Integer.parseInt(this.SalesQty.getText());
-        float UnitPrice = Float.parseFloat(PurchaseRegistrationEdit.UnitPrice.getText());
-        float total;
+        double UnitPrice = Double.parseDouble(PurchaseRegistrationEdit.UnitPrice.getText());
+        double total;
         total = Qty * UnitPrice;
 
         String type = "B-18%";
         if (Tax.getSelectedItem().equals(type)) {
-            float vat = (float) (total * 0.18);
+            double vat = (double) (total * 0.18);
             DecimalFormat df = new DecimalFormat("#.##");
             VAT_Item.setText(df.format(vat));
         }

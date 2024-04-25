@@ -574,7 +574,7 @@ public class PettyCash extends javax.swing.JPanel {
                     String TxnId = this.TxnId.getText();
                     String InvoiceNo = this.InvoiceNo.getText();
                     String Path = this.Preview.getText();
-                    float bal = 0, in, out;
+                    double bal = 0, in, out;
 
                     if (input1 == true) {
 
@@ -591,7 +591,7 @@ public class PettyCash extends javax.swing.JPanel {
                             insert.setString(5, RefNo);
                             insert.setString(6, TxnId);
                             insert.setString(7, InvoiceNo);
-                            insert.setFloat(8, bal);
+                            insert.setDouble(8, bal);
                             insert.setString(9, Path);
 
                             insert.executeUpdate();
@@ -601,13 +601,13 @@ public class PettyCash extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                out = rs.getFloat("POUT");
-                                in = rs.getFloat("PIN");
+                                out = rs.getDouble("POUT");
+                                in = rs.getDouble("PIN");
                                 bal = in - out;
                             }
 
                             insert = con.prepareStatement("update pettycash set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -658,7 +658,7 @@ public class PettyCash extends javax.swing.JPanel {
                             insert.setString(5, RefNo);
                             insert.setString(6, TxnId);
                             insert.setString(7, InvoiceNo);
-                            insert.setFloat(8, bal);
+                            insert.setDouble(8, bal);
                             insert.setString(9, Path);
 
                             insert.executeUpdate();
@@ -668,13 +668,13 @@ public class PettyCash extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                out = rs.getFloat("POUT");
-                                in = rs.getFloat("PIN");
+                                out = rs.getDouble("POUT");
+                                in = rs.getDouble("PIN");
                                 bal = in - out;
                             }
 
                             insert = con.prepareStatement("update pettycash set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -736,7 +736,7 @@ public class PettyCash extends javax.swing.JPanel {
                     String TxnId = this.TxnId.getText();
                     String InvoiceNo = this.InvoiceNo.getText();
                     String Path = this.Preview.getText();
-                    float bal = 0, in, out;
+                    double bal = 0, in, out;
 
                     if (input1 == true) {
                         try {
@@ -761,13 +761,13 @@ public class PettyCash extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                out = rs.getFloat("POUT");
-                                in = rs.getFloat("PIN");
+                                out = rs.getDouble("POUT");
+                                in = rs.getDouble("PIN");
                                 bal = in - out;
                             }
 
                             insert = con.prepareStatement("update pettycash set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
@@ -825,13 +825,13 @@ public class PettyCash extends javax.swing.JPanel {
                             ResultSet rs = Bal.executeQuery();
 
                             if (rs.next()) {
-                                out = rs.getFloat("POUT");
-                                in = rs.getFloat("PIN");
+                                out = rs.getDouble("POUT");
+                                in = rs.getDouble("PIN");
                                 bal = in - out;
                             }
 
                             insert = con.prepareStatement("update pettycash set Balance=? where TxnId=?");
-                            insert.setFloat(1, bal);
+                            insert.setDouble(1, bal);
                             insert.setString(2, TxnId);
 
                             insert.executeUpdate();
