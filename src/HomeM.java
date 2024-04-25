@@ -187,7 +187,7 @@ public class HomeM extends javax.swing.JFrame {
             }
         });
 
-        expenseFrame1.setBackground(new java.awt.Color(0, 102, 204));
+        expenseFrame1.setBackground(new java.awt.Color(0, 151, 39));
         expenseFrame1.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         expenseFrame1.setForeground(new java.awt.Color(255, 255, 255));
         expenseFrame1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/update.png"))); // NOI18N
