@@ -861,8 +861,8 @@ public class SaleUserS extends javax.swing.JPanel {
                     new SalesTransactionEdit().setVisible(true);
                     String InvoiceID = (Df.getValueAt(selectedIndex, 2).toString());
                     String Customer = (Df.getValueAt(selectedIndex, 3).toString());
-                    String VAT = (Df.getValueAt(selectedIndex, 6).toString());
-                    String Total = (Df.getValueAt(selectedIndex, 7).toString());
+                    String VAT = (Df.getValueAt(selectedIndex, 7).toString());
+                    String Total = (Df.getValueAt(selectedIndex,6).toString());
                     String type = null;
                     String cusID = null;
                     String PurchaseCode = null;
