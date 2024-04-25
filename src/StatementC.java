@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -391,8 +392,9 @@ public class StatementC extends javax.swing.JPanel {
                 SIN = rsCC.getDouble("SIN");
             }
             
+            DecimalFormat df = new DecimalFormat("#,##0.00");
             double tot=SIN+amount;
-            this.totAmount.setText(String.valueOf(tot));
+            this.totAmount.setText(df.format(tot));
 
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StatementC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
