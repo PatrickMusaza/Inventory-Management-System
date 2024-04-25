@@ -1,8 +1,10 @@
+
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 import javax.swing.RowFilter;
@@ -167,8 +169,8 @@ public class StockM extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     PreparedStatement insert;
-                
-                NumberFormat formatter = NumberFormat.getInstance();
+
+    NumberFormat formatter = NumberFormat.getInstance();
 
     private void table_update() {
 
@@ -206,15 +208,18 @@ public class StockM extends javax.swing.JPanel {
 
                 Df.addRow(v2);
             }
-            
+
             insert = con.prepareStatement("select sum(StockAmount) as Total from stock");
             ResultSet tot = insert.executeQuery();
-            
-            if(tot.next()){
-                double sum=tot.getDouble("Total");
-                this.total.setText(String.valueOf(sum));
+
+            if (tot.next()) {
+
+                DecimalFormat df = new DecimalFormat("#,##0.00"); 
+                double sum = tot.getDouble("Total");
+                this.total.setText(df.format(sum));
+
             }
-            
+
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StockM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 import javax.swing.RowFilter;
@@ -213,8 +214,11 @@ public class StockUserS extends javax.swing.JPanel {
             ResultSet tot = insert.executeQuery();
 
             if (tot.next()) {
+
+                DecimalFormat df = new DecimalFormat("#,##0.00"); 
                 double sum = tot.getDouble("Total");
-                this.total.setText(String.valueOf(sum));
+                this.total.setText(df.format(sum));
+
             }
 
         } catch (SQLException ex) {
