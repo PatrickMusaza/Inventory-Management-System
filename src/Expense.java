@@ -420,7 +420,7 @@ public class Expense extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert;
+    PreparedStatement insert,Bal;
 
     private void addNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addNewMouseClicked
         // TODO add your handling code here:
@@ -485,7 +485,36 @@ public class Expense extends javax.swing.JPanel {
                         insert.setString(6, Code);
                         insert.setString(7, Amount);
 
+                        insert.executeUpdate(); if (Source.contains("Bank")) {
+
+                        insert = con.prepareStatement("insert into bank(Purpose,GivenBy,BOUT,Balance,Bank,TxnId) values (?,?,?,?,?,?)");
+                        insert.setString(1, "Expense");
+                        insert.setString(2, Username);
+                        insert.setString(3, Amount);
+                        insert.setString(4, Amount);
+                        insert.setString(5, Source);
+                        insert.setString(6, Code);
+
                         insert.executeUpdate();
+
+                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                        Bal.setString(1, Source);
+
+                        ResultSet rs = Bal.executeQuery();
+                        double IN, OUT, bal = 0;
+                        if (rs.next()) {
+                            IN = rs.getDouble("BIN");
+                            OUT = rs.getDouble("BOUT");
+                            bal = IN - OUT;
+                        }
+
+                        insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                        insert.setDouble(1, bal);
+                        insert.setString(2, Code);
+
+                        insert.executeUpdate();
+
+                    }
 
                     } catch (SQLException ex) {
                         Logger.getLogger(Expense.class.getName()).log(Level.SEVERE, null, ex);
