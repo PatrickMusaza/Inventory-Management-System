@@ -368,11 +368,11 @@ public class StatementC extends javax.swing.JPanel {
                 Df.addRow(v2);
             }
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate=? AND NOT (method LIKE ?)");
-            totC.setString(1, "Refunded");
-            totC.setString(2, "Cash");
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where (Type=?) and not(method like ?) and SaleDate=? and not(status=?)");
+            totC.setString(1, "Sale");
+            totC.setString(2, "%Bank%");
             totC.setString(3, today);
-            totC.setString(4, "%Bank%");
+            totC.setString(4, "Refunded");
 
             double amount = 0;
             ResultSet rsC = totC.executeQuery();
@@ -380,9 +380,9 @@ public class StatementC extends javax.swing.JPanel {
                 amount = rsC.getDouble("TotC");
             }
             
-            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and method=? and SaleDate=?");
+            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and not(method like ?) and SaleDate=?");
             totC.setString(1, "Paid");
-            totC.setString(2, "Cash");
+            totC.setString(2, "%Bank%");
             totC.setString(3, today);
 
             double SIN = 0;
