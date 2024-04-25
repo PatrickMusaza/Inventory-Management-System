@@ -52,7 +52,7 @@ public class StatementC extends javax.swing.JPanel {
 
             PreparedStatement Method = con.prepareStatement("SELECT Method FROM Payment WHERE not(Method LIKE ?)");
             Method.setString(1, "%bank%");
-            
+
             ResultSet met = Method.executeQuery();
             List<String> methods = new ArrayList<>();
 
@@ -380,7 +380,7 @@ public class StatementC extends javax.swing.JPanel {
             if (rsC.next()) {
                 amount = rsC.getDouble("TotC");
             }
-            
+
             totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and not(method like ?) and SaleDate=?");
             totC.setString(1, "Paid");
             totC.setString(2, "%Bank%");
@@ -391,9 +391,9 @@ public class StatementC extends javax.swing.JPanel {
             if (rsCC.next()) {
                 SIN = rsCC.getDouble("SIN");
             }
-            
+
             DecimalFormat df = new DecimalFormat("#,##0.00");
-            double tot=SIN+amount;
+            double tot = SIN + amount;
             this.totAmount.setText(df.format(tot));
 
         } catch (SQLException ex) {
@@ -559,20 +559,34 @@ public class StatementC extends javax.swing.JPanel {
             String startDateStr = sdf.format(startDate.getDate());
             String endDateStr = sdf.format(endDate.getDate());
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? AND NOT (method LIKE ?)");
-            totC.setString(1, "Refunded");
-            totC.setString(2, Method.getSelectedItem().toString());
+            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where (Type=?) and not(method like ?) and SaleDate>=? and SaleDate<=? and not(status=?)");
+            totC.setString(1, "Sale");
+            totC.setString(2, "%Bank%");
             totC.setString(3, startDateStr);
             totC.setString(4, endDateStr);
-            totC.setString(5, "%Bank%");
+            totC.setString(5, "Refunded");
 
-            String amount = null;
+            double amount = 0;
             ResultSet rsC = totC.executeQuery();
             if (rsC.next()) {
-                amount = rsC.getString("TotC");
+                amount = rsC.getDouble("TotC");
             }
-            this.totAmount.setText(amount);
 
+            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and not(method like ?) and SaleDate>=? and SaleDate<=?");
+            totC.setString(1, "Paid");
+            totC.setString(2, "%Bank%");
+            totC.setString(3, startDateStr);
+            totC.setString(4, endDateStr);
+
+            double SIN = 0;
+            ResultSet rsCC = totC.executeQuery();
+            if (rsCC.next()) {
+                SIN = rsCC.getDouble("SIN");
+            }
+
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            double tot = SIN + amount;
+            this.totAmount.setText(df.format(tot));
 
             /*
             ResultSet rsC = totC.executeQuery();
