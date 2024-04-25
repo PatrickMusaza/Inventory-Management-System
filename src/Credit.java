@@ -842,17 +842,17 @@ public class Credit extends javax.swing.JPanel {
                                         updateBalance.executeUpdate();
 
                                     }
-
+                                    
                                     if (selectedMethod.contains("Bank")) {
 
-                                        insert = con.prepareStatement("update bank set Purpose=?,GivenBy=?,ReceivedBy=?,BIN=?,Balance=?,Bank=? where TxnId=?");
+                                        insert = con.prepareStatement("insert into bank (Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
                                         insert.setString(1, "Paid Credit");
                                         insert.setString(2, CustomerName);
                                         insert.setString(3, Login.Username.getText());
                                         insert.setString(4, amountInput);
                                         insert.setString(5, amountInput);
                                         insert.setString(6, selectedMethod);
-                                        insert.setString(7, InvoiceID);
+                                        insert.setString(7, Code);
 
                                         insert.executeUpdate();
 
@@ -869,7 +869,7 @@ public class Credit extends javax.swing.JPanel {
 
                                         insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
                                         insert.setDouble(1, bal);
-                                        insert.setString(2, InvoiceID);
+                                        insert.setString(2, Code);
 
                                         insert.executeUpdate();
 
