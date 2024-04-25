@@ -551,6 +551,15 @@ public class Payment extends javax.swing.JPanel {
                         insert.executeUpdate();
 
                         if (!Amount.isBlank() && Method.contains("Bank")) {
+                            
+                            insert = con.prepareStatement("INSERT INTO bank(Purpose,BIN,Balance,Bank,TxnId) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE Balance = VALUES(Balance), Bank = VALUES(Bank), TxnId = VALUES(TxnId)");
+                            insert.setString(1, "Initial Amount");
+                            insert.setString(2, Amount);
+                            insert.setString(3, Amount);
+                            insert.setString(4, Method);
+                            insert.setString(5, Code);
+
+                            insert.executeUpdate();
 
                             insert = con.prepareStatement("update bank set Purpose=?,BIN=?,Balance=?,Bank=? where TxnId=?");
                             insert.setString(1, "Initial Amount");
