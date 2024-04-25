@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -583,6 +584,8 @@ public class StatementB extends javax.swing.JPanel {
         return Code;
     }
 
+    NumberFormat formatter = NumberFormat.getInstance();
+
     private void table_update() {
 
         int count;
@@ -608,9 +611,9 @@ public class StatementB extends javax.swing.JPanel {
                     v2.add(rs.getString("Purpose"));
                     v2.add(rs.getDate("createdAt"));
                     v2.add(rs.getString("Bank"));
-                    v2.add(rs.getString("BIN"));
-                    v2.add(rs.getString("BOUT"));
-                    v2.add(rs.getString("Balance"));
+                    v2.add(formatter.format(rs.getDouble("BIN")));
+                    v2.add(formatter.format(rs.getDouble("BOUT")));
+                    v2.add(formatter.format(rs.getDouble("Balance")));
                     v2.add(rs.getString("InvoiceNo"));
                     v2.add(rs.getString("file_path"));
 
@@ -779,22 +782,20 @@ public class StatementB extends javax.swing.JPanel {
         DefaultTableModel Df = (DefaultTableModel) BankTxn.getModel();
         int selectedIndex = BankTxn.getSelectedRow();
 
-        Object Type = Df.getValueAt(selectedIndex, 4);
-        Object Type1 = Df.getValueAt(selectedIndex, 5);
+        String Type = Df.getValueAt(selectedIndex, 4).toString();
+        String Type1 = Df.getValueAt(selectedIndex, 5).toString();
 
         String Bank = (String) Df.getValueAt(selectedIndex, 3);
         this.Bank.setSelectedItem(Bank);
 
         this.TxnId.setText(Df.getValueAt(selectedIndex, 0).toString());
         this.Reason.setText(Df.getValueAt(selectedIndex, 1).toString());
-        this.InvoiceNo.setText(Df.getValueAt(selectedIndex, 7).toString());
-        this.Preview.setText(Df.getValueAt(selectedIndex, 8).toString());
 
         PreparedStatement select;
 
         try {
 
-            String Code = this.TxnId.getText();
+            String Code = Df.getValueAt(selectedIndex, 0).toString();
 
             Connection con = Connect.getConnection();
 
@@ -812,15 +813,18 @@ public class StatementB extends javax.swing.JPanel {
                 this.ReceivedBy.setText(ReceivedBy);
             }
 
-            if (Type1 == null) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 4).toString());
+            if (Type1.equals("0")) {
+                this.Amount.setText(Df.getValueAt(selectedIndex, 4).toString().replace(",", ""));
                 this.Deposit.setSelected(true);
                 this.Withdraw.setSelected(false);
-            } else if (Type == null) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 5).toString());
+            } else if (Type.equals("0")) {
+                this.Amount.setText(Df.getValueAt(selectedIndex, 5).toString().replace(",", ""));
                 this.Withdraw.setSelected(true);
                 this.Deposit.setSelected(false);
             }
+
+            this.InvoiceNo.setText(Df.getValueAt(selectedIndex, 7).toString());
+            this.Preview.setText(Df.getValueAt(selectedIndex, 8).toString());
 
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StatementB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -1044,114 +1048,117 @@ public class StatementB extends javax.swing.JPanel {
                     String Path = this.Preview.getText();
                     double bal = 0, IN, OUT;
                     String Bank = this.Bank.getSelectedItem().toString();
+                    
+                    if (TxnId.contains("TXN X")) {
+                        
+                        if (input7 == true) {
 
-                                     if (input7 == true) {
+                            try {
 
-                        try {
+                                Connection con = Connect.getConnection();
 
-                            Connection con = Connect.getConnection();
+                                insert = con.prepareStatement("update bank set BIN=?,Purpose=?,GivenBy=?,ReceivedBy=?,Bank=?,InvoiceNo=?,file_path=? where TxnId=?");
 
-                            insert = con.prepareStatement("update bank set BIN=?,Purpose=?,GivenBy=?,ReceivedBy=?,Bank=?,InvoiceNo=?,file_path=? where TxnId=?");
+                                insert.setString(1, Amount);
+                                insert.setString(2, Purpose);
+                                insert.setString(3, GivenBy);
+                                insert.setString(4, ReceivedBy);
+                                insert.setString(5, Bank);
+                                insert.setString(6, InvoiceNo);
+                                insert.setString(7, Path);
+                                insert.setString(8, TxnId);
 
-                            insert.setString(1, Amount);
-                            insert.setString(2, Purpose);
-                            insert.setString(3, GivenBy);
-                            insert.setString(4, ReceivedBy);
-                            insert.setString(5, Bank);
-                            insert.setString(6, InvoiceNo);
-                            insert.setString(7, Path);
-                            insert.setString(8, TxnId);
+                                insert.executeUpdate();
 
-                            insert.executeUpdate();
+                                Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where Bank=?");
+                                Bal.setString(1, Bank);
 
-                            Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where Bank=?");
-                            Bal.setString(1, Bank);
+                                ResultSet rs = Bal.executeQuery();
 
-                            ResultSet rs = Bal.executeQuery();
+                                if (rs.next()) {
+                                    IN = rs.getDouble("BIN");
+                                    OUT = rs.getDouble("BOUT");
+                                    bal = IN - OUT;
+                                }
 
-                            if (rs.next()) {
-                                IN = rs.getDouble("BIN");
-                                OUT = rs.getDouble("BOUT");
-                                bal = IN - OUT;
+                                insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                                insert.setDouble(1, bal);
+                                insert.setString(2, TxnId);
+
+                                insert.executeUpdate();
+
+                                JOptionPane.showMessageDialog(null, "Bank Transaction Updated!");
+                                table_update();
+
+                                this.Withdraw.setSelected(false);
+                                this.Deposit.setSelected(false);
+                                this.Reason.setText("");
+                                this.GivenBy.setText("");
+                                this.ReceivedBy.setText("");
+                                this.Amount.setText("");
+                                this.TxnId.setText("");
+                                this.InvoiceNo.setText("");
+                                this.Preview.setText("Unknown File Path");
+                                this.Reason.requestFocus();
+                                generateTxnCode();
+
+                            } catch (SQLException ex) {
+                                java.util.logging.Logger.getLogger(StatementB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                             }
-
-                            insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setDouble(1, bal);
-                            insert.setString(2, TxnId);
-
-                            insert.executeUpdate();
-
-                            JOptionPane.showMessageDialog(null, "Bank Transaction Updated!");
-                            table_update();
-
-                            this.Withdraw.setSelected(false);
-                            this.Deposit.setSelected(false);
-                            this.Reason.setText("");
-                            this.GivenBy.setText("");
-                            this.ReceivedBy.setText("");
-                            this.Amount.setText("");
-                            this.TxnId.setText("");
-                            this.InvoiceNo.setText("");
-                            this.Preview.setText("Unknown File Path");
-                            this.Reason.requestFocus();
-                            generateTxnCode();
-
-                        } catch (SQLException ex) {
-                            java.util.logging.Logger.getLogger(StatementB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                    }
-                    if (input17 == true) {
-                        try {
+                        if (input17 == true) {
+                            try {
 
-                            Connection con = Connect.getConnection();
+                                Connection con = Connect.getConnection();
 
-                            insert = con.prepareStatement("update bank set BOUT=?,Purpose=?,GivenBy=?,ReceivedBy=?,Bank=?,InvoiceNo=?,file_path=? where TxnId=?");
+                                insert = con.prepareStatement("update bank set BOUT=?,Purpose=?,GivenBy=?,ReceivedBy=?,Bank=?,InvoiceNo=?,file_path=? where TxnId=?");
 
-                            insert.setString(1, Amount);
-                            insert.setString(2, Purpose);
-                            insert.setString(3, GivenBy);
-                            insert.setString(4, ReceivedBy);
-                            insert.setString(5, Bank);
-                            insert.setString(6, InvoiceNo);
-                            insert.setString(7, Path);
-                            insert.setString(8, TxnId);
+                                insert.setString(1, Amount);
+                                insert.setString(2, Purpose);
+                                insert.setString(3, GivenBy);
+                                insert.setString(4, ReceivedBy);
+                                insert.setString(5, Bank);
+                                insert.setString(6, InvoiceNo);
+                                insert.setString(7, Path);
+                                insert.setString(8, TxnId);
 
-                            insert.executeUpdate();
+                                insert.executeUpdate();
 
-                            Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where Bank=?");
-                            Bal.setString(1, Bank);
+                                Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where Bank=?");
+                                Bal.setString(1, Bank);
 
-                            ResultSet rs = Bal.executeQuery();
+                                ResultSet rs = Bal.executeQuery();
 
-                            if (rs.next()) {
-                                IN = rs.getDouble("BIN");
-                                OUT = rs.getDouble("BOUT");
-                                bal = IN - OUT;
+                                if (rs.next()) {
+                                    IN = rs.getDouble("BIN");
+                                    OUT = rs.getDouble("BOUT");
+                                    bal = IN - OUT;
+                                }
+
+                                insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                                insert.setDouble(1, bal);
+                                insert.setString(2, TxnId);
+
+                                insert.executeUpdate();
+
+                                JOptionPane.showMessageDialog(null, "Bank Transaction Updated!");
+                                table_update();
+
+                                this.Withdraw.setSelected(false);
+                                this.Deposit.setSelected(false);
+                                this.Reason.setText("");
+                                this.GivenBy.setText("");
+                                this.ReceivedBy.setText("");
+                                this.Amount.setText("");
+                                this.TxnId.setText("");
+                                this.InvoiceNo.setText("");
+                                this.Preview.setText("Unknown File Path");
+                                this.Reason.requestFocus();
+                                generateTxnCode();
+
+                            } catch (SQLException ex) {
+                                java.util.logging.Logger.getLogger(StatementB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                             }
-
-                            insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                            insert.setDouble(1, bal);
-                            insert.setString(2, TxnId);
-
-                            insert.executeUpdate();
-
-                            JOptionPane.showMessageDialog(null, "Bank Transaction Updated!");
-                            table_update();
-
-                            this.Withdraw.setSelected(false);
-                            this.Deposit.setSelected(false);
-                            this.Reason.setText("");
-                            this.GivenBy.setText("");
-                            this.ReceivedBy.setText("");
-                            this.Amount.setText("");
-                            this.TxnId.setText("");
-                            this.InvoiceNo.setText("");
-                            this.Preview.setText("Unknown File Path");
-                            this.Reason.requestFocus();
-                            generateTxnCode();
-
-                        } catch (SQLException ex) {
-                            java.util.logging.Logger.getLogger(StatementB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -1197,7 +1204,7 @@ public class StatementB extends javax.swing.JPanel {
         TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(src);
         BankTxn.setRowSorter(obj);
         obj.setRowFilter(RowFilter.regexFilter(Bank1.getSelectedItem().toString(), 3));
-        
+
     }//GEN-LAST:event_Bank1ActionPerformed
 
     private static File createExcelFile() {

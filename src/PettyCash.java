@@ -934,8 +934,8 @@ public class PettyCash extends javax.swing.JPanel {
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
 
-        Object Type = Df.getValueAt(selectedIndex, 4);
-        Object Type1 = Df.getValueAt(selectedIndex, 5);
+        String Type = Df.getValueAt(selectedIndex, 4).toString();
+        String Type1 = Df.getValueAt(selectedIndex, 5).toString();
 
         this.TxnId.setText(Df.getValueAt(selectedIndex, 0).toString());
         this.RefNo.setText(Df.getValueAt(selectedIndex, 1).toString());
@@ -965,12 +965,12 @@ public class PettyCash extends javax.swing.JPanel {
                 this.ReceivedBy.setText(ReceivedBy);
             }
 
-            if (Type == null) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 5).toString());
+            if (Type.equals("0")) {
+                this.Amount.setText(Df.getValueAt(selectedIndex, 5).toString().replace(",", ""));
                 this.OUT.setSelected(true);
                 this.IN.setSelected(false);
-            } else if (Type1 == null) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 4).toString());
+            } else if (Type1.equals("0")) {
+                this.Amount.setText(Df.getValueAt(selectedIndex, 4).toString().replace(",", ""));
                 this.IN.setSelected(true);
                 this.OUT.setSelected(false);
             }
