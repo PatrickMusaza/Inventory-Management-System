@@ -1058,7 +1058,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     String SalesQty = this.SalesQty.getText();
                     String VAT_Item = this.VAT_Item.getText();
                     String TotalPrice = this.TotalPrice.getText();
-                    String INV = PurchaseRegistrationEdit.PurchaseCode.getText();
+                    String INV = PurchaseRegistrationEdit.PurchaseID.getText();
 
                     Connection con = Connect.getConnection();
 
