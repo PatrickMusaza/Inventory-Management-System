@@ -467,7 +467,7 @@ public class SaleM extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, tot, stock, Current, totC;
+    PreparedStatement insert, tot, stock, Current, totC, MetBank, Bal;
 
     public void table_updates() {
 
@@ -1010,7 +1010,7 @@ public class SaleM extends javax.swing.JPanel {
                 int confirm = JOptionPane.showConfirmDialog(null, "Do you want to refund this Sale", "Warning", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
 
-                    if (!(St.equals("Refunded"))) {
+                    if ((St.equals("Waiting Approval"))) {
 
                         String Remark = JOptionPane.showInputDialog(null, "Why do you want to refund", "Mistake");
                         String Username = Login.Username.getText();
@@ -1059,12 +1059,58 @@ public class SaleM extends javax.swing.JPanel {
 
                         }
 
+                        PreparedStatement met=con.prepareStatement("select * from sales where InvoiceID=?");
+                        met.setString(1, InvoiceID);
+                        
+                        String BankPaid = "Cash";
+                        
+                        ResultSet Bank=met.executeQuery();
+                        if(Bank.next()){
+                            BankPaid=Bank.getString("Method");
+                        }
+                        
+                        String CusName=Df.getValueAt(selectedIndex, 3).toString();
+                        double Tot = Double.parseDouble(Df.getValueAt(selectedIndex, 6).toString().replace(",", ""));
+
+                        
+                    if (BankPaid.contains("Bank")) {
+
+                        MetBank = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BOUT,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
+                        MetBank.setString(1, "Refunded");
+                        MetBank.setString(2, CusName);
+                        MetBank.setString(3, Username);
+                        MetBank.setDouble(4, Tot);
+                        MetBank.setDouble(5, Tot);
+                        MetBank.setString(6, BankPaid);
+                        MetBank.setString(7, "Ref "+InvoiceID);
+
+                        MetBank.executeUpdate();
+
+                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                        Bal.setString(1, BankPaid);
+
+                        ResultSet rss = Bal.executeQuery();
+                        double IN, OUT, bal = 0;
+                        if (rss.next()) {
+                            IN = rss.getDouble("BIN");
+                            OUT = rss.getDouble("BOUT");
+                            bal = IN - OUT;
+                        }
+
+                        MetBank = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                        MetBank.setDouble(1, bal);
+                        MetBank.setString(2, "Ref "+InvoiceID);
+
+                        MetBank.executeUpdate();
+
+                    }
+
                         insert.executeUpdate();
 
                         JOptionPane.showMessageDialog(null, "Sale Refunded Successfully!");
                         table_updates();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sale Already Refunded!");
+                        JOptionPane.showMessageDialog(null, "Sale can't be Refunded!");
                     }
                 }
             } catch (SQLException ex) {
