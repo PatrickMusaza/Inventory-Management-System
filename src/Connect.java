@@ -1,11 +1,16 @@
 
 import java.sql.Statement;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -392,15 +397,55 @@ public class Connect {
     }
 
     public static Connection getCloudConnection() throws SQLException {
-        try {
 
-            String url = "jdbc:mysql://34.69.198.229:3306/ivm";
+        ConnectCloud connector = new ConnectCloud();
+        String dbUrl = null, dbUser = null, dbPass = null;
+
+        try {
+            Connection con = connector.getConnection();
+            if (con != null) {
+                String query = "SELECT * FROM `hlt-customers` WHERE cst_license_key = ?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, License());
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    // Retrieve additional details from the database
+                    dbUrl = rs.getString("db_url");
+                    dbUser = rs.getString("db_user");
+                    dbPass = rs.getString("db_pass");
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbUrl = url + dbName;
-            return DriverManager.getConnection(url, "patson", "pat123");
+            return DriverManager.getConnection(dbUrl, dbUser, dbPass);
         } catch (ClassNotFoundException e) {
             throw new SQLException("Failed to load database driver", e);
         }
+    }
+
+    public static String License() {
+        String fileN = "C:\\Users\\Default\\AppData\\Local\\Microsoft\\lic.txt";
+        String lic = "";
+        try {
+            File file = new File(fileN);
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    lic += scanner.nextLine();
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ValidateForm.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("File not found: " + fileN);
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lic;
     }
 
     public void main(String[] args) throws SQLException, IOException, InterruptedException {
