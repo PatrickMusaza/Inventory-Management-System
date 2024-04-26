@@ -465,11 +465,13 @@ public class StatementP extends javax.swing.JPanel {
                             .addGroup(AllLayout.createSequentialGroup()
                                 .addGap(44, 44, 44)
                                 .addComponent(purchases)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(opStock)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clStock)
-                        .addGap(33, 33, 33))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TotCost)
+                        .addGap(12, 12, 12))
                     .addGroup(AllLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -481,19 +483,18 @@ public class StatementP extends javax.swing.JPanel {
                         .addComponent(jLabel4)
                         .addGap(32, 32, 32)
                         .addComponent(TotRevenue1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel19)
-                            .addComponent(TotCost))))
-                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(grossProfit)
-                    .addComponent(gross))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(gross)
+                    .addComponent(grossProfit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
@@ -663,7 +664,9 @@ public class StatementP extends javax.swing.JPanel {
                 this.NetBfr.setText(String.valueOf(formattedBal));
             }
 
-            selectTax = con.prepareStatement("select SUM(VAT) as TotTax from sales");
+            selectTax = con.prepareStatement("select SUM(VAT) as TotTax from sales where not(Type=?) and not(status=?)");
+            selectTax.setString(1,"Credit");
+            selectTax.setString(2, "Refunded");
             ResultSet rs6 = selectTax.executeQuery();
 
             if (rs6.next()) {
@@ -678,14 +681,14 @@ public class StatementP extends javax.swing.JPanel {
             if (all > 0) {
                 this.netAll.setForeground(Color.green);
                 this.decision.setForeground(Color.green);
-                this.overall.setForeground(Color.green);
-                this.overall.setText(String.valueOf(formattedAll));
+                this.overall1.setForeground(Color.green);
+                this.overall1.setText(String.valueOf(formattedAll));
             } else if (all <= 0) {
                 this.netAll.setForeground(Color.red);
                 this.decision.setForeground(Color.red);
                 this.decision.setText("LOSS");
-                this.overall.setForeground(Color.red);
-                this.overall.setText(String.valueOf(formattedAll));
+                this.overall1.setForeground(Color.red);
+                this.overall1.setText(String.valueOf(formattedAll));
             }
 
         } catch (SQLException e) {
@@ -877,9 +880,11 @@ public class StatementP extends javax.swing.JPanel {
                 this.NetBfr.setText(String.valueOf(bal));
             }
 
-            selectTax = con.prepareStatement("select SUM(VAT) as TotTax from sales where CreatedAt >= ? AND CreatedAt <= ?");
+            selectTax = con.prepareStatement("select SUM(VAT) as TotTax from sales where CreatedAt >= ? AND CreatedAt <= ? and not(Type=?) and not(status=?)");
             selectTax.setString(1, startDateStr);
             selectTax.setString(2, endDateStr);
+            selectTax.setString(3,"Credit");
+            selectTax.setString(4, "Refunded");
             ResultSet rs6 = selectTax.executeQuery();
 
             if (rs6.next()) {
@@ -894,14 +899,14 @@ public class StatementP extends javax.swing.JPanel {
             if (all > 0) {
                 this.netAll.setForeground(Color.green);
                 this.decision.setForeground(Color.green);
-                this.overall.setForeground(Color.green);
-                this.overall.setText(String.valueOf(formattedAll));
+                this.overall1.setForeground(Color.green);
+                this.overall1.setText(String.valueOf(formattedAll));
             } else if (all <= 0) {
                 this.netAll.setForeground(Color.red);
                 this.decision.setForeground(Color.red);
                 this.decision.setText("LOSS");
-                this.overall.setForeground(Color.red);
-                this.overall.setText(String.valueOf(formattedAll));
+                this.overall1.setForeground(Color.red);
+                this.overall1.setText(String.valueOf(formattedAll));
             }
 
         } catch (SQLException e) {
