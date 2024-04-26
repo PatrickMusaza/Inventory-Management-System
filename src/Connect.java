@@ -294,11 +294,12 @@ public class Connect {
         createPaymentQuery
                 = """
                  CREATE TABLE IF NOT EXISTS Payment (        
-                                   id INT AUTO_INCREMENT PRIMARY KEY,
+                                   id INT AUTO_INCREMENT,
                                    Code text,
                                    Method text,
                                    Amount text,
-                                   CreatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+                                   CreatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   PRIMARY KEY (id))
                  """;
 
         createExpenseQuery
