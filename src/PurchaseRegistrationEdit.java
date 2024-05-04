@@ -870,7 +870,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current,Bal;
+    PreparedStatement insert, stock, Current, Bal,Balance;
 
     private void savePurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePurchaseActionPerformed
         // TODO add your handling code here:
@@ -1084,6 +1084,18 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     insert.executeUpdate();
                     stock.executeUpdate();
 
+                    stock = con.prepareStatement("insert into stock(Action,StockIN,PurchasePrice,UnitPrice,ItemCode,ItemName,SubTotal) values(?,?,?,?,?,?,?)");
+
+                    stock.setString(1, INV);
+                    stock.setString(2, SalesQty);
+                    stock.setString(3, SalesPrice);
+                    stock.setString(4, UnitPrice);
+                    stock.setString(5, Codes);
+                    stock.setString(6, Name);
+                    stock.setDouble(7, Double.parseDouble(SalesQty) * Double.parseDouble(SalesPrice));
+
+                    stock.executeUpdate();
+
                     CurrentStock currentStock = new CurrentStock();
                     double current = currentStock.getCurrentStock(Codes)[0];
 
@@ -1114,6 +1126,26 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     Current.setString(2, Codes);
 
                     Current.executeUpdate();
+
+                    Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
+                    Balance.setString(1, Codes);
+
+                    ResultSet Bal = Balance.executeQuery();
+                    double StockIN, StockOUT, Balan = 0;
+
+                    if (Bal.next()) {
+                        StockIN = Bal.getDouble("StockIN");
+                        StockOUT = Bal.getDouble("StockOUT");
+                        Balan = StockIN - StockOUT;
+                    }
+
+                    Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=? and StockIN=?");
+                    Balance.setDouble(1, Balan);
+                    Balance.setString(2, Codes);
+                    Balance.setString(3, INV);
+                    Balance.setString(4, SalesQty);
+
+                    Balance.executeUpdate();
 
                     JOptionPane.showMessageDialog(this, "Item Recorded");
 
@@ -1360,6 +1392,13 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                     Current.executeUpdate();
 
+                    Balance = con.prepareStatement("delete from stock where ItemCode=? and Action=? and StockIN=?");
+                    Balance.setString(1, id);
+                    Balance.setString(2, PurchaseID.getText());
+                    Balance.setString(3, Qty);
+
+                    Balance.executeUpdate();
+
                     JOptionPane.showMessageDialog(this, "Item Deleted Successfully!");
                     table_update();
                     totalAmount();
@@ -1447,6 +1486,11 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                         Current.setString(2, id);
 
                         Current.executeUpdate();
+
+                        Balance = con.prepareStatement("delete from stock where Action=?");
+                        Balance.setString(1, PurchaseID);
+
+                        Balance.executeUpdate();
 
                     }
 

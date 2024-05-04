@@ -44,6 +44,10 @@ public class StockM extends javax.swing.JPanel {
         total = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(64, 60, 60)));
 
@@ -94,7 +98,7 @@ public class StockM extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -143,11 +147,56 @@ public class StockM extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(jTable1);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel22.setText("Stock Card Details");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel22)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel22)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Invoice No.", "Item Name", "IN", "OUT", "Balance", "Purchase Price", "Sale Price", "Amount"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1026, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -158,13 +207,19 @@ public class StockM extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 543, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(268, 268, 268)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(357, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -178,7 +233,8 @@ public class StockM extends javax.swing.JPanel {
 
         try {
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from stock");
+            insert = con.prepareStatement("select * from stock where not(SafetyQty=?)");
+            insert.setString(1, "");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
@@ -209,12 +265,13 @@ public class StockM extends javax.swing.JPanel {
                 Df.addRow(v2);
             }
 
-            insert = con.prepareStatement("select sum(StockAmount) as Total from stock");
+            insert = con.prepareStatement("select sum(StockAmount) as Total from stock where not(SafetyQty=?)");
+            insert.setString(1, "");
             ResultSet tot = insert.executeQuery();
 
             if (tot.next()) {
 
-                DecimalFormat df = new DecimalFormat("#,##0.00"); 
+                DecimalFormat df = new DecimalFormat("#,##0.00");
                 double sum = tot.getDouble("Total");
                 this.total.setText(df.format(sum));
 
@@ -256,7 +313,45 @@ public class StockM extends javax.swing.JPanel {
     }//GEN-LAST:event_SearchActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
+
+        DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+
+        String Item = (Df.getValueAt(selectedIndex, 0).toString());
+
+        try {
+            Connection con = Connect.getConnection();
+            PreparedStatement insert = con.prepareStatement("SELECT * FROM stock WHERE ItemCode=?");
+            insert.setString(1, Item);
+
+            ResultSet rs = insert.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int count = rsmd.getColumnCount();
+
+            DefaultTableModel Df2 = (DefaultTableModel) jTable2.getModel();
+            Df2.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v2 = new Vector();
+
+                v2.add(rs.getDate("createdAt"));
+                v2.add(rs.getString("Action"));
+                v2.add(rs.getString("ItemName"));
+                v2.add(formatter.format(rs.getDouble("StockIN")));
+                v2.add(formatter.format(rs.getDouble("StockOut")));
+                v2.add(formatter.format(rs.getDouble("Balance")));
+                v2.add(formatter.format(rs.getDouble("PurchasePrice")));
+                v2.add(formatter.format(rs.getDouble("UnitPrice")));
+                v2.add(formatter.format(rs.getDouble("SubTotal")));
+
+                Df2.addRow(v2);
+            }
+
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(StockM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jTable1MouseClicked
 
 
@@ -265,9 +360,13 @@ public class StockM extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField srcCode;
     private javax.swing.JTextField srcName;
     private javax.swing.JLabel total;

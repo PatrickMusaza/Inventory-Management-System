@@ -512,7 +512,7 @@ public class ItemM extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current;
+    PreparedStatement insert, stock, Current, Balance;
 
     public final String generateItemCode() {
         String Code = "";
@@ -712,14 +712,21 @@ public class ItemM extends javax.swing.JPanel {
 
                         Connection con = Connect.getConnection();
 
-                        stock = con.prepareStatement("insert into stock (ItemCode,ItemName,SafetyQty,BeginningStock,UnitPrice,PurchasePrice) values (?,?,?,?,?,?)");
+                        double beginning = Double.parseDouble(Beginning);
+                        double purchase = Double.parseDouble(Purchase);
+                        double subtotal = beginning * purchase;
+
+                        stock = con.prepareStatement("INSERT INTO stock (ItemCode, ItemName, SafetyQty, BeginningStock, UnitPrice, PurchasePrice, Action, StockIN, SubTotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                         stock.setString(1, generateItemCode());
                         stock.setString(2, Name);
                         stock.setString(3, Safety);
-                        stock.setString(4, Beginning);
-                        stock.setString(5, Sale);
-                        stock.setString(6, Purchase);
+                        stock.setDouble(4, beginning);
+                        stock.setDouble(5, Double.parseDouble(Sale));
+                        stock.setDouble(6, purchase);
+                        stock.setString(7, "Beginning");
+                        stock.setDouble(8, beginning);
+                        stock.setDouble(9, subtotal);
 
                         stock.executeUpdate();
 
@@ -733,6 +740,23 @@ public class ItemM extends javax.swing.JPanel {
                         Current.setString(3, generateItemCode());
 
                         Current.executeUpdate();
+
+                        Balance = con.prepareStatement("select * from stock where ItemCode=?");
+                        Balance.setString(1, Code);
+                        ResultSet Bal = Balance.executeQuery();
+                        double StockIN, StockOUT, Balan = 0;
+
+                        if (Bal.next()) {
+                            StockIN = Bal.getDouble("StockIN");
+                            StockOUT = Bal.getDouble("StockOUT");
+                            Balan = StockIN - StockOUT;
+                        }
+
+                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=?");
+                        Balance.setDouble(1, Balan);
+                        Balance.setString(2, Code);
+
+                        Balance.executeUpdate();
 
                         insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -871,7 +895,7 @@ public class ItemM extends javax.swing.JPanel {
 
                         Connection con = Connect.getConnection();
                         insert = con.prepareStatement("update item set ItemName=?,UseBarcode=?,Origin=?,ItemType=?,PkgUnit=?,QtyUnit=?,PurchaseUnit=?,SalePrice=?,TaxType=?,BeginningStock=?,SafetyStock=?,Description=?,Active=?, createdBy=? where ItemCode=?");
-                        stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=? where ItemCode=?");
+                        stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=?,StockIN=?,SubTotal=? where ItemCode=?");
                         insert.setString(1, Name);
                         insert.setString(2, Barcode);
                         insert.setString(3, Origin);
@@ -887,13 +911,15 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(13, Use);
                         insert.setString(14, Username);
                         insert.setString(15, id);
-
-                        stock.setString(1, Name);
-                        stock.setString(2, Sale);
-                        stock.setString(3, Beginning);
-                        stock.setString(4, Safety);
-                        stock.setString(5, Purchase);
-                        stock.setString(6, id);
+                        
+                        stock.setString(1, Name);               
+                        stock.setDouble(2, Double.parseDouble(Sale));         
+                        stock.setDouble(3, Double.parseDouble(Beginning));    
+                        stock.setDouble(4, Double.parseDouble(Safety));       
+                        stock.setDouble(5, Double.parseDouble(Purchase));     
+                        stock.setDouble(6, Double.parseDouble(Beginning));    
+                        stock.setDouble(7, Double.parseDouble(Beginning) * Double.parseDouble(Purchase)); 
+                        stock.setString(8, id);               
 
                         insert.executeUpdate();
                         stock.executeUpdate();
@@ -914,6 +940,23 @@ public class ItemM extends javax.swing.JPanel {
                         Current.setString(2, id);
 
                         Current.executeUpdate();
+
+                        Balance = con.prepareStatement("select * from stock where ItemCode=?");
+                        Balance.setString(1, id);
+                        ResultSet Bal = Balance.executeQuery();
+                        double StockIN, StockOUT, Balan = 0;
+
+                        if (Bal.next()) {
+                            StockIN = Bal.getDouble("StockIN");
+                            StockOUT = Bal.getDouble("StockOUT");
+                            Balan = StockIN - StockOUT;
+                        }
+
+                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=?");
+                        Balance.setDouble(1, Balan);
+                        Balance.setString(2, id);
+
+                        Balance.executeUpdate();
 
                         JOptionPane.showMessageDialog(null, "Item Updated!");
                         table_update();
@@ -1104,7 +1147,7 @@ public class ItemM extends javax.swing.JPanel {
         // Remove commas from the sale price
         String salePrice = Df.getValueAt(selectedIndex, 7).toString().replaceAll(",", "");
         this.Sale.setText(salePrice);
-        
+
         // Remove commas from the beginning
         String beginning = Df.getValueAt(selectedIndex, 8).toString().replaceAll(",", "");
         this.Beginning.setText(beginning);

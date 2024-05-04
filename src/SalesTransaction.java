@@ -259,6 +259,8 @@ public class SalesTransaction extends javax.swing.JFrame {
         DAmount = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         Tax = new javax.swing.JComboBox<>();
+        jLabel26 = new javax.swing.JLabel();
+        DAmount1 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         RemoveItem = new javax.swing.JButton();
@@ -681,6 +683,8 @@ public class SalesTransaction extends javax.swing.JFrame {
 
         Tax.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A-EX", "B-18%", "C" }));
 
+        jLabel26.setText("Measurement");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -714,16 +718,21 @@ public class SalesTransaction extends javax.swing.JFrame {
                         .addComponent(jLabel18)
                         .addGap(18, 18, 18)
                         .addComponent(Tax, 0, 124, Short.MAX_VALUE)))
-                .addGap(7, 7, 7)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel22)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(DAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(DRatio, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(DAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(DRatio, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel26)
+                        .addGap(8, 8, 8)
+                        .addComponent(DAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -745,7 +754,10 @@ public class SalesTransaction extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(TotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20)))
+                            .addComponent(jLabel20)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel26)
+                                .addComponent(DAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel18)
                         .addComponent(Tax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -877,7 +889,7 @@ public class SalesTransaction extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current, Bal;
+    PreparedStatement insert, stock, Current, Bal, Balance;
 
     private void saveSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSaleActionPerformed
         // TODO add your handling code here:
@@ -958,7 +970,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                     insert.setString(15, TotalAmount);
 
                     insert.executeUpdate();
-                    String BankPaid=null;
+                    String BankPaid = null;
                     if (this.Method.getSelectedItem() != null) {
                         BankPaid = this.Method.getSelectedItem().toString();
                     }
@@ -1141,7 +1153,6 @@ public class SalesTransaction extends javax.swing.JFrame {
                         Connection con = Connect.getConnection();
 
                         insert = con.prepareStatement("INSERT INTO salesitem (ItemCode,ItemName,UnitPrice,SalesQty,SalesPrice,TaxType,VAT,TotalPrice,DRatio,DAmount,RefSale) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-                        stock = con.prepareStatement("Update stock set Sales=Sales+? where ItemCode=?");
 
                         insert.setString(1, Codes);
                         insert.setString(2, Name);
@@ -1154,6 +1165,20 @@ public class SalesTransaction extends javax.swing.JFrame {
                         insert.setString(9, DRatio);
                         insert.setString(10, DAmount);
                         insert.setString(11, INV);
+
+                        stock = con.prepareStatement("insert into stock(Action,StockOUT,PurchasePrice,UnitPrice,ItemCode,ItemName,SubTotal) values(?,?,?,?,?,?,?)");
+
+                        stock.setString(1, INV);
+                        stock.setString(2, SalesQty);
+                        stock.setString(3, SalesPrice);
+                        stock.setString(4, UnitPrice);
+                        stock.setString(5, Codes);
+                        stock.setString(6, Name);
+                        stock.setDouble(7, Double.parseDouble(SalesQty) * Double.parseDouble(UnitPrice));
+
+                        stock.executeUpdate();
+
+                        stock = con.prepareStatement("Update stock set Sales=Sales+? where ItemCode=?");
 
                         stock.setString(1, SalesQty);
                         stock.setString(2, Codes);
@@ -1177,6 +1202,26 @@ public class SalesTransaction extends javax.swing.JFrame {
                         Current.setString(2, Codes);
 
                         Current.executeUpdate();
+
+                        Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
+                        Balance.setString(1, Codes);
+
+                        ResultSet Bal = Balance.executeQuery();
+                        double StockIN, StockOUT, Balan = 0;
+
+                        if (Bal.next()) {
+                            StockIN = Bal.getDouble("StockIN");
+                            StockOUT = Bal.getDouble("StockOUT");
+                            Balan = StockIN - StockOUT;
+                        }
+
+                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=? and StockOut=?");
+                        Balance.setDouble(1, Balan);
+                        Balance.setString(2, Codes);
+                        Balance.setString(3, INV);
+                        Balance.setString(4, SalesQty);
+
+                        Balance.executeUpdate();
 
                         JOptionPane.showMessageDialog(this, "Item Recorded");
 
@@ -1412,6 +1457,11 @@ public class SalesTransaction extends javax.swing.JFrame {
 
                         Current.executeUpdate();
 
+                        Balance = con.prepareStatement("delete from stock where Action=?");
+                        Balance.setString(1, InvoiceID.getText());
+
+                        Balance.executeUpdate();
+
                     }
 
                     insert.executeUpdate();
@@ -1480,6 +1530,13 @@ public class SalesTransaction extends javax.swing.JFrame {
                     Current.setString(2, id);
 
                     Current.executeUpdate();
+
+                    Balance = con.prepareStatement("delete from stock where ItemCode=? and Action=? and StockOut=?");
+                    Balance.setString(1, id);
+                    Balance.setString(2, InvoiceID.getText());
+                    Balance.setString(3, Qty);
+
+                    Balance.executeUpdate();
 
                     JOptionPane.showMessageDialog(this, "Item Deleted Successfully!");
                     table_update();
@@ -1573,6 +1630,7 @@ public class SalesTransaction extends javax.swing.JFrame {
     public static javax.swing.JTextField CustomerID;
     public static javax.swing.JTextField CustomerName;
     private javax.swing.JTextField DAmount;
+    private javax.swing.JTextField DAmount1;
     private javax.swing.JTextField DRatio;
     private javax.swing.JButton DeleteAll;
     private javax.swing.JButton Exit;
@@ -1614,6 +1672,7 @@ public class SalesTransaction extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
