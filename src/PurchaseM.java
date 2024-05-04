@@ -749,12 +749,11 @@ public class PurchaseM extends javax.swing.JPanel {
 
     private void search1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search1ActionPerformed
         // TODO add your handling code here:
-          File file = createExcelFile();
+        File file = createExcelFile();
         exportToCSV(jTable2, jTable1, file, true);
 
     }//GEN-LAST:event_search1ActionPerformed
 
-    
     private static File createExcelFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save CSV File");
@@ -780,10 +779,9 @@ public class PurchaseM extends javax.swing.JPanel {
         FileWriter writer = null;
 
         try {
-            writer = new FileWriter(file, true);
+            writer = new FileWriter(file);
 
-            writer.write("Purchase History");
-
+            // Export jTable1
             if (writeHeaders) {
                 for (int i = 0; i < table1.getColumnCount(); i++) {
                     writer.write(table1.getColumnName(i));
@@ -794,7 +792,6 @@ public class PurchaseM extends javax.swing.JPanel {
                 writer.write("\n");
             }
 
-            // Export jTable2
             for (int i = 0; i < table1.getRowCount(); i++) {
                 for (int j = 0; j < table1.getColumnCount(); j++) {
                     Object value = table1.getValueAt(i, j);
@@ -815,6 +812,7 @@ public class PurchaseM extends javax.swing.JPanel {
 
             writer.write("\nItems Information Details\n\n");
 
+            // Export jTable2
             if (writeHeaders) {
                 for (int i = 0; i < table2.getColumnCount(); i++) {
                     writer.write(table2.getColumnName(i));
@@ -825,7 +823,6 @@ public class PurchaseM extends javax.swing.JPanel {
                 writer.write("\n");
             }
 
-            // Export jTable1
             for (int i = 0; i < table2.getRowCount(); i++) {
                 for (int j = 0; j < table2.getColumnCount(); j++) {
                     Object value = table2.getValueAt(i, j);
@@ -879,7 +876,6 @@ public class PurchaseM extends javax.swing.JPanel {
         }
         return result.toString();
     }
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
