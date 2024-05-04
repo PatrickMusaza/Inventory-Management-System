@@ -390,7 +390,7 @@ public class CustomerListP extends javax.swing.JFrame {
     private void addNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewActionPerformed
         // TODO add your handling code here:
 
-        new NewCustomer().setVisible(true);
+     //   new NewCustomer().setVisible(true);
     }//GEN-LAST:event_addNewActionPerformed
 
     private void FAXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAXActionPerformed

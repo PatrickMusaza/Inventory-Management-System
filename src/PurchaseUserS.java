@@ -1,19 +1,27 @@
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -53,6 +61,7 @@ public class PurchaseUserS extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         status = new javax.swing.JComboBox<>();
         Refresh = new javax.swing.JButton();
+        search1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -180,6 +189,20 @@ public class PurchaseUserS extends javax.swing.JPanel {
             }
         });
 
+        search1.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        search1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/share.png"))); // NOI18N
+        search1.setText("Export");
+        search1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                search1MouseClicked(evt);
+            }
+        });
+        search1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -192,18 +215,20 @@ public class PurchaseUserS extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(endDate, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(endDate, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(Invoice, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(29, 29, 29)
                 .addComponent(search)
-                .addGap(282, 282, 282)
+                .addGap(39, 39, 39)
+                .addComponent(search1)
+                .addGap(18, 18, 18)
                 .addComponent(Refresh)
                 .addContainerGap())
         );
@@ -224,7 +249,8 @@ public class PurchaseUserS extends javax.swing.JPanel {
                                     .addComponent(jLabel8)
                                     .addComponent(search)
                                     .addComponent(jLabel7)
-                                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(search1)))))
                     .addComponent(Refresh))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -235,14 +261,14 @@ public class PurchaseUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Status", "Invoice ID", "Supplier", "Purchase Date", "Release Date", "Total Amount", "VAT"
+                "Status", "Item Code", "Item Name", "Total Quantity", "Total Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -302,14 +328,14 @@ public class PurchaseUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Qty", "Unit Price", "Purchase Price", "Amount", "VAT"
+                "Purchase Date", "Status", "Supplier Name", "Invoice ID", "Item Name", "Qty", "Purchase Price", "Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -363,44 +389,52 @@ public class PurchaseUserS extends javax.swing.JPanel {
 
     public void table_updates() {
 
-        int count;
-
         try {
-
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from purchase");
+            insert = con.prepareStatement("SELECT "
+                    + "pi.ItemCode, "
+                    + "pi.ItemName, "
+                    + "SUM(pi.PurchaseQty) AS TotalQuantity, "
+                    + "SUM(pi.TotalPrice) AS TotalPrice "
+                    + "FROM purchaseitem pi "
+                    + "GROUP BY pi.ItemCode, pi.ItemName "
+                    + "HAVING COUNT(pi.ItemCode) > 0");
 
             ResultSet rs = insert.executeQuery();
-            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-            count = rsmd.getColumnCount();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int count = rsmd.getColumnCount();
 
             DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
             Df.setRowCount(0);
 
             while (rs.next()) {
-                Vector v2 = new Vector();
+                String itemCode = rs.getString("ItemCode");
+                String itemName = rs.getString("ItemName");
+                double totalQuantity = rs.getDouble("TotalQuantity");
+                double totalPrice = rs.getDouble("TotalPrice");
 
-                for (int i = 1; i <= count; i++) {
+                PreparedStatement checkApproval = con.prepareStatement("SELECT * FROM purchase p WHERE p.InvoiceID IN (SELECT pi.RefPurchase FROM purchaseitem pi WHERE pi.ItemCode = ?) AND p.Status != 'Approved'");
+                checkApproval.setString(1, itemCode);
+                ResultSet approvalResult = checkApproval.executeQuery();
+                boolean isWaitingApproval = approvalResult.next();
 
-                    v2.add(rs.getString("Status"));
-                    v2.add(rs.getString("InvoiceID"));
-                    v2.add(rs.getString("SupplierName"));
-                    v2.add(rs.getDate("createdAt"));
-                    v2.add(rs.getString("ReleaseDate"));
-                    v2.add(formatter.format(rs.getDouble("TotalAmount")));
-                    v2.add(formatter.format(rs.getDouble("VAT")));
+                String status = isWaitingApproval ? "Waiting Approval" : "Approved";
 
-                }
+                Vector<Object> row = new Vector<>();
+                row.add(status);
+                row.add(itemCode);
+                row.add(itemName);
+                row.add(formatter.format(totalQuantity));
+                row.add(formatter.format(totalPrice));
 
-                Df.addRow(v2);
+                Df.addRow(row);
             }
 
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(PurchaseM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
     }
-
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         // TODO add your handling code here:
@@ -512,47 +546,36 @@ public class PurchaseUserS extends javax.swing.JPanel {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
 
-        DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
-        int selectedIndex = jTable2.getSelectedRow();
-
-        String InvoiceID = (Df.getValueAt(selectedIndex, 1).toString());
-
         int count;
-
         try {
-
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from purchaseitem where RefPurchase=?");
-            insert.setString(1, InvoiceID);
+            insert = con.prepareStatement("SELECT DATE(p.createdAt), p.Status, p.InvoiceID, p.SupplierName, pi.ItemName, pi.PurchaseQty, pi.UnitPrice, pi.TotalPrice FROM purchase p JOIN purchaseitem pi ON p.InvoiceID = pi.RefPurchase WHERE pi.ItemCode = ?");
+
+            String itemCode = jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString();
+
+            insert.setString(1, itemCode);
 
             ResultSet rs = insert.executeQuery();
-            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             count = rsmd.getColumnCount();
 
             DefaultTableModel Df2 = (DefaultTableModel) jTable1.getModel();
             Df2.setRowCount(0);
 
             while (rs.next()) {
-                Vector v2 = new Vector();
+                Vector<Object> v2 = new Vector<>();
 
                 for (int i = 1; i <= count; i++) {
-
-                    v2.add(rs.getString("ItemCode"));
-                    v2.add(rs.getString("ItemName"));
-                    v2.add(rs.getString("PurchaseQty"));
-                    v2.add(formatter.format(rs.getDouble("PurchasePrice")));
-                    v2.add(formatter.format(rs.getDouble("UnitPrice")));
-                    v2.add(formatter.format(rs.getDouble("TotalPrice")));
-                    v2.add(formatter.format(rs.getDouble("VAT")));
-
+                    v2.add(rs.getObject(i));
                 }
 
                 Df2.addRow(v2);
             }
 
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(PurchaseM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
+
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void statusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statusMouseClicked
@@ -598,10 +621,10 @@ public class PurchaseUserS extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         } else {
-            DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
-            int selectedIndex = jTable2.getSelectedRow();
+            DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
+            int selectedIndex = jTable1.getSelectedRow();
 
-            String status = (Df.getValueAt(selectedIndex, 0).toString());
+            String status = (Df.getValueAt(selectedIndex, 1).toString());
 
             if (selectedIndex < 0) {
                 JOptionPane.showMessageDialog(null, "Select the Row First", "Invalid Purchase", JOptionPane.ERROR_MESSAGE);
@@ -613,10 +636,10 @@ public class PurchaseUserS extends javax.swing.JPanel {
                     Connection con = Connect.getConnection();
 
                     new PurchaseRegistrationEdit().setVisible(true);
-                    String InvoiceID = (Df.getValueAt(selectedIndex, 1).toString());
-                    String Customer = (Df.getValueAt(selectedIndex, 2).toString());
-                    String VAT = (Df.getValueAt(selectedIndex, 5).toString());
-                    String Total = (Df.getValueAt(selectedIndex, 6).toString());
+                    String InvoiceID = (Df.getValueAt(selectedIndex, 2).toString());
+                    String Customer = (Df.getValueAt(selectedIndex, 3).toString());
+                    String VAT = null;
+                    String Total = null;
                     String type = null;
                     String cusID = null;
                     String PurchaseCode = null;
@@ -626,7 +649,7 @@ public class PurchaseUserS extends javax.swing.JPanel {
                     String rpt = null;
                     String rsn = null;
 
-                    PreparedStatement sel = con.prepareStatement("Select Type,SupplierID,PurchaseCode,Remark,SupplierSDCD,SupplierReceipt,PurchaseReason,Method from purchase where InvoiceID=?");
+                    PreparedStatement sel = con.prepareStatement("Select TotalAmount,VAT,Type,SupplierID,PurchaseCode,Remark,SupplierSDCD,SupplierReceipt,PurchaseReason,Method from purchase where InvoiceID=?");
                     sel.setString(1, InvoiceID);
 
                     ResultSet rs = sel.executeQuery();
@@ -639,6 +662,8 @@ public class PurchaseUserS extends javax.swing.JPanel {
                         rpt = rs.getString("SupplierReceipt");
                         rsn = rs.getString("PurchaseReason");
                         Method = rs.getString("Method");
+                        VAT = rs.getString("VAT");
+                        Total = rs.getString("TotalAmount");
                     }
 
                     if (type.equals("Purchase")) {
@@ -661,13 +686,150 @@ public class PurchaseUserS extends javax.swing.JPanel {
                     PurchaseRegistrationEdit.Method.setSelectedItem(Method);
 
                 } catch (SQLException ex) {
-                    java.util.logging.Logger.getLogger(PurchaseUserS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    java.util.logging.Logger.getLogger(PurchaseM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
             }
         }
     }//GEN-LAST:event_EditPurchaseActionPerformed
 
+    private void search1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_search1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search1MouseClicked
 
+    private void search1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search1ActionPerformed
+        // TODO add your handling code here:
+          File file = createExcelFile();
+        exportToCSV(jTable2, jTable1, file, true);
+    }//GEN-LAST:event_search1ActionPerformed
+
+
+    private static File createExcelFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save CSV File");
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files (*.csv)", "csv");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showSaveDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".csv")) {
+                fileToSave = new File(filePath + ".csv");
+            }
+            return fileToSave;
+        } else {
+            return null;
+        }
+    }
+
+    private void exportToCSV(JTable table1, JTable table2, File file, boolean writeHeaders) {
+        FileWriter writer = null;
+
+        try {
+            writer = new FileWriter(file, true);
+
+            writer.write("Purchase History");
+
+            if (writeHeaders) {
+                for (int i = 0; i < table1.getColumnCount(); i++) {
+                    writer.write(table1.getColumnName(i));
+                    if (i < table1.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
+
+            // Export jTable2
+            for (int i = 0; i < table1.getRowCount(); i++) {
+                for (int j = 0; j < table1.getColumnCount(); j++) {
+                    Object value = table1.getValueAt(i, j);
+                    if (value != null) {
+                        // Check if the value is a number and format it accordingly
+                        if (value.toString().contains(",")) {
+                            writer.write(value.toString().replace(',', ' '));
+                        } else {
+                            writer.write(value.toString());
+                        }
+                    }
+                    if (j < table1.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
+
+            writer.write("\nItems Information Details\n\n");
+
+            if (writeHeaders) {
+                for (int i = 0; i < table2.getColumnCount(); i++) {
+                    writer.write(table2.getColumnName(i));
+                    if (i < table2.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
+
+            // Export jTable1
+            for (int i = 0; i < table2.getRowCount(); i++) {
+                for (int j = 0; j < table2.getColumnCount(); j++) {
+                    Object value = table2.getValueAt(i, j);
+                    if (value != null) {
+                        // Check if the value is a number and format it accordingly
+                        if (value.toString().contains(",")) {
+                            writer.write(value.toString().replace(',', ' '));
+                        } else {
+                            writer.write(value.toString());
+                        }
+                    }
+                    if (j < table2.getColumnCount() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.write("\n");
+            }
+            JOptionPane.showMessageDialog(null, file.getName() + " exported to CSV file successfully.", "File Exported", JOptionPane.PLAIN_MESSAGE);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Credit.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Credit.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public static String customFormat(double value) {
+        DecimalFormat myFormatter = new DecimalFormat("###,###.##");
+        String formattedValue = myFormatter.format(value);
+
+        // If the formatted value contains commas, remove them
+        formattedValue = formattedValue.replace(",", "");
+
+        // Insert apostrophes as thousand separators
+        StringBuilder result = new StringBuilder();
+        int length = formattedValue.length();
+        int count = 0;
+        for (int i = length - 1; i >= 0; i--) {
+            result.insert(0, formattedValue.charAt(i));
+            count++;
+            if (count == 3 && i != 0 && formattedValue.charAt(i - 1) != '-') {
+                result.insert(0, '\'');
+                count = 0;
+            }
+        }
+        return result.toString();
+    }
+
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditPurchase;
     private javax.swing.JButton Exit;
@@ -689,6 +851,7 @@ public class PurchaseUserS extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JButton search;
+    private javax.swing.JButton search1;
     private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JComboBox<String> status;
     // End of variables declaration//GEN-END:variables
