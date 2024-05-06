@@ -86,7 +86,7 @@ public class SalesTransaction extends javax.swing.JFrame {
 
             Connection con = Connect.getConnection();
 
-            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice FROM item WHERE ItemCode = ? AND ItemName= ?");
+            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice,QtyUnit FROM item WHERE ItemCode = ? AND ItemName= ?");
             select.setString(1, Code);
             select.setString(2, Name);
 
@@ -98,12 +98,16 @@ public class SalesTransaction extends javax.swing.JFrame {
 
                 String taxType = rs.getString("TaxType");
                 Tax.setSelectedItem(taxType);
+                Tax.setEditable(false);
 
                 String UnitPrice = rs.getString("SalePrice");
                 SalesTransaction.UnitPrice.setText(UnitPrice);
 
                 String SalesPrice = rs.getString("PurchaseUnit");
                 SalesTransaction.SalesPrice.setText(SalesPrice);
+                
+                String Measure = rs.getString("QtyUnit");
+                SalesTransaction.Measurement.setText(Measure);
 
             }
 
@@ -260,7 +264,7 @@ public class SalesTransaction extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         Tax = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        DAmount1 = new javax.swing.JTextField();
+        Measurement = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         RemoveItem = new javax.swing.JButton();
@@ -685,6 +689,8 @@ public class SalesTransaction extends javax.swing.JFrame {
 
         jLabel26.setText("Measurement");
 
+        Measurement.setEditable(false);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -732,7 +738,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel26)
                         .addGap(8, 8, 8)
-                        .addComponent(DAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Measurement, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -752,12 +758,13 @@ public class SalesTransaction extends javax.swing.JFrame {
                             .addComponent(VAT_Item, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(DAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel26)
-                                .addComponent(DAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(Measurement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(TotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel20))))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel18)
                         .addComponent(Tax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1149,10 +1156,11 @@ public class SalesTransaction extends javax.swing.JFrame {
                         String DRatio = this.DRatio.getText();
                         String DAmount = this.DAmount.getText();
                         String INV = generateInvoiceCode();
+                        String Measure = Measurement.getText();
 
                         Connection con = Connect.getConnection();
 
-                        insert = con.prepareStatement("INSERT INTO salesitem (ItemCode,ItemName,UnitPrice,SalesQty,SalesPrice,TaxType,VAT,TotalPrice,DRatio,DAmount,RefSale) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+                        insert = con.prepareStatement("INSERT INTO salesitem (ItemCode,ItemName,UnitPrice,SalesQty,SalesPrice,TaxType,VAT,TotalPrice,DRatio,DAmount,RefSale,Measurement) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 
                         insert.setString(1, Codes);
                         insert.setString(2, Name);
@@ -1165,6 +1173,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                         insert.setString(9, DRatio);
                         insert.setString(10, DAmount);
                         insert.setString(11, INV);
+                        insert.setString(12, Measure);
 
                         stock = con.prepareStatement("insert into stock(Action,StockOUT,PurchasePrice,UnitPrice,ItemCode,ItemName,SubTotal) values(?,?,?,?,?,?,?)");
 
@@ -1262,7 +1271,7 @@ public class SalesTransaction extends javax.swing.JFrame {
 
             Connection con = Connect.getConnection();
 
-            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice FROM item WHERE ItemCode = ? AND ItemName= ?");
+            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice,QtyUnit FROM item WHERE ItemCode = ? AND ItemName= ?");
             select.setString(1, Code);
             select.setString(2, Name);
 
@@ -1281,6 +1290,9 @@ public class SalesTransaction extends javax.swing.JFrame {
 
                 String SalesPrice = rs.getString("PurchaseUnit");
                 this.SalesPrice.setText(SalesPrice);
+
+                String Measure = rs.getString("QtyUnit");
+                this.Measurement.setText(Measure);
 
             }
 
@@ -1342,7 +1354,7 @@ public class SalesTransaction extends javax.swing.JFrame {
 
             Connection con = Connect.getConnection();
 
-            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice FROM item WHERE ItemCode = ? AND ItemName= ?");
+            select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice,QtyUnit FROM item WHERE ItemCode = ? AND ItemName= ?");
             select.setString(1, Code);
             select.setString(2, Name);
 
@@ -1354,12 +1366,16 @@ public class SalesTransaction extends javax.swing.JFrame {
 
                 String taxType = rs.getString("TaxType");
                 this.Tax.setSelectedItem(taxType);
+                Tax.setEditable(false);
 
                 String UnitPrice = rs.getString("SalePrice");
                 this.UnitPrice.setText(UnitPrice);
 
                 String SalesPrice = rs.getString("PurchaseUnit");
                 this.SalesPrice.setText(SalesPrice);
+
+                String Measure = rs.getString("QtyUnit");
+                this.Measurement.setText(Measure);
 
             }
 
@@ -1630,13 +1646,13 @@ public class SalesTransaction extends javax.swing.JFrame {
     public static javax.swing.JTextField CustomerID;
     public static javax.swing.JTextField CustomerName;
     private javax.swing.JTextField DAmount;
-    private javax.swing.JTextField DAmount1;
     private javax.swing.JTextField DRatio;
     private javax.swing.JButton DeleteAll;
     private javax.swing.JButton Exit;
     private javax.swing.JTextField InvoiceID;
     public static javax.swing.JTextField ItemCode;
     public static javax.swing.JTextField ItemName;
+    public static javax.swing.JTextField Measurement;
     private javax.swing.JComboBox<String> Method;
     private javax.swing.JTextField PurchaseCode;
     private com.toedter.calendar.JDateChooser ReleaseDate;

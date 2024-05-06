@@ -175,6 +175,7 @@ public class Connect {
                           SalesPrice text   NOT NULL,
                           TaxType text   NOT NULL,
                           VAT text   NOT NULL,
+                          Measurement text,
                           TotalPrice text   NOT NULL,
                           DRatio text    NULL,
                           DAmount text    NULL,
