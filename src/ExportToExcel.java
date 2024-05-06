@@ -20,19 +20,21 @@ public class ExportToExcel {
             Connection con = Connect.getConnection();
 
             PreparedStatement statement = con.prepareStatement(
-                    "SELECT s.createdAt, s.CustomerName, si.ItemName, si.Measurement, si.SalesQty, si.UnitPrice, si.TotalPrice, s.SOUT "
+                    "SELECT DISTINCT s.createdAt, s.CustomerName, si.ItemName, si.Measurement, si.SalesQty, si.UnitPrice, si.TotalPrice, s.SIN "
                     + "FROM sales s "
-                    + "JOIN salesitem si ON s.InvoiceID = si.RefSale "
-                    + "WHERE s.CustomerID = ?"
+                    + "LEFT JOIN salesitem si ON s.InvoiceID = si.RefSale "
+                    + "LEFT JOIN sales s2 ON s.CustomerID = s2.Ref_Inv "
+                    + "WHERE (s.CustomerID = ? OR s2.CustomerID = ?) AND s.Type IN ('Paid', 'Credit')"
             );
 
             // Set the customer ID parameter
             statement.setString(1, customerID);
+            statement.setString(2, customerID);
 
             ResultSet rs = statement.executeQuery();
 
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Creditors");
+            Sheet sheet = workbook.createSheet("Creditor");
 
             // Headers
             Row headerRow = (Row) sheet.createRow(0);
@@ -54,7 +56,7 @@ public class ExportToExcel {
                 double salesQty = rs.getDouble("SalesQty");
                 double unitPrice = rs.getDouble("UnitPrice");
                 double credited = rs.getDouble("TotalPrice");
-                double debited = rs.getDouble("SOUT");
+                double debited = rs.getDouble("SIN");
 
                 Row row = sheet.createRow(rowNum++);
 
