@@ -308,7 +308,8 @@ public class InventoryM extends javax.swing.JPanel {
 
         try {
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from stock");
+            insert = con.prepareStatement("select * from stock where not(SafetyQty=?)");
+            insert.setString(1, "");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
