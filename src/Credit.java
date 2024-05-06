@@ -462,10 +462,26 @@ public class Credit extends javax.swing.JPanel {
     }//GEN-LAST:event_InvoiceKeyReleased
 
     private void ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportActionPerformed
-        // TODO add your handling code here:    
-        File file = createExcelFile();
-        exportToCSV(jTable2, jTable1, file, true);
+        // Get the selected row index from jTable3
+        int selectedRowIndex = jTable3.getSelectedRow();
 
+        // Ensure a row is selected
+        if (selectedRowIndex != -1) {
+            // Get the customer ID or any relevant information from the selected row
+            Object customerID = jTable3.getValueAt(selectedRowIndex, 0);
+
+            // Call the exportToExcel method with the selected customer ID
+            ExportToExcel.exportToExcel(customerID.toString());
+
+            /*  // Call the exportToCSV method with the selected customer ID
+            ExportToCSV .exportCreditorsToCSV(customerID.toString());*/
+        } else {
+            // No row selected, show error message or handle appropriately
+            JOptionPane.showMessageDialog(this, "Please select a customer to export.", "No Customer Selected", JOptionPane.WARNING_MESSAGE);
+        }
+
+        /*        File file = createExcelFile();
+        exportToCSV(jTable2, jTable1, file, true);*/
     }//GEN-LAST:event_ExportActionPerformed
 
     private static File createExcelFile() {
@@ -842,7 +858,7 @@ public class Credit extends javax.swing.JPanel {
                                         updateBalance.executeUpdate();
 
                                     }
-                                    
+
                                     if (selectedMethod.contains("Bank")) {
 
                                         insert = con.prepareStatement("insert into bank (Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
