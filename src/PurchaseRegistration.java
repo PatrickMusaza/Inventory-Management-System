@@ -908,37 +908,54 @@ public class PurchaseRegistration extends javax.swing.JFrame {
             } else if (input1 == null) {
                 JOptionPane.showMessageDialog(frame, "Please Enter Release Date.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-
-                String PurchaseID = this.PurchaseID.getText();
-                String SupplierID = this.SupplierID.getText();
-                String SupplierName = this.SupplierName.getText();
-                String PurchaseCode = this.PurchaseCode.getText();
-                Date ReleaseDate = this.ReleaseDate.getDate();
-                String Remark = this.Remark.getText();
-                String TotalAmount = this.TotalAmount.getText();
-                String VAT = this.VAT.getText();
-                String SupplierReceipt = this.SupplierReceipt.getText();
-                String SupplierSDCD = this.SupplierSDCD.getText();
-                String Purchase = null;
-                String Method = (String) this.Method.getSelectedItem();
-
-                this.generateInvoiceCode();
-                totalAmount();
-
-                String Username = Login.Username.getText();
-
-                if (this.Purchase.isSelected()) {
-                    Purchase = "Purchase";
-                } else if (this.Debtor.isSelected()) {
-                    Purchase = "Debt";
-                }
-
-                java.sql.Date sqlReleaseDate = new java.sql.Date(ReleaseDate.getTime());
-
-                String Status = "Waiting Approval";
-
                 try {
                     Connection con = Connect.getConnection();
+
+                    String BankPaid = (String) this.Method.getSelectedItem(); // Declaration of BankPaid
+                    String TotalAmount = this.TotalAmount.getText(); // Declaration of TotalAmount
+
+                    // Retrieve balance
+                    Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                    Bal.setString(1, BankPaid);
+                    ResultSet rs = Bal.executeQuery();
+                    double IN, OUT, bal = 0;
+                    if (rs.next()) {
+                        IN = rs.getDouble("BIN");
+                        OUT = rs.getDouble("BOUT");
+                        bal = IN - OUT;
+                    }
+
+                    if (BankPaid.contains("Bank") && Double.parseDouble(TotalAmount) > bal) {
+                        JOptionPane.showMessageDialog(this, "Total amount exceeds available balance in the selected bank. Please choose another payment method or deposit funds into the bank.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        return; // Stop further processing
+                    }
+
+                    String PurchaseID = this.PurchaseID.getText();
+                    String SupplierID = this.SupplierID.getText();
+                    String SupplierName = this.SupplierName.getText();
+                    String PurchaseCode = this.PurchaseCode.getText();
+                    Date ReleaseDate = this.ReleaseDate.getDate();
+                    String Remark = this.Remark.getText();
+                    String VAT = this.VAT.getText();
+                    String SupplierReceipt = this.SupplierReceipt.getText();
+                    String SupplierSDCD = this.SupplierSDCD.getText();
+                    String Purchase = null;
+
+                    this.generateInvoiceCode();
+                    totalAmount();
+
+                    String Username = Login.Username.getText();
+
+                    if (this.Purchase.isSelected()) {
+                        Purchase = "Purchase";
+                    } else if (this.Debtor.isSelected()) {
+                        Purchase = "Debt";
+                    }
+
+                    java.sql.Date sqlReleaseDate = new java.sql.Date(ReleaseDate.getTime());
+
+                    String Status = "Waiting Approval";
+
                     insert = con.prepareStatement("insert into purchase (SupplierID,SupplierName,ReleaseDate,SupplierReceipt,Remark,VAT,InvoiceID,TotalAmount,PurchaseCode,Type,createdBy,SupplierSDCD,Status,Method) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                     insert.setString(1, SupplierID);
                     insert.setString(2, SupplierName);
@@ -953,10 +970,10 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                     insert.setString(11, Username);
                     insert.setString(12, SupplierSDCD);
                     insert.setString(13, Status);
-                    insert.setString(14, Method);
+                    insert.setString(14, BankPaid);
                     insert.executeUpdate();
 
-                    String BankPaid = this.Method.getSelectedItem().toString();
+                    JOptionPane.showMessageDialog(this, "New Purchase Recorded");
 
                     if (BankPaid.contains("Bank")) {
 
@@ -974,8 +991,7 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                         Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
                         Bal.setString(1, BankPaid);
 
-                        ResultSet rs = Bal.executeQuery();
-                        double IN, OUT, bal = 0;
+                        rs = Bal.executeQuery();
                         if (rs.next()) {
                             IN = rs.getDouble("BIN");
                             OUT = rs.getDouble("BOUT");
@@ -987,10 +1003,7 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                         insert.setString(2, PurchaseID);
 
                         insert.executeUpdate();
-
                     }
-
-                    JOptionPane.showMessageDialog(this, "New Purchase Recorded");
 
                     this.TotalAmount.setText("");
                     this.PurchaseID.setText("");
@@ -1009,6 +1022,7 @@ public class PurchaseRegistration extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     java.util.logging.Logger.getLogger(PurchaseRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
+
             }
         }
     }//GEN-LAST:event_savePurchaseActionPerformed

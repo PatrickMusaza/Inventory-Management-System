@@ -20,7 +20,9 @@ public class ExportToExcel {
             Connection con = Connect.getConnection();
 
             PreparedStatement statement = con.prepareStatement(
-                    "SELECT DISTINCT s.createdAt, s.CustomerName, si.ItemName, si.Measurement, si.SalesQty, si.UnitPrice, si.TotalPrice, s.SIN "
+                    "SELECT DISTINCT s.createdAt, "
+                    + "COALESCE(si.ItemName, s.Method) AS ItemName, "
+                    + "si.Measurement, si.SalesQty, si.UnitPrice, si.TotalPrice, s.SIN "
                     + "FROM sales s "
                     + "LEFT JOIN salesitem si ON s.InvoiceID = si.RefSale "
                     + "LEFT JOIN sales s2 ON s.CustomerID = s2.Ref_Inv "
@@ -36,12 +38,19 @@ public class ExportToExcel {
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Creditor");
 
-            // Headers
-            Row headerRow = (Row) sheet.createRow(0);
+            // Inside your exportToExcel method after creating headers
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
             String[] headers = {"DATE", "DESCRIPTION", "MEASUREMENT", "QUANTITY", "UNIT/PRICE", "CREDITED", "DEBITED", "BALANCE"};
             for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerCellStyle); // Apply bold font style
             }
 
             // Data

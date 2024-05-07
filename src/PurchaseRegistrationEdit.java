@@ -870,7 +870,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, stock, Current, Bal,Balance;
+    PreparedStatement insert, stock, Current, Bal, Balance;
 
     private void savePurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePurchaseActionPerformed
         // TODO add your handling code here:
@@ -896,7 +896,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
             } else if (input1 == null) {
                 JOptionPane.showMessageDialog(frame, "Please Enter Release Date.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-
                 String PurchaseID = PurchaseRegistrationEdit.PurchaseID.getText();
                 String SupplierID = PurchaseRegistrationEdit.SupplierID.getText();
                 String SupplierName = PurchaseRegistrationEdit.SupplierName.getText();
@@ -926,6 +925,9 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                 try {
                     Connection con = Connect.getConnection();
+
+                    String BankPaid = (String) PurchaseRegistrationEdit.Method.getSelectedItem(); // Declaration of BankPaid
+
                     insert = con.prepareStatement("update purchase set SupplierID=?,SupplierName=?,ReleaseDate=?,SupplierReceipt=?,Remark=?,VAT=?,InvoiceID=?,"
                             + "TotalAmount=?,Type=?,createdBy=?,SupplierSDCD=?,Status=?,Method=? where PurchaseCode=?");
                     insert.setString(1, SupplierID);
@@ -944,8 +946,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                     insert.setString(14, PurchaseID);
                     insert.executeUpdate();
 
-                    String BankPaid = this.Method.getSelectedItem().toString();
-
                     if (BankPaid.contains("Bank")) {
 
                         insert = con.prepareStatement("update bank set Purpose=?,GivenBy=?,ReceivedBy=?,BOUT=?,Balance=?,Bank=? where TxnId=?");
@@ -959,7 +959,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
                         insert.executeUpdate();
 
-                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                        PreparedStatement Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
                         Bal.setString(1, BankPaid);
 
                         ResultSet rs = Bal.executeQuery();
@@ -997,6 +997,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     java.util.logging.Logger.getLogger(PurchaseRegistrationEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
+
             }
         }
     }//GEN-LAST:event_savePurchaseActionPerformed
