@@ -1,0 +1,244 @@
+CREATE TABLE IF NOT EXISTS ivm.customer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Type TEXT NULL,
+    TIN TEXT NOT NULL,
+    Name TEXT NOT NULL,
+    Bank TEXT NULL,
+    Address TEXT NULL,
+    Delegator TEXT NULL,
+    Nationality TEXT NOT NULL,
+    Email TEXT NULL,
+    Account TEXT NULL,
+    Remark TEXT NULL,
+    Phone1 TEXT NOT NULL,
+    Phone2 TEXT NULL,
+    FAX TEXT NULL,
+    Depositor TEXT NOT NULL,
+    Active TEXT NOT NULL,
+    createdBy TEXT,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ivm.item (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ItemCode TEXT,
+    ItemName TEXT,
+    UseBarcode TEXT,
+    Origin TEXT,
+    ItemType TEXT,
+    PkgUnit TEXT,
+    QtyUnit TEXT,
+    PurchaseUnit DOUBLE DEFAULT NULL,
+    SalePrice DOUBLE DEFAULT NULL,
+    TaxType TEXT,
+    BeginningStock INT DEFAULT NULL,
+    CurrentStock DOUBLE DEFAULT 0,
+    SafetyStock INT DEFAULT NULL,
+    Description TEXT DEFAULT NULL,
+    Active TEXT,
+    createdBy TEXT,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ivm.purchase (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Type TEXT NOT NULL,
+    SupplierID TEXT NOT NULL,
+    SupplierSDCD TEXT NOT NULL,
+    SupplierReceipt TEXT NULL,
+    TotalAmount TEXT NOT NULL,
+    PurchaseReason TEXT NULL,
+    Remark TEXT NULL,
+    PurchaseCode TEXT NULL,
+    SupplierName TEXT NOT NULL,
+    Status TEXT NULL,
+    Method TEXT NULL,
+    ReleaseDate TEXT NULL,
+    VAT TEXT NULL,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CreatedBy TEXT NOT NULL,
+    InvoiceID VARCHAR(255) NOT NULL DEFAULT 'INV 001'
+);
+
+CREATE TABLE IF NOT EXISTS ivm.purchaseitem (
+    id INT NOT NULL AUTO_INCREMENT,
+    ItemCode TEXT NOT NULL,
+    ItemName TEXT NOT NULL,
+    UnitPrice TEXT NOT NULL,
+    PurchaseQty TEXT NOT NULL,
+    PurchasePrice TEXT NOT NULL,
+    TaxType TEXT NOT NULL,
+    VAT TEXT NOT NULL,
+    TotalPrice TEXT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    RefPurchase VARCHAR(255) NOT NULL DEFAULT 'PRC 001',
+    KEY FK_Sales (RefPurchase(100)),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS ivm.sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Type TEXT NOT NULL,
+    CustomerID TEXT NOT NULL,
+    SaleDate TEXT NOT NULL,
+    TotalAmount DOUBLE DEFAULT NULL,
+    Remark TEXT NULL,
+    PurchaseCode TEXT,
+    CustomerName TEXT NOT NULL,
+    ReleaseDate TEXT NULL,
+    SIN DOUBLE DEFAULT NULL,
+    SOUT DOUBLE DEFAULT NULL,
+    Balance DOUBLE DEFAULT NULL,
+    Ref_Inv TEXT NULL,
+    VAT TEXT NULL,
+    Status TEXT NULL,
+    Method TEXT NULL,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CreatedBy TEXT NOT NULL,
+    InvoiceID VARCHAR(255) NOT NULL DEFAULT 'INV 001'
+);
+
+CREATE TABLE IF NOT EXISTS ivm.salesitem (
+    id INT NOT NULL AUTO_INCREMENT,
+    ItemCode TEXT NOT NULL,
+    ItemName TEXT NOT NULL,
+    UnitPrice TEXT NOT NULL,
+    SalesQty TEXT NOT NULL,
+    SalesPrice TEXT NOT NULL,
+    TaxType TEXT NOT NULL,
+    VAT TEXT NOT NULL,
+    Measurement TEXT,
+    TotalPrice TEXT NOT NULL,
+    DRatio TEXT NULL,
+    DAmount TEXT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    RefSale VARCHAR(255) NOT NULL DEFAULT 'INV 001',
+    KEY FK_Sales (RefSale(100)),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS ivm.staff (
+    id INT NOT NULL AUTO_INCREMENT,
+    user_role TEXT DEFAULT NULL,
+    user_pass TEXT NOT NULL,
+    email TEXT DEFAULT NULL,
+    username TEXT NOT NULL,
+    full_name TEXT DEFAULT NULL,
+    createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY email (email(100))
+);
+
+CREATE TABLE IF NOT EXISTS ivm.stock (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ItemCode TEXT,
+    ItemName TEXT,
+    SafetyQty INT DEFAULT NULL,
+    Purchase INT DEFAULT 0,
+    Sales INT DEFAULT 0,
+    BeginningStock DOUBLE DEFAULT NULL,
+    CurrentStock DOUBLE DEFAULT NULL,
+    UnitPrice DOUBLE DEFAULT NULL,
+    StockIN double DEFAULT NULL,
+    StockOUT double DEFAULT NULL,
+    Balance double DEFAULT NULL,
+    Action text,
+    SubTotal double DEFAULT NULL,
+    PurchasePrice DOUBLE DEFAULT NULL,
+    StockAmount TEXT DEFAULT NULL,
+    ChangeQuantity DOUBLE DEFAULT NULL,
+    NewQuantity DOUBLE DEFAULT NULL,
+    Remark TEXT,
+    Status TEXT,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ivm.import (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    OpCode TEXT NOT NULL,
+    DeclDate TEXT NULL,
+    Seq TEXT DEFAULT NULL,
+    HsCode TEXT NULL,
+    ItemCode TEXT NULL,
+    Origin TEXT NULL,
+    Export TEXT NULL,
+    PkgQty TEXT NULL,
+    Qty TEXT NULL,
+    Unit TEXT NULL,
+    ItemDesc TEXT NULL,
+    Supplier TEXT NULL,
+    Agent TEXT NULL,
+    TaxPayerName TEXT NULL,
+    ItemName TEXT NULL,
+    GrossWT TEXT,
+    NetWT TEXT DEFAULT NULL,
+    InvoiceAMT TEXT NULL,
+    InvoiceCurrency TEXT NULL,
+    Ratio TEXT NULL,
+    Status TEXT NOT NULL,
+    ApproveDate TEXT DEFAULT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ivm.pettycash (
+    ID INT NOT NULL AUTO_INCREMENT,
+    PIN DOUBLE DEFAULT NULL,
+    POUT DOUBLE DEFAULT NULL,
+    Purpose TEXT,
+    GivenBy TEXT,
+    ReceivedBy TEXT,
+    Balance DOUBLE NOT NULL,
+    RefNo TEXT,
+    TxnId TEXT NOT NULL,
+    InvoiceNo TEXT,
+    file_path TEXT,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS ivm.bank (
+    ID INT NOT NULL AUTO_INCREMENT,
+    Purpose TEXT,
+    GivenBy TEXT,
+    ReceivedBy TEXT,
+    BIN DOUBLE DEFAULT NULL,
+    BOUT DOUBLE DEFAULT NULL,
+    Balance DOUBLE NOT NULL,
+    Method TEXT,
+    Bank TEXT,
+    TxnId TEXT NOT NULL,
+    InvoiceNo TEXT,
+    file_path TEXT,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS ivm.payment (
+    id INT AUTO_INCREMENT,
+    Code TEXT,
+    Method TEXT,
+    Amount TEXT,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS ivm.Expense (
+    ID TEXT,
+    Name TEXT,
+    Description TEXT,
+    Source TEXT,
+    Ref TEXT,
+    Amount TEXT,
+    CreatedBy TEXT,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (ID(100))
+);
+
+CREATE TABLE IF NOT EXISTS ivm.user (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Action TEXT,
+    DateUsed DATE NULL,
+    Found INT NULL DEFAULT 0,
+    openedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    LastOpenedDate DATE
+);

@@ -8,9 +8,9 @@ import java.sql.Statement;
 
 public class ConnectCloud {
 
-    private static final String DB_URL = "jdbc:mysql://34.28.10.216:3306/customerDB";
-    private static final String DB_USER = "happylight";
-    private static final String DB_PASS = "g@Secur!";
+    private static final String DB_URL = "jdbc:mysql://34.30.45.69:3306/customerDB";
+    private static final String DB_USER = "hltadmin";
+    private static final String DB_PASS = "g@Secur!2024$";
 
     public static Connection getConnection() throws SQLException {
         try {
