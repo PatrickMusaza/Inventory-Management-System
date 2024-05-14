@@ -42,11 +42,11 @@ public class Staff extends javax.swing.JPanel {
 
                 Vector v = new Vector();
 
-                v.add(rs.getString(1));
-                v.add(rs.getString(7));
-                v.add(rs.getString(6));
-                v.add(rs.getString(5));
-                v.add(rs.getString(2));
+                v.add(rs.getString("ID"));
+                v.add(rs.getString("full_name"));
+                v.add(rs.getString("username"));
+                v.add(rs.getString("email"));
+                v.add(rs.getString("user_role"));
 
                 dt.addRow(v);
 
