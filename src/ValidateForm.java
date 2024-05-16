@@ -38,7 +38,7 @@ public class ValidateForm extends javax.swing.JFrame {
         initComponents();
         Image logo = new ImageIcon(this.getClass().getResource("/Logo.png")).getImage();
         this.setIconImage(logo);
-       this.loadingSpinner1.setVisible(false);
+        this.loadingSpinner1.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -195,7 +195,7 @@ public class ValidateForm extends javax.swing.JFrame {
         /*--------------------- What happens when 'Validate Button is pressed.' -------------------------------*/
 
         this.loadingSpinner1.setVisible(true);
-        
+
         if ("".equals(licenseKey.getText())) {
             JOptionPane.showMessageDialog(new JFrame(), "License key is required to proceed", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -404,7 +404,7 @@ public class ValidateForm extends javax.swing.JFrame {
             // Try to connect to a known host (e.g., Google's DNS server)
             return InetAddress.getByName("8.8.8.8").isReachable(1000); // Timeout set to 1 second
         } catch (IOException e) {
-            return false; // Failed to connect
+            return false;// Failed to connect
         }
     }
 
@@ -486,6 +486,10 @@ public class ValidateForm extends javax.swing.JFrame {
         loaderFrame.pack();
         loaderFrame.setSize(300, 300);
         loaderFrame.setLocationRelativeTo(null);
+
+        // Set the application icon
+        Image logo = new ImageIcon(Login.class.getResource("/Logo.png")).getImage();
+        loaderFrame.setIconImage(logo);
     }
 
     private static void closeLoader() {
