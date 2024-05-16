@@ -67,18 +67,16 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="itemFrame" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="customerFrame" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="saleFrame" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="purchaseFrame" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="stockFrame" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="creditorFrame" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="286" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="pettyFrame" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="358" max="32767" attributes="0"/>
                   <Component id="Logout" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -89,10 +87,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="itemFrame" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="customerFrame" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="saleFrame" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="purchaseFrame" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="pettyFrame" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="stockFrame" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="Logout" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="creditorFrame" alignment="3" max="32767" attributes="0"/>
@@ -103,26 +100,6 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="itemFrame">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="33" red="0" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Trebuchet MS" size="12" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/shopping-bag.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Item"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemFrameActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JButton" name="customerFrame">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -163,7 +140,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saleFrameActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="purchaseFrame">
+        <Component class="javax.swing.JButton" name="pettyFrame">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="33" red="0" type="rgb"/>
@@ -175,12 +152,12 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/document.png"/>
+              <Image iconType="3" name="/Icons/money.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Purchase"/>
+            <Property name="text" type="java.lang.String" value="Petty Cash"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="purchaseFrameActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pettyFrameActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="stockFrame">

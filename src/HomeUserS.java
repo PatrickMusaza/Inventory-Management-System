@@ -24,7 +24,7 @@ public class HomeUserS extends javax.swing.JFrame {
 
         ItemM itemUser = new ItemM();
         jpload.jPanelLoader(MainFrame, itemUser);
-        this.itemFrame.setForeground(Color.GREEN);
+        this.customerFrame.setForeground(Color.GREEN);
 
         User.setText("Welcome Back " + Login.Username.getText());
 
@@ -40,10 +40,9 @@ public class HomeUserS extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        itemFrame = new javax.swing.JButton();
         customerFrame = new javax.swing.JButton();
         saleFrame = new javax.swing.JButton();
-        purchaseFrame = new javax.swing.JButton();
+        pettyFrame = new javax.swing.JButton();
         stockFrame = new javax.swing.JButton();
         Logout = new javax.swing.JButton();
         creditorFrame = new javax.swing.JButton();
@@ -55,17 +54,6 @@ public class HomeUserS extends javax.swing.JFrame {
         setTitle("ELECTRONIC BILLING MACHINE");
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 0));
-
-        itemFrame.setBackground(new java.awt.Color(0, 51, 0));
-        itemFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        itemFrame.setForeground(new java.awt.Color(255, 255, 255));
-        itemFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/shopping-bag.png"))); // NOI18N
-        itemFrame.setText("Item");
-        itemFrame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemFrameActionPerformed(evt);
-            }
-        });
 
         customerFrame.setBackground(new java.awt.Color(0, 51, 0));
         customerFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
@@ -89,14 +77,14 @@ public class HomeUserS extends javax.swing.JFrame {
             }
         });
 
-        purchaseFrame.setBackground(new java.awt.Color(0, 51, 0));
-        purchaseFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        purchaseFrame.setForeground(new java.awt.Color(255, 255, 255));
-        purchaseFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/document.png"))); // NOI18N
-        purchaseFrame.setText("Purchase");
-        purchaseFrame.addActionListener(new java.awt.event.ActionListener() {
+        pettyFrame.setBackground(new java.awt.Color(0, 51, 0));
+        pettyFrame.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        pettyFrame.setForeground(new java.awt.Color(255, 255, 255));
+        pettyFrame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/money.png"))); // NOI18N
+        pettyFrame.setText("Petty Cash");
+        pettyFrame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                purchaseFrameActionPerformed(evt);
+                pettyFrameActionPerformed(evt);
             }
         });
 
@@ -139,18 +127,16 @@ public class HomeUserS extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(itemFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(customerFrame)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saleFrame)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(purchaseFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stockFrame)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(creditorFrame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pettyFrame)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 358, Short.MAX_VALUE)
                 .addComponent(Logout)
                 .addContainerGap())
         );
@@ -159,10 +145,9 @@ public class HomeUserS extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(itemFrame)
                     .addComponent(customerFrame)
                     .addComponent(saleFrame)
-                    .addComponent(purchaseFrame)
+                    .addComponent(pettyFrame)
                     .addComponent(stockFrame)
                     .addComponent(Logout)
                     .addComponent(creditorFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -221,29 +206,14 @@ public class HomeUserS extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFrameActionPerformed
-        // TODO add your handling code here:
-
-        ItemM itemUser = new ItemM();
-        jpload.jPanelLoader(MainFrame, itemUser);
-        this.itemFrame.setForeground(Color.GREEN);
-        this.customerFrame.setForeground(Color.WHITE);
-        this.saleFrame.setForeground(Color.WHITE);
-        this.purchaseFrame.setForeground(Color.WHITE);
-        this.stockFrame.setForeground(Color.WHITE);
-        this.creditorFrame.setForeground(Color.WHITE);
-
-    }//GEN-LAST:event_itemFrameActionPerformed
-
     private void customerFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerFrameActionPerformed
         // TODO add your handling code here:
 
         CustomerM customerUser = new CustomerM();
         jpload.jPanelLoader(MainFrame, customerUser);
         this.customerFrame.setForeground(Color.GREEN);
-        this.itemFrame.setForeground(Color.WHITE);
         this.saleFrame.setForeground(Color.WHITE);
-        this.purchaseFrame.setForeground(Color.WHITE);
+        this.pettyFrame.setForeground(Color.WHITE);
         this.stockFrame.setForeground(Color.WHITE);
         this.creditorFrame.setForeground(Color.WHITE);
 
@@ -256,26 +226,11 @@ public class HomeUserS extends javax.swing.JFrame {
         jpload.jPanelLoader(MainFrame, SaleUser);
         this.saleFrame.setForeground(Color.GREEN);
         this.customerFrame.setForeground(Color.WHITE);
-        this.itemFrame.setForeground(Color.WHITE);
-        this.purchaseFrame.setForeground(Color.WHITE);
+        this.pettyFrame.setForeground(Color.WHITE);
         this.stockFrame.setForeground(Color.WHITE);
         this.creditorFrame.setForeground(Color.WHITE);
 
     }//GEN-LAST:event_saleFrameActionPerformed
-
-    private void purchaseFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseFrameActionPerformed
-        // TODO add your handling code here:
-
-        PurchaseUserS PurchaseUser = new PurchaseUserS();
-        jpload.jPanelLoader(MainFrame, PurchaseUser);
-        this.purchaseFrame.setForeground(Color.GREEN);
-        this.customerFrame.setForeground(Color.WHITE);
-        this.saleFrame.setForeground(Color.WHITE);
-        this.itemFrame.setForeground(Color.WHITE);
-        this.stockFrame.setForeground(Color.WHITE);
-        this.creditorFrame.setForeground(Color.WHITE);
-
-    }//GEN-LAST:event_purchaseFrameActionPerformed
 
     private void stockFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockFrameActionPerformed
         // TODO add your handling code here:
@@ -285,7 +240,7 @@ public class HomeUserS extends javax.swing.JFrame {
         this.stockFrame.setForeground(Color.GREEN);
         this.customerFrame.setForeground(Color.WHITE);
         this.saleFrame.setForeground(Color.WHITE);
-        this.purchaseFrame.setForeground(Color.WHITE);
+        this.pettyFrame.setForeground(Color.WHITE);
         this.creditorFrame.setForeground(Color.WHITE);
 
     }//GEN-LAST:event_stockFrameActionPerformed
@@ -306,10 +261,21 @@ public class HomeUserS extends javax.swing.JFrame {
         this.creditorFrame.setForeground(Color.GREEN);
         this.customerFrame.setForeground(Color.WHITE);
         this.saleFrame.setForeground(Color.WHITE);
-        this.purchaseFrame.setForeground(Color.WHITE);
+        this.pettyFrame.setForeground(Color.WHITE);
         this.stockFrame.setForeground(Color.WHITE);
-        this.itemFrame.setForeground(Color.WHITE);
     }//GEN-LAST:event_creditorFrameActionPerformed
+
+    private void pettyFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pettyFrameActionPerformed
+        // TODO add your handling code here:
+
+        PettyCash PettyUser = new PettyCash();
+        jpload.jPanelLoader(MainFrame, PettyUser);
+        this.pettyFrame.setForeground(Color.GREEN);
+        this.customerFrame.setForeground(Color.WHITE);
+        this.saleFrame.setForeground(Color.WHITE);
+        this.stockFrame.setForeground(Color.WHITE);
+        this.creditorFrame.setForeground(Color.WHITE);
+    }//GEN-LAST:event_pettyFrameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -354,10 +320,9 @@ public class HomeUserS extends javax.swing.JFrame {
     private javax.swing.JLabel User;
     private javax.swing.JButton creditorFrame;
     private javax.swing.JButton customerFrame;
-    private javax.swing.JButton itemFrame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton purchaseFrame;
+    private javax.swing.JButton pettyFrame;
     private javax.swing.JButton saleFrame;
     private javax.swing.JButton stockFrame;
     // End of variables declaration//GEN-END:variables
