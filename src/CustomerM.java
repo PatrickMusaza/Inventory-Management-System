@@ -852,7 +852,7 @@ public class CustomerM extends javax.swing.JPanel {
         if (evt.getSource() == this.Individual) {
             this.Individual.setSelected(true);
             this.Corporate.setSelected(false);
-            this.Delegator.setEditable(false);
+            // this.Delegator.setEditable(false);
             this.TIN.setEditable(false);
             TIN.setVisible(false);
         }
