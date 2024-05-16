@@ -205,7 +205,7 @@ public class ItemM extends javax.swing.JPanel {
             }
         });
 
-        Pkg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bucket", "Bottle", "Basket", "Carton", "Cassette", "Can", "Container", "Jug", "Net", "Roll", "Wooden Case", "Wooden Box" }));
+        Pkg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ampoule", "Bag", "Bale", "Balloon, Non-Protected", "Bar", "Barrel", "Basket", "Bottle, Bulbous", "Bottle, Protected Cylindrical", "Bottle Crate", "Bucket", "Bulk, Fine Particles (Powder)", "Bulk, Gas (Liquefied at Abnormal Temperature/Pressure)", "Bulk, Gas (at 1031 mbar 15°C)", "Bulk, Liquid (at Normal Temperature/Pressure)", "Bulk, Solid, Granular Particles (Grains)", "Bulk, Solid, Large Particles (Nodules)", "Bundle", "Can", "Canister", "Carton", "Cassette", "Chest", "Coffin", "Coil", "Container", "Cylinder", "Drum", "Extra Bulk Item", "Extra Countable Item", "Hand Baggage", "Ingots", "Jar", "Jerry Can Cylindrical", "Jug", "Logs, in Bundle/Bunch/Truss", "Mills", "Net", "Non-Exterior Packaging Unit", "Pilot", "Pipe", "Plate", "Potton", "Reel", "Rods, in Bundle/Bunch/Truss", "Roll", "Skeleton Case", "TAN", "Tank, Cylindrical", "Tray Pack", "Wooden Box, Wooden Case" }));
         Pkg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PkgActionPerformed(evt);
@@ -230,7 +230,7 @@ public class ItemM extends javax.swing.JPanel {
             }
         });
 
-        Type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asset", "Expense", "Finished Product", "Raw Material", "Service" }));
+        Type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asset", "Finished Product", "Raw Material", "Service" }));
         Type.setSelectedItem(null);
 
         Beginning.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -264,7 +264,7 @@ public class ItemM extends javax.swing.JPanel {
             }
         });
 
-        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Box", "Gallon ", "Kilogram ", "Litre", "Cubic Metre", "Dozen", "Gram", "Number", "Pair" }));
+        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bag", "Barrel", "Barrel (Petroleum) (158,987 dm3)", "Block", "Box", "Bundle", "Can", "Cap", "CARAT", "Centimeter", "Cell", "Cubic Meter", "Dozen", "Drum", "Gallon", "Gram", "Gross", "Kilo-Gramme", "Kilometer", "Kilowatt", "Link", "Liter", "Megawatt Hour (1000 kW.h)", "Meter", "Milligram", "Number", "Number", "Packet", "Pair", "Part Per Thousand", "Pieces/Item [Number]", "Plate", "Pound", "Reel", "Roll", "Set", "Sheet", "Square Meter", "Tone (Metric Ton)", "Tube", "Yard" }));
         QTY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QTYActionPerformed(evt);
