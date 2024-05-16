@@ -268,6 +268,38 @@ public class DynamicSyncUpload {
         statement.executeUpdate();
     }
 
+    public static void truncateTables(Connection con) {
+        try {
+            // Get database metadata
+            DatabaseMetaData metaData = con.getMetaData();
+
+            // Get all table names
+            ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+
+            // Iterate through each table and truncate
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                truncateTable(con, tableName);
+            }
+
+            // Close resources
+            tables.close();
+            con.close();
+
+            System.out.println("All tables truncated successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void truncateTable(Connection con, String tableName) throws SQLException {
+        String truncateQuery = "TRUNCATE TABLE " + tableName;
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(truncateQuery);
+            System.out.println("Table " + tableName + " truncated.");
+        }
+    }
+
     public static void main(String[] args) {
         try (Connection localConnection = Connect.getConnection(); Connection cloudConnection = Connect.getCloudConnection()) {
 
