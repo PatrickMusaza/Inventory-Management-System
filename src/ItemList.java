@@ -293,7 +293,7 @@ public class ItemList extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert;
+    PreparedStatement insert, select;
 
     private void table_update() {
 
@@ -387,6 +387,41 @@ public class ItemList extends javax.swing.JFrame {
             if (evt.getClickCount() == 1) {
                 // Single click event
                 SalesTransaction.setItemDetails(code, name);
+                try {
+
+                    String Code = SalesTransaction.ItemCode.getText();
+                    String Name = SalesTransaction.ItemName.getText();
+
+                    Connection con = Connect.getConnection();
+
+                    select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice,QtyUnit FROM item WHERE ItemCode = ? AND ItemName= ?");
+                    select.setString(1, Code);
+                    select.setString(2, Name);
+
+                    ResultSet rs = select.executeQuery();
+
+                    // Check if the item with the given code exists
+                    if (rs.next()) {
+                        // Retrieve values from the ResultSet
+
+                        String taxType = rs.getString("TaxType");
+                        SalesTransaction.Tax.setSelectedItem(taxType);
+                        SalesTransaction.Tax.setEnabled(false);
+
+                        String UnitPrice = rs.getString("SalePrice");
+                        SalesTransaction.UnitPrice.setText(UnitPrice);
+
+                        String SalesPrice = rs.getString("PurchaseUnit");
+                        SalesTransaction.SalesPrice.setText(SalesPrice);
+
+                        String Measure = rs.getString("QtyUnit");
+                        SalesTransaction.Measurement.setText(Measure);
+
+                    }
+
+                } catch (SQLException ex) {
+                    java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
             } else if (evt.getClickCount() == 2) {
                 // Double click event
                 this.setVisible(false); // Close the window

@@ -292,7 +292,7 @@ public class ItemListP extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert;
+    PreparedStatement insert, select;
 
     private void table_update() {
 
@@ -386,6 +386,37 @@ public class ItemListP extends javax.swing.JFrame {
             if (evt.getClickCount() == 1) {
                 // Single click event
                 PurchaseRegistration.setItemDetails(code, name);
+                try {
+
+                    String Code = PurchaseRegistration.ItemCode.getText();
+                    String Name = PurchaseRegistration.ItemName.getText();
+
+                    Connection con = Connect.getConnection();
+
+                    select = con.prepareStatement("SELECT  TaxType,PurchaseUnit,SalePrice FROM item WHERE ItemCode = ? AND ItemName= ?");
+                    select.setString(1, Code);
+                    select.setString(2, Name);
+
+                    ResultSet rs = select.executeQuery();
+
+                    // Check if the item with the given code exists
+                    if (rs.next()) {
+                        // Retrieve values from the ResultSet
+
+                        String taxType = rs.getString("TaxType");
+                        PurchaseRegistration.Tax.setSelectedItem(taxType);
+
+                        String UnitPrice = rs.getString("PurchaseUnit");
+                        PurchaseRegistration.UnitPrice.setText(UnitPrice);
+
+                        String SalesPrice = rs.getString("SalePrice");
+                        PurchaseRegistration.SalesPrice.setText(SalesPrice);
+
+                    }
+
+                } catch (SQLException ex) {
+                    java.util.logging.Logger.getLogger(PurchaseRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
             } else if (evt.getClickCount() == 2) {
                 // Double click event
                 this.setVisible(false); // Close the window
@@ -437,7 +468,7 @@ public class ItemListP extends javax.swing.JFrame {
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyReleased
