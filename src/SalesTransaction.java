@@ -655,6 +655,8 @@ public class SalesTransaction extends javax.swing.JFrame {
 
         jLabel22.setText("D/C Amount");
 
+        UnitPrice.setEditable(false);
+
         SalesQty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SalesQtyActionPerformed(evt);
