@@ -1,3 +1,4 @@
+
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -323,7 +324,14 @@ public class CustomerListPE extends javax.swing.JFrame {
         if (row >= 0) {
             String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
             String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            PurchaseRegistrationEdit.setCustomerDetails(code, name);
+
+            if (evt.getClickCount() == 1) {
+                // Single click event
+                PurchaseRegistrationEdit.setCustomerDetails(code, name);
+            } else if (evt.getClickCount() == 2) {
+                // Double click event
+                this.setVisible(false); // Close the window
+            }
         }
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
@@ -334,11 +342,8 @@ public class CustomerListPE extends javax.swing.JFrame {
         PreparedStatement select;
 
         try {
-
             String Name = this.Name.getText();
-
             Connection con = Connect.getConnection();
-
             select = con.prepareStatement("SELECT Delegator, Nationality, Phone1, FAX, Address FROM customer WHERE Name = ?");
             select.setString(1, Name);
 
@@ -347,7 +352,6 @@ public class CustomerListPE extends javax.swing.JFrame {
             // Check if the item with the given code exists
             if (rs.next()) {
                 // Retrieve values from the ResultSet
-
                 String Address = rs.getString("Address");
                 this.Address.setText(Address);
 
@@ -362,15 +366,11 @@ public class CustomerListPE extends javax.swing.JFrame {
 
                 String Delegator = rs.getString("Delegator");
                 this.Delegator.setText(Delegator);
-
             }
-
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(CustomerM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        // this.setVisible(false);
-
+        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyReleased
@@ -409,8 +409,6 @@ public class CustomerListPE extends javax.swing.JFrame {
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         // TODO add your handling code here:
-
-        this.setVisible(false);
     }//GEN-LAST:event_jTable1KeyPressed
 
     /**

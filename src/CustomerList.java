@@ -1,3 +1,4 @@
+
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -156,6 +157,9 @@ public class CustomerList extends javax.swing.JFrame {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jTable1MouseEntered(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTable1MousePressed(evt);
             }
         });
         jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -329,13 +333,20 @@ public class CustomerList extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
+        // TODO add your handling code here
 
         int row = jTable1.rowAtPoint(evt.getPoint());
         if (row >= 0) {
             String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
             String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            SalesTransaction.setCustomerDetails(code, name);
+
+            if (evt.getClickCount() == 1) {
+                // Single click event
+                SalesTransaction.setCustomerDetails(code, name);
+            } else if (evt.getClickCount() == 2) {
+                // Double click event
+                this.setVisible(false); // Close the window
+            }
         }
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
@@ -346,11 +357,8 @@ public class CustomerList extends javax.swing.JFrame {
         PreparedStatement select;
 
         try {
-
             String Name = this.Name.getText();
-
-            Connection con=Connect.getConnection();
-
+            Connection con = Connect.getConnection();
             select = con.prepareStatement("SELECT Delegator, Nationality, Phone1, FAX, Address FROM customer WHERE Name = ?");
             select.setString(1, Name);
 
@@ -359,7 +367,6 @@ public class CustomerList extends javax.swing.JFrame {
             // Check if the item with the given code exists
             if (rs.next()) {
                 // Retrieve values from the ResultSet
-
                 String Address = rs.getString("Address");
                 this.Address.setText(Address);
 
@@ -374,15 +381,10 @@ public class CustomerList extends javax.swing.JFrame {
 
                 String Delegator = rs.getString("Delegator");
                 this.Delegator.setText(Delegator);
-
             }
-
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        // this.setVisible(false);
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyReleased
@@ -412,19 +414,15 @@ public class CustomerList extends javax.swing.JFrame {
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
         // TODO add your handling code here:
-        int row = jTable1.rowAtPoint(evt.getPoint());
-        if (row >= 0) {
-            String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
-            String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            SalesTransaction.setCustomerDetails(code, name);
-        }
     }//GEN-LAST:event_jTable1MouseEntered
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         // TODO add your handling code here:
-
-        this.setVisible(false);
     }//GEN-LAST:event_jTable1KeyPressed
+
+    private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MousePressed
 
     /**
      * @param args the command line arguments

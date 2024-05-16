@@ -1,3 +1,4 @@
+
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -381,7 +382,14 @@ public class ItemListES extends javax.swing.JFrame {
         if (row >= 0) {
             String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
             String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            SalesTransactionEdit.setItemDetails(code, name);
+
+            if (evt.getClickCount() == 1) {
+                // Single click event
+                SalesTransactionEdit.setItemDetails(code, name);
+            } else if (evt.getClickCount() == 2) {
+                // Double click event
+                this.setVisible(false); // Close the window
+            }
         }
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
@@ -392,11 +400,8 @@ public class ItemListES extends javax.swing.JFrame {
         PreparedStatement select;
 
         try {
-
             String Name = this.Name.getText();
-
             Connection con = Connect.getConnection();
-
             select = con.prepareStatement("SELECT Origin, TaxType, CurrentStock, SafetyStock, PkgUnit, QtyUnit, PurchaseUnit, SalePrice FROM item WHERE ItemName = ?");
             select.setString(1, Name);
 
@@ -405,7 +410,6 @@ public class ItemListES extends javax.swing.JFrame {
             // Check if the item with the given code exists
             if (rs.next()) {
                 // Retrieve values from the ResultSet
-
                 String Origin = rs.getString("Origin");
                 this.Origin.setText(Origin);
 
@@ -429,13 +433,10 @@ public class ItemListES extends javax.swing.JFrame {
 
                 String SalePrice = rs.getString("SalePrice");
                 this.Sale.setText(SalePrice);
-
             }
-
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyReleased
@@ -450,10 +451,6 @@ public class ItemListES extends javax.swing.JFrame {
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         // TODO add your handling code here:
-
-        SalesTransactionEdit.generateItemDetails();
-        this.setVisible(false);
-
     }//GEN-LAST:event_jTable1KeyPressed
 
     /**

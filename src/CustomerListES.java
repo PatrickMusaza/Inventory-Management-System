@@ -1,3 +1,4 @@
+
 import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -335,53 +336,52 @@ public class CustomerListES extends javax.swing.JFrame {
         if (row >= 0) {
             String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
             String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            SalesTransactionEdit.setCustomerDetails(code, name);
+
+            if (evt.getClickCount() == 1) {
+                // Single click event
+                SalesTransactionEdit.setCustomerDetails(code, name);
+            } else if (evt.getClickCount() == 2) {
+                // Double click event
+                this.setVisible(false); // Close the window
+            }
         }
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
 
-        this.Name.setText(Df.getValueAt(selectedIndex, 1).toString());
+        Name.setText(Df.getValueAt(selectedIndex, 1).toString());
 
         PreparedStatement select;
 
         try {
-
-            String Name = this.Name.getText();
-
-            Connection con=Connect.getConnection();
-
+            String nameText = Name.getText();
+            Connection con = Connect.getConnection();
             select = con.prepareStatement("SELECT Delegator, Nationality, Phone1, FAX, Address FROM customer WHERE Name = ?");
-            select.setString(1, Name);
+            select.setString(1, nameText);
 
             ResultSet rs = select.executeQuery();
 
             // Check if the item with the given code exists
             if (rs.next()) {
                 // Retrieve values from the ResultSet
+                String addressText = rs.getString("Address");
+                Address.setText(addressText);
 
-                String Address = rs.getString("Address");
-                this.Address.setText(Address);
+                String faxText = rs.getString("FAX");
+                FAX.setText(faxText);
 
-                String FAX = rs.getString("FAX");
-                this.FAX.setText(FAX);
+                String nationalityText = rs.getString("Nationality");
+                Nationality.setText(nationalityText);
 
-                String Nationality = rs.getString("Nationality");
-                this.Nationality.setText(Nationality);
+                String phoneText = rs.getString("Phone1");
+                Phone.setText(phoneText);
 
-                String Phone = rs.getString("Phone1");
-                this.Phone.setText(Phone);
-
-                String Delegator = rs.getString("Delegator");
-                this.Delegator.setText(Delegator);
-
+                String delegatorText = rs.getString("Delegator");
+                Delegator.setText(delegatorText);
             }
-
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(CustomerListES.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        // this.setVisible(false);
 
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -412,18 +412,10 @@ public class CustomerListES extends javax.swing.JFrame {
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
         // TODO add your handling code here:
-        int row = jTable1.rowAtPoint(evt.getPoint());
-        if (row >= 0) {
-            String code = (String) jTable1.getValueAt(row, 0); // Assuming code is in the first column
-            String name = (String) jTable1.getValueAt(row, 1); // Assuming name is in the second column
-            SalesTransactionEdit.setCustomerDetails(code, name);
-        }
     }//GEN-LAST:event_jTable1MouseEntered
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         // TODO add your handling code here:
-
-        this.setVisible(false);
     }//GEN-LAST:event_jTable1KeyPressed
 
     /**
