@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -121,14 +122,14 @@ public class StockUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Safety Qty", "Beginning Stock", "Purchase", "Sales", "Current Stock", "Purchase Price", "Sale Price", "Stock Amount"
+                "Item Code", "Item Name", "Safety Qty", "Beginning Stock", "Purchase", "Sales", "Current Stock", "Purchase Price", "Stock Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -256,7 +257,7 @@ public class StockUserS extends javax.swing.JPanel {
                     v2.add(formatter.format(rs.getDouble("Sales")));
                     v2.add(formatter.format(rs.getDouble("CurrentStock")));
                     v2.add(formatter.format(rs.getDouble("PurchasePrice")));
-                    v2.add(formatter.format(rs.getDouble("UnitPrice")));
+                    //      v2.add(formatter.format(rs.getDouble("UnitPrice")));
                     v2.add(formatter.format(rs.getDouble("StockAmount")));
                     //v2.add(rs.getString("reportOn"));
 
@@ -271,7 +272,7 @@ public class StockUserS extends javax.swing.JPanel {
 
             if (tot.next()) {
 
-                DecimalFormat df = new DecimalFormat("#,##0.00"); 
+                DecimalFormat df = new DecimalFormat("#,##0.00");
                 double sum = tot.getDouble("Total");
                 this.total.setText(df.format(sum));
 
@@ -313,7 +314,7 @@ public class StockUserS extends javax.swing.JPanel {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        
+
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
 
@@ -336,19 +337,25 @@ public class StockUserS extends javax.swing.JPanel {
             while (rs.next()) {
                 Vector v2 = new Vector();
 
-                for (int i = 1; i <= count; i++) {
+                Date createdAtDate = rs.getDate("createdAt");
+                String actionString = rs.getString("Action");
+                String itemNameString = rs.getString("ItemName");
+                double stockInDouble = rs.getDouble("StockIN");
+                double stockOutDouble = rs.getDouble("StockOut");
+                double balanceDouble = rs.getDouble("Balance");
+                double purchasePriceDouble = rs.getDouble("PurchasePrice");
+                double unitPriceDouble = rs.getDouble("UnitPrice");
+                double totalPurchasePrice = balanceDouble * purchasePriceDouble;
 
-                    v2.add(rs.getDate("createdAt"));
-                    v2.add(rs.getString("Action"));
-                    v2.add(rs.getString("ItemName"));
-                    v2.add(formatter.format(rs.getDouble("StockIN")));
-                    v2.add(formatter.format(rs.getDouble("StockOut")));
-                    v2.add(formatter.format(rs.getDouble("Balance")));
-                    v2.add(formatter.format(rs.getDouble("PurchasePrice")));
-                    v2.add(formatter.format(rs.getDouble("UnitPrice")));
-                    v2.add(formatter.format(rs.getDouble("SubTotal")));
-
-                }
+                v2.add(createdAtDate);
+                v2.add(actionString);
+                v2.add(itemNameString);
+                v2.add(formatter.format(stockInDouble));
+                v2.add(formatter.format(stockOutDouble));
+                v2.add(formatter.format(balanceDouble));
+                v2.add(formatter.format(purchasePriceDouble));
+                v2.add(formatter.format(unitPriceDouble));
+                v2.add(formatter.format(totalPurchasePrice));
 
                 Df2.addRow(v2);
             }
