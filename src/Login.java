@@ -569,6 +569,10 @@ public class Login extends javax.swing.JFrame {
         loaderFrame.pack();
         loaderFrame.setSize(500, 500);
         loaderFrame.setLocationRelativeTo(null);
+        
+        // Set the application icon
+        Image logo = new ImageIcon(Login.class.getResource("/Logo.png")).getImage();
+        loaderFrame.setIconImage(logo);
     }
 
     private static void closeLoader() {
