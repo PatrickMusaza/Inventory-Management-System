@@ -474,6 +474,7 @@ public class StatementC extends javax.swing.JPanel {
         try {
             writer = new FileWriter(file);
 
+            // Write column names
             for (int i = 0; i < table.getColumnCount(); i++) {
                 writer.write(table.getColumnName(i));
                 if (i < table.getColumnCount() - 1) {
@@ -482,10 +483,15 @@ public class StatementC extends javax.swing.JPanel {
             }
             writer.write("\n");
 
+            // Write row data
             for (int i = 0; i < table.getRowCount(); i++) {
                 for (int j = 0; j < table.getColumnCount(); j++) {
                     Object value = table.getValueAt(i, j);
-                    writer.write(value.toString());
+                    if (value != null) {
+                        writer.write(value.toString());
+                    } else {
+                        writer.write("");
+                    }
                     if (j < table.getColumnCount() - 1) {
                         writer.write(",");
                     }
@@ -498,7 +504,9 @@ public class StatementC extends javax.swing.JPanel {
             Logger.getLogger(SaleM.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                writer.close();
+                if (writer != null) {
+                    writer.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(SaleM.class.getName()).log(Level.SEVERE, null, ex);
             }
