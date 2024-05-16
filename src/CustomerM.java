@@ -652,9 +652,6 @@ public class CustomerM extends javax.swing.JPanel {
 
                         TIN = Phone1;
 
-                        this.Delegator.setEditable(false);
-                        Delegator = this.Name.getText();
-
                     } else if (this.Corporate.isSelected()) {
                         Type = "Corporate";
                     }
