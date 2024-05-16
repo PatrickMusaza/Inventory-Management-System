@@ -790,123 +790,115 @@ public class Credit extends javax.swing.JPanel {
                     JComboBox<String> methodDropdown = new JComboBox<>(methods.toArray(new String[0]));
 
                     int choice = JOptionPane.showConfirmDialog(null, methodDropdown, "Select Payment Method", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                    int choice1 = JOptionPane.showConfirmDialog(null, "Do you want to enter an amount?", "Amount", JOptionPane.YES_NO_CANCEL_OPTION);
-
                     if (choice == JOptionPane.YES_OPTION) {
-                        if (choice1 == JOptionPane.YES_OPTION) {
-                            String selectedMethod = (String) methodDropdown.getSelectedItem();
-                            String amountInput = null;
+                        String selectedMethod = (String) methodDropdown.getSelectedItem();
+                        String amountInput = null;
 
-                            // Loop until a valid numeric value is entered or user cancels
-                            while (true) {
-                                amountInput = JOptionPane.showInputDialog(null, "Enter Amount");
+                        // Loop until a valid numeric value is entered or user cancels
+                        while (true) {
+                            amountInput = JOptionPane.showInputDialog(null, "Enter Amount");
 
-                                // Check if the input is blank or null
-                                if (amountInput == null || amountInput.trim().isEmpty()) {
-                                    JOptionPane.showMessageDialog(null, "Amount cannot be blank. Please enter a valid numeric value.");
-                                    continue; // Continue looping until a valid input is provided or user cancels
-                                }
-
-                                // Check if the input is numeric
-                                try {
-                                    double amount = Double.parseDouble(amountInput);
-                                    // If input is numeric, break out of the loop
-                                    break;
-                                } catch (NumberFormatException e) {
-                                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid numeric value.");
-                                }
+                            // Check if the input is blank or null
+                            if (amountInput == null || amountInput.trim().isEmpty()) {
+                                break; // Continue looping until a valid input is provided or user cancels
                             }
 
-                            DefaultTableModel Df1 = (DefaultTableModel) jTable3.getModel();
-                            int selected = jTable3.getSelectedRow();
+                            // Check if the input is numeric
+                            try {
+                                double amount = Double.parseDouble(amountInput);
+                                // If input is numeric, break out of the loop
+                                break;
+                            } catch (NumberFormatException e) {
+                                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid numeric value.");
+                            }
+                        }
 
-                            String CustomerID = Df1.getValueAt(selected, 0).toString();
-                            String CustomerName = Df1.getValueAt(selected, 1).toString();
-                            String amou = Df1.getValueAt(selected, 3).toString();
-                            amou = amou.replace(",", "");
-                            String Code = generateInvoiceCode();
+                        DefaultTableModel Df1 = (DefaultTableModel) jTable3.getModel();
+                        int selected = jTable3.getSelectedRow();
 
-                            if (amountInput != null) {
-                                if (Double.parseDouble(amountInput) - 1 < Double.parseDouble(amou)) {
-                                    // Inserting the sale record
-                                    insert = con.prepareStatement("INSERT INTO sales (CustomerID, InvoiceID, SaleDate, Method, SIN, Ref_Inv, Type, CustomerName, CreatedBy, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                                    insert.setString(1, CustomerID);
-                                    insert.setString(2, Code);
-                                    insert.setString(3, now);
-                                    insert.setString(4, selectedMethod);
+                        String CustomerID = Df1.getValueAt(selected, 0).toString();
+                        String CustomerName = Df1.getValueAt(selected, 1).toString();
+                        String amou = Df1.getValueAt(selected, 3).toString();
+                        amou = amou.replace(",", "");
+                        String Code = generateInvoiceCode();
+
+                        if (amountInput != null) {
+                            if (Double.parseDouble(amountInput) - 1 < Double.parseDouble(amou)) {
+                                // Inserting the sale record
+                                insert = con.prepareStatement("INSERT INTO sales (CustomerID, InvoiceID, SaleDate, Method, SIN, Ref_Inv, Type, CustomerName, CreatedBy, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                insert.setString(1, CustomerID);
+                                insert.setString(2, Code);
+                                insert.setString(3, now);
+                                insert.setString(4, selectedMethod);
+                                insert.setString(5, amountInput);
+                                insert.setString(6, InvoiceID);
+                                insert.setString(7, "Paid");
+                                insert.setString(8, CustomerName);
+                                insert.setString(9, Login.Username.getText());
+                                insert.setString(10, "Paid");
+                                insert.executeUpdate();
+
+                                PreparedStatement selectSOUT = con.prepareStatement("SELECT SUM(SOUT) AS TotalSOUT,SUM(SIN) AS TotalSIN FROM sales WHERE CustomerID = ?");
+                                selectSOUT.setString(1, CustomerID);
+                                ResultSet rsSOUT = selectSOUT.executeQuery();
+                                double soutTotal = 0, sinTotal = 0;
+                                double balance = 0;
+                                if (rsSOUT.next()) {
+                                    soutTotal = rsSOUT.getDouble("TotalSOUT");
+                                    sinTotal = rsSOUT.getDouble("TotalSIN");
+                                    balance = soutTotal - sinTotal;
+
+                                    PreparedStatement updateBalance = con.prepareStatement("UPDATE sales SET TotalAmount = ? WHERE InvoiceID = ?");
+                                    updateBalance.setDouble(1, balance);
+                                    updateBalance.setString(2, Code);
+                                    updateBalance.executeUpdate();
+
+                                }
+
+                                if (selectedMethod.contains("Bank")) {
+
+                                    insert = con.prepareStatement("insert into bank (Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
+                                    insert.setString(1, "Paid Credit");
+                                    insert.setString(2, CustomerName);
+                                    insert.setString(3, Login.Username.getText());
+                                    insert.setString(4, amountInput);
                                     insert.setString(5, amountInput);
-                                    insert.setString(6, InvoiceID);
-                                    insert.setString(7, "Paid");
-                                    insert.setString(8, CustomerName);
-                                    insert.setString(9, Login.Username.getText());
-                                    insert.setString(10, "Paid");
+                                    insert.setString(6, selectedMethod);
+                                    insert.setString(7, Code);
+
                                     insert.executeUpdate();
 
-                                    PreparedStatement selectSOUT = con.prepareStatement("SELECT SUM(SOUT) AS TotalSOUT,SUM(SIN) AS TotalSIN FROM sales WHERE CustomerID = ?");
-                                    selectSOUT.setString(1, CustomerID);
-                                    ResultSet rsSOUT = selectSOUT.executeQuery();
-                                    double soutTotal = 0, sinTotal = 0;
-                                    double balance = 0;
-                                    if (rsSOUT.next()) {
-                                        soutTotal = rsSOUT.getDouble("TotalSOUT");
-                                        sinTotal = rsSOUT.getDouble("TotalSIN");
-                                        balance = soutTotal - sinTotal;
+                                    Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                                    Bal.setString(1, selectedMethod);
 
-                                        PreparedStatement updateBalance = con.prepareStatement("UPDATE sales SET TotalAmount = ? WHERE InvoiceID = ?");
-                                        updateBalance.setDouble(1, balance);
-                                        updateBalance.setString(2, Code);
-                                        updateBalance.executeUpdate();
-
+                                    ResultSet rs = Bal.executeQuery();
+                                    double IN, OUT, bal = 0;
+                                    if (rs.next()) {
+                                        IN = rs.getDouble("BIN");
+                                        OUT = rs.getDouble("BOUT");
+                                        bal = IN - OUT;
                                     }
 
-                                    if (selectedMethod.contains("Bank")) {
+                                    insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                                    insert.setDouble(1, bal);
+                                    insert.setString(2, Code);
 
-                                        insert = con.prepareStatement("insert into bank (Purpose,GivenBy,ReceivedBy,BIN,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
-                                        insert.setString(1, "Paid Credit");
-                                        insert.setString(2, CustomerName);
-                                        insert.setString(3, Login.Username.getText());
-                                        insert.setString(4, amountInput);
-                                        insert.setString(5, amountInput);
-                                        insert.setString(6, selectedMethod);
-                                        insert.setString(7, Code);
+                                    insert.executeUpdate();
 
-                                        insert.executeUpdate();
-
-                                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
-                                        Bal.setString(1, selectedMethod);
-
-                                        ResultSet rs = Bal.executeQuery();
-                                        double IN, OUT, bal = 0;
-                                        if (rs.next()) {
-                                            IN = rs.getDouble("BIN");
-                                            OUT = rs.getDouble("BOUT");
-                                            bal = IN - OUT;
-                                        }
-
-                                        insert = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                                        insert.setDouble(1, bal);
-                                        insert.setString(2, Code);
-
-                                        insert.executeUpdate();
-
-                                    }
-
-                                    JOptionPane.showMessageDialog(null, "Payment Succeed!");
-                                    table_updates();
-                                } else {
-                                    // Handle case where user cancels
-                                    JOptionPane.showMessageDialog(null, "Payment can't exceed " + amou);
                                 }
+
+                                JOptionPane.showMessageDialog(null, "Payment Succeed!");
+                                table_updates();
                             } else {
                                 // Handle case where user cancels
-                                JOptionPane.showMessageDialog(null, "Payment Canceled!");
+                                JOptionPane.showMessageDialog(null, "Payment can't exceed " + amou);
                             }
                         } else {
-                            // Handle case where user clicks "No" or "Cancel"
-                            JOptionPane.showMessageDialog(null, "Payment canceled!");
+                            // Handle case where user cancels
+                            JOptionPane.showMessageDialog(null, "Payment Canceled!");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "No Method of Payment Selected", "Method of Payment", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Method of Payment Canceled", "Method of Payment", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             } catch (SQLException ex) {
