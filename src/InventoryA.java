@@ -316,7 +316,7 @@ public class InventoryA extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    PreparedStatement insert, select, Current;
+    PreparedStatement insert, select, Current, Balance;
 
     private void table_update() {
 
@@ -441,8 +441,8 @@ public class InventoryA extends javax.swing.JPanel {
         double qty, price;
         double tot;
         try {
-            qty = Double.parseDouble(this.UpdatedQty.getText());
-            price = Double.parseDouble(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText().replaceAll(",", ""));
+            price = Double.parseDouble(this.AvgPrch.getText().replaceAll(",", ""));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -473,8 +473,8 @@ public class InventoryA extends javax.swing.JPanel {
         double qty, price;
         double tot;
         try {
-            qty = Double.parseDouble(this.UpdatedQty.getText());
-            price = Double.parseDouble(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText().replaceAll(",", ""));
+            price = Double.parseDouble(this.AvgPrch.getText().replaceAll(",", ""));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -498,8 +498,8 @@ public class InventoryA extends javax.swing.JPanel {
             }
         } else {
 
-            String Qty = this.UpdatedQty.getText();
-            String current = this.CurrentQty.getText();
+            String Qty = this.UpdatedQty.getText().replaceAll(",", "");
+            String current = this.CurrentQty.getText().replaceAll(",", "");
 
             double qtyNow = Double.parseDouble(Qty);
             double qtyOld = Double.parseDouble(current);
@@ -558,8 +558,8 @@ public class InventoryA extends javax.swing.JPanel {
             }
         } else {
 
-            String Qty = this.UpdatedQty.getText();
-            String current = this.CurrentQty.getText();
+            String Qty = this.UpdatedQty.getText().replaceAll(",", "");
+            String current = this.CurrentQty.getText().replaceAll(",", "");
 
             double qtyNow = Double.parseDouble(Qty);
             double qtyOld = Double.parseDouble(current);
@@ -577,7 +577,8 @@ public class InventoryA extends javax.swing.JPanel {
                 try {
                     String Code = this.ItemCode.getText();
                     double Change, now = 0, old = 0;
-                    String amount = this.StockAmount.getText();
+                    double amount = 0, avg = 0;
+                    String name = null, purch = null, sale = null;
 
                     Connection con = Connect.getConnection();
                     select = con.prepareStatement("select * from stock where ItemCode=?");
@@ -587,10 +588,16 @@ public class InventoryA extends javax.swing.JPanel {
                     while (rs.next()) {
                         now = rs.getDouble("NewQuantity");
                         old = rs.getDouble("CurrentStock");
+                        name = rs.getString("ItemName");
+                        purch = rs.getString("PurchasePrice");
+                        sale = rs.getString("UnitPrice");
+                        avg = rs.getDouble("PurchasePrice");
                     }
 
                     Change = old - now;
                     String Sts = "Approved";
+
+                    amount = now * avg;
 
                     insert = con.prepareStatement("update stock set CurrentStock=?, ChangeQuantity=ChangeQuantity+?, Status=? where ItemCode=?");
                     insert.setString(1, Qty);
@@ -607,10 +614,40 @@ public class InventoryA extends javax.swing.JPanel {
                     Current.executeUpdate();
 
                     Current = con.prepareStatement("update stock set StockAmount=? where ItemCode=?");
-                    Current.setString(1, amount);
+                    Current.setDouble(1, amount);
                     Current.setString(2, Code);
 
                     Current.executeUpdate();
+
+                    insert = con.prepareStatement("Insert into stock(Action,StockOUT,ItemName,PurchasePrice,UnitPrice,ItemCode) values(?,?,?,?,?,?)");
+                    insert.setString(1, "Quick Inventory");
+                    insert.setDouble(2, Change);
+                    insert.setString(3, name);
+                    insert.setString(4, purch);
+                    insert.setString(5, sale);
+                    insert.setString(6, Code);
+
+                    insert.executeUpdate();
+
+                    Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
+                    Balance.setString(1, Code);
+                    ResultSet Bal = Balance.executeQuery();
+                    double StockIN, StockOUT, Balan = 0;
+
+                    if (Bal.next()) {
+                        StockIN = Bal.getDouble("StockIN");
+                        StockOUT = Bal.getDouble("StockOUT");
+                        Balan = StockIN - StockOUT;
+                    }
+
+                    Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=? and StockOut=?");
+                    Balance.setDouble(1, Balan);
+                    Balance.setString(2, Code);
+                    Balance.setString(3, "Quick Inventory");
+                    Balance.setDouble(4, Change);
+
+                    Balance.executeUpdate();
+
                     JOptionPane.showMessageDialog(null, "New Quantity Approved");
                 } catch (SQLException ex) {
                     java.util.logging.Logger.getLogger(InventoryA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -641,8 +678,8 @@ public class InventoryA extends javax.swing.JPanel {
             }
         } else {
 
-            String Qty = this.UpdatedQty.getText();
-            String current = this.CurrentQty.getText();
+            String Qty = this.UpdatedQty.getText().replaceAll(",", "");
+            String current = this.CurrentQty.getText().replaceAll(",", "");
 
             double qtyNow = Double.parseDouble(Qty);
             double qtyOld = Double.parseDouble(current);

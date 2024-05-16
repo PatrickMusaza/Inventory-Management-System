@@ -424,8 +424,8 @@ public class InventoryM extends javax.swing.JPanel {
         double qty, price;
         double tot;
         try {
-            qty = Double.parseDouble(this.UpdatedQty.getText());
-            price = Double.parseDouble(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText().replaceAll(",", ""));
+            price = Double.parseDouble(this.AvgPrch.getText().replaceAll(",", ""));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -456,8 +456,8 @@ public class InventoryM extends javax.swing.JPanel {
         double qty, price;
         double tot;
         try {
-            qty = Double.parseDouble(this.UpdatedQty.getText());
-            price = Double.parseDouble(this.AvgPrch.getText());
+            qty = Double.parseDouble(this.UpdatedQty.getText().replaceAll(",", ""));
+            price = Double.parseDouble(this.AvgPrch.getText().replaceAll(",", ""));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -481,8 +481,8 @@ public class InventoryM extends javax.swing.JPanel {
             }
         } else {
 
-            String Qty = this.UpdatedQty.getText();
-            String current = this.CurrentQty.getText();
+            String Qty = this.UpdatedQty.getText().replaceAll(",", "");
+            String current = this.CurrentQty.getText().replaceAll(",", "");
 
             double qtyNow = Double.parseDouble(Qty);
             double qtyOld = Double.parseDouble(current);
@@ -541,8 +541,8 @@ public class InventoryM extends javax.swing.JPanel {
             }
         } else {
 
-            String Qty = this.UpdatedQty.getText();
-            String current = this.CurrentQty.getText();
+            String Qty = this.UpdatedQty.getText().replaceAll(",", "");
+            String current = this.CurrentQty.getText().replaceAll(",", "");
 
             double qtyNow = Double.parseDouble(Qty);
             double qtyOld = Double.parseDouble(current);

@@ -740,9 +740,9 @@ public class ItemM extends javax.swing.JPanel {
                         Current.setString(3, generateItemCode());
 
                         Current.executeUpdate();
-
-                        Balance = con.prepareStatement("select * from stock where ItemCode=?");
+                        Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
                         Balance.setString(1, Code);
+
                         ResultSet Bal = Balance.executeQuery();
                         double StockIN, StockOUT, Balan = 0;
 
@@ -752,12 +752,14 @@ public class ItemM extends javax.swing.JPanel {
                             Balan = StockIN - StockOUT;
                         }
 
-                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=?");
+                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=? and StockIn=?");
                         Balance.setDouble(1, Balan);
                         Balance.setString(2, Code);
+                        Balance.setString(3, "Beginning");
+                        Balance.setDouble(4, beginning);
 
                         Balance.executeUpdate();
-
+                        
                         insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                         insert.setString(1, generateItemCode());
@@ -895,7 +897,7 @@ public class ItemM extends javax.swing.JPanel {
 
                         Connection con = Connect.getConnection();
                         insert = con.prepareStatement("update item set ItemName=?,UseBarcode=?,Origin=?,ItemType=?,PkgUnit=?,QtyUnit=?,PurchaseUnit=?,SalePrice=?,TaxType=?,BeginningStock=?,SafetyStock=?,Description=?,Active=?, createdBy=? where ItemCode=?");
-                        stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=?,StockIN=?,SubTotal=? where ItemCode=?");
+                        stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=?,StockIN=?,SubTotal=? where ItemCode=? and Action=?");
                         insert.setString(1, Name);
                         insert.setString(2, Barcode);
                         insert.setString(3, Origin);
@@ -911,15 +913,16 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(13, Use);
                         insert.setString(14, Username);
                         insert.setString(15, id);
-                        
-                        stock.setString(1, Name);               
-                        stock.setDouble(2, Double.parseDouble(Sale));         
-                        stock.setDouble(3, Double.parseDouble(Beginning));    
-                        stock.setDouble(4, Double.parseDouble(Safety));       
-                        stock.setDouble(5, Double.parseDouble(Purchase));     
-                        stock.setDouble(6, Double.parseDouble(Beginning));    
-                        stock.setDouble(7, Double.parseDouble(Beginning) * Double.parseDouble(Purchase)); 
-                        stock.setString(8, id);               
+
+                        stock.setString(1, Name);
+                        stock.setDouble(2, Double.parseDouble(Sale));
+                        stock.setDouble(3, Double.parseDouble(Beginning));
+                        stock.setDouble(4, Double.parseDouble(Safety));
+                        stock.setDouble(5, Double.parseDouble(Purchase));
+                        stock.setDouble(6, Double.parseDouble(Beginning));
+                        stock.setDouble(7, Double.parseDouble(Beginning) * Double.parseDouble(Purchase));
+                        stock.setString(8, id);
+                        stock.setString(9, "Beginning");
 
                         insert.executeUpdate();
                         stock.executeUpdate();
@@ -941,8 +944,9 @@ public class ItemM extends javax.swing.JPanel {
 
                         Current.executeUpdate();
 
-                        Balance = con.prepareStatement("select * from stock where ItemCode=?");
+                        Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
                         Balance.setString(1, id);
+
                         ResultSet Bal = Balance.executeQuery();
                         double StockIN, StockOUT, Balan = 0;
 
@@ -952,11 +956,13 @@ public class ItemM extends javax.swing.JPanel {
                             Balan = StockIN - StockOUT;
                         }
 
-                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=?");
+                        Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=?");
                         Balance.setDouble(1, Balan);
                         Balance.setString(2, id);
+                        Balance.setString(3, "Beginning");
 
                         Balance.executeUpdate();
+                        
 
                         JOptionPane.showMessageDialog(null, "Item Updated!");
                         table_update();
