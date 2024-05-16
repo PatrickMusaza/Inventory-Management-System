@@ -2,6 +2,7 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,8 +36,13 @@ public class Staff extends javax.swing.JPanel {
             dt.setRowCount(0);
 
             Connection con = Connect.getConnection();
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery(" SELECT * FROM staff WHERE id!=1");
+            String sql = "SELECT * FROM staff WHERE user_role != ? OR username != ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, "Admin");
+            pstmt.setString(2, "Admin");
+
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
 
@@ -378,47 +384,47 @@ public class Staff extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         } else {
-        String name = c_name.getText();
-        String user = c_user.getText();
-        String role = c_role.getSelectedItem().toString();
-        String id = c_search.getText();
-        String email = c_email.getText();
-        String no = c_id.getText();
-        String pass = c_pass.getText();
-        String c_pass = c_pass_conf.getText();
+            String name = c_name.getText();
+            String user = c_user.getText();
+            String role = c_role.getSelectedItem().toString();
+            String id = c_search.getText();
+            String email = c_email.getText();
+            String no = c_id.getText();
+            String pass = c_pass.getText();
+            String c_pass = c_pass_conf.getText();
 
-        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update user '" + user + "' ", "Update User", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update user '" + user + "' ", "Update User", JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
+            if (confirm == JOptionPane.YES_OPTION) {
 
-            if (pass.equals(c_pass)) {
-                try {
+                if (pass.equals(c_pass)) {
+                    try {
 
-                    String hpass = hashPassword(pass);
-                    Connection con = Connect.getConnection();
-                    Statement s = con.createStatement();
-                    s.executeUpdate(" UPDATE staff SET full_name ='" + name + "' ,username ='" + user + "',email  ='" + email + "',user_pass ='" + hpass + "',user_role ='" + role + "' WHERE id  = '" + no + "' ");
-                    JOptionPane.showMessageDialog(null, "Data Updated");
+                        String hpass = hashPassword(pass);
+                        Connection con = Connect.getConnection();
+                        Statement s = con.createStatement();
+                        s.executeUpdate(" UPDATE staff SET full_name ='" + name + "' ,username ='" + user + "',email  ='" + email + "',user_pass ='" + hpass + "',user_role ='" + role + "' WHERE id  = '" + no + "' ");
+                        JOptionPane.showMessageDialog(null, "Data Updated");
 
-                } catch (Exception e) {
-                    System.out.println(e);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "The Password you typed, it doesn't match with the one you confirmed");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "The Password you typed, it doesn't match with the one you confirmed");
+
+                c_name.setText("");
+                c_user.setText("");
+                c_role.setSelectedItem("");
+                c_search.setText("");
+                c_email.setText("");
+                c_id.setText("");
+                this.c_pass.setText("");
+                c_pass_conf.setText("");
+
+                tb_load();
+
             }
-
-            c_name.setText("");
-            c_user.setText("");
-            c_role.setSelectedItem("");
-            c_search.setText("");
-            c_email.setText("");
-            c_id.setText("");
-            this.c_pass.setText("");
-            c_pass_conf.setText("");
-
-            tb_load();
-
-        }
         }
     }//GEN-LAST:event_UpdateActionPerformed
 
@@ -433,34 +439,34 @@ public class Staff extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         } else {
-        String id = c_search.getText();
-        String user = c_user.getText();
+            String id = c_search.getText();
+            String user = c_user.getText();
 
-        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete user '" + user.toUpperCase() + "' ", "Delete User", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete user '" + user.toUpperCase() + "' ", "Delete User", JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
 
-                Connection con = Connect.getConnection();
-                Statement s = con.createStatement();
-                s.executeUpdate("DELETE FROM staff WHERE id = '" + id + "'");
-                JOptionPane.showMessageDialog(null, "User Deleted");
+                    Connection con = Connect.getConnection();
+                    Statement s = con.createStatement();
+                    s.executeUpdate("DELETE FROM staff WHERE id = '" + id + "'");
+                    JOptionPane.showMessageDialog(null, "User Deleted");
 
-            } catch (SQLException e) {
-                System.out.println(e);
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+
+                c_name.setText("");
+                c_user.setText("");
+                c_role.setSelectedItem("");
+                c_search.setText("");
+                c_email.setText("");
+                c_id.setText("");
+                this.c_pass.setText("");
+                c_pass_conf.setText("");
+
+                tb_load();
             }
-
-            c_name.setText("");
-            c_user.setText("");
-            c_role.setSelectedItem("");
-            c_search.setText("");
-            c_email.setText("");
-            c_id.setText("");
-            this.c_pass.setText("");
-            c_pass_conf.setText("");
-
-            tb_load();
-        }
         }
     }//GEN-LAST:event_DeleteActionPerformed
 
@@ -469,19 +475,33 @@ public class Staff extends javax.swing.JPanel {
 
         int r = jTable1.getSelectedRow();
 
-        String id = jTable1.getValueAt(r, 0).toString();
-        String name = jTable1.getValueAt(r, 1).toString();
-        String user = jTable1.getValueAt(r, 2).toString();
-        String email = jTable1.getValueAt(r, 3).toString();
-        String role = jTable1.getValueAt(r, 4).toString();
+        // Check if selected row is valid
+        if (r != -1 && r < jTable1.getRowCount()) {
+            // Retrieve data from table
+            Object idObj = jTable1.getValueAt(r, 0);
+            Object nameObj = jTable1.getValueAt(r, 1);
+            Object userObj = jTable1.getValueAt(r, 2);
+            Object emailObj = jTable1.getValueAt(r, 3);
+            Object roleObj = jTable1.getValueAt(r, 4);
 
-        c_search.setText(id);
-        c_id.setText(id);
-        c_name.setText(name);
-        c_user.setText(user);
-        c_email.setText(email);
-        c_role.setSelectedItem(role);
-
+            // Set values to text fields if not null
+            if (idObj != null) {
+                c_search.setText(idObj.toString());
+                c_id.setText(idObj.toString());
+            }
+            if (nameObj != null) {
+                c_name.setText(nameObj.toString());
+            }
+            if (userObj != null) {
+                c_user.setText(userObj.toString());
+            }
+            if (emailObj != null) {
+                c_email.setText(emailObj.toString());
+            }
+            if (roleObj != null) {
+                c_role.setSelectedItem(roleObj.toString());
+            }
+        }
 
     }//GEN-LAST:event_jTable1MouseClicked
 
