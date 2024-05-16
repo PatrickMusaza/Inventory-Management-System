@@ -225,7 +225,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Please enter you login details"/>
+                <Property name="text" type="java.lang.String" value="Please enter your login details"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
