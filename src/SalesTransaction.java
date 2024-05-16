@@ -239,7 +239,6 @@ public class SalesTransaction extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         AddItem = new javax.swing.JButton();
-        Confirm = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -544,16 +543,6 @@ public class SalesTransaction extends javax.swing.JFrame {
             }
         });
 
-        Confirm.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        Confirm.setForeground(new java.awt.Color(0, 153, 51));
-        Confirm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/verified.png"))); // NOI18N
-        Confirm.setText("Confirm");
-        Confirm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -563,8 +552,6 @@ public class SalesTransaction extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(AddItem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Confirm)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -573,8 +560,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(AddItem)
-                    .addComponent(Confirm))
+                    .addComponent(AddItem))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1072,10 +1058,6 @@ public class SalesTransaction extends javax.swing.JFrame {
     private void CustomerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CustomerIDActionPerformed
-
-    private void ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ConfirmActionPerformed
 
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddItemActionPerformed
         // TODO add your handling code here:
@@ -1629,7 +1611,6 @@ public class SalesTransaction extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddItem;
-    private javax.swing.JButton Confirm;
     private javax.swing.JRadioButton Credit;
     public static javax.swing.JTextField CustomerID;
     public static javax.swing.JTextField CustomerName;
