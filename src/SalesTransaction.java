@@ -379,7 +379,7 @@ public class SalesTransaction extends javax.swing.JFrame {
 
         jLabel8.setText("Remark");
 
-        Sale.setText("Sale");
+        Sale.setText("Cash");
         Sale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaleActionPerformed(evt);
