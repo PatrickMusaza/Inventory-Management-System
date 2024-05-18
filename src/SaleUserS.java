@@ -373,7 +373,7 @@ public class SaleUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Qty", "Unit Price", "Purchase Price", "Total Amount"
+                "Item Code", "Item Name", "Qty", "Measurement", "Unit Price", "Total Amount"
             }
         ) {
             Class[] types = new Class [] {
@@ -593,8 +593,8 @@ public class SaleUserS extends javax.swing.JPanel {
                     v2.add(rs.getString("ItemCode"));
                     v2.add(rs.getString("ItemName"));
                     v2.add(rs.getString("SalesQty"));
+                    v2.add(rs.getString("Measurement"));
                     v2.add(formatter.format(rs.getDouble("UnitPrice")));
-                    v2.add(formatter.format(rs.getDouble("SalesPrice")));
                     v2.add(formatter.format(rs.getDouble("TotalPrice")));
                     v2.add(formatter.format(rs.getDouble("vAT")));
 
@@ -881,7 +881,7 @@ public class SaleUserS extends javax.swing.JPanel {
                         Remark = rs.getString("Remark");
                     }
 
-                    if (type.equals("Sale")) {
+                    if (type.equals("Cash")) {
                         SalesTransactionEdit.Sale.setSelected(true);
                     } else if (type.equals("Credit")) {
                         SalesTransactionEdit.Credit.setSelected(true);

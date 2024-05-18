@@ -536,8 +536,8 @@
                 <Column editable="false" title="Item Code" type="java.lang.String"/>
                 <Column editable="false" title="Item Name" type="java.lang.String"/>
                 <Column editable="false" title="Qty" type="java.lang.String"/>
+                <Column editable="false" title="Measurement" type="java.lang.String"/>
                 <Column editable="false" title="Unit Price" type="java.lang.String"/>
-                <Column editable="false" title="Purchase Price" type="java.lang.String"/>
                 <Column editable="false" title="Total Amount" type="java.lang.String"/>
               </Table>
             </Property>
