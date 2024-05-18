@@ -87,6 +87,7 @@ public class Connect {
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           ItemCode text  ,
                           ItemName text  ,
+                          Supplier text  ,
                           UseBarcode text  ,
                           Origin text  ,
                           ItemType text  ,
