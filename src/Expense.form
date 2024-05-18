@@ -16,7 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="1146" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="1166" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
@@ -191,7 +191,7 @@
                       </Group>
                       <Component id="Description" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="70" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -285,7 +285,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Description*"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;p&gt;Description&lt;/br&gt; &lt;span&gt;&lt;center&gt;(Purpose)&lt;/center&gt;&lt;/span&gt;&lt;/p&gt; &lt;/html&gt;"/>
           </Properties>
         </Component>
         <Component class="java.awt.TextField" name="Description">
