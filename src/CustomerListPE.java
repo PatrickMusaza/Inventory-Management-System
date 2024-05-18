@@ -38,20 +38,8 @@ public class CustomerListPE extends javax.swing.JFrame {
         Name = new javax.swing.JTextField();
         Search = new javax.swing.JButton();
         Exit = new javax.swing.JButton();
-        addNew = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        Delegator = new javax.swing.JTextField();
-        Phone = new javax.swing.JTextField();
-        Address = new javax.swing.JTextField();
-        Nationality = new javax.swing.JTextField();
-        FAX = new javax.swing.JTextField();
 
         setTitle("Customer List");
         setResizable(false);
@@ -84,20 +72,6 @@ public class CustomerListPE extends javax.swing.JFrame {
             }
         });
 
-        addNew.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        addNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/credit-card-add.png"))); // NOI18N
-        addNew.setText("New");
-        addNew.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addNewMouseClicked(evt);
-            }
-        });
-        addNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,9 +81,7 @@ public class CustomerListPE extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Name, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addNew)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(90, 90, 90)
                 .addComponent(Search)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Exit)
@@ -123,8 +95,7 @@ public class CustomerListPE extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Search)
-                    .addComponent(Exit)
-                    .addComponent(addNew))
+                    .addComponent(Exit))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -133,14 +104,14 @@ public class CustomerListPE extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Code", "Customer Name", "Remark"
+                "Code", "Supplier Name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -166,83 +137,11 @@ public class CustomerListPE extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel2.setText("Delegator");
-
-        jLabel3.setText("Phone");
-
-        jLabel4.setText("Address");
-
-        jLabel6.setText("Nationality");
-
-        jLabel8.setText("FAX");
-
-        FAX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FAXActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Phone, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Delegator, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Nationality, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-                            .addComponent(FAX)))
-                    .addComponent(Address))
-                .addGap(10, 10, 10))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(Delegator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Nationality, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(FAX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(Address, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -251,8 +150,7 @@ public class CustomerListPE extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -269,7 +167,7 @@ public class CustomerListPE extends javax.swing.JFrame {
 
             Connection con = Connect.getConnection();
 
-            insert = con.prepareStatement("select * from customer");
+            insert = con.prepareStatement("select * from item");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
@@ -283,9 +181,8 @@ public class CustomerListPE extends javax.swing.JFrame {
 
                 for (int i = 1; i <= count; i++) {
 
-                    v2.add(rs.getString("TIN"));
-                    v2.add(rs.getString("Name"));
-                    v2.add(rs.getString("Remark"));
+                    v2.add(rs.getString("ID"));
+                    v2.add(rs.getString("Supplier"));
 
                 }
 
@@ -293,7 +190,7 @@ public class CustomerListPE extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(CustomerM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerListPE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
     }
@@ -338,39 +235,6 @@ public class CustomerListPE extends javax.swing.JFrame {
         int selectedIndex = jTable1.getSelectedRow();
 
         this.Name.setText(Df.getValueAt(selectedIndex, 1).toString());
-
-        PreparedStatement select;
-
-        try {
-            String Name = this.Name.getText();
-            Connection con = Connect.getConnection();
-            select = con.prepareStatement("SELECT Delegator, Nationality, Phone1, FAX, Address FROM customer WHERE Name = ?");
-            select.setString(1, Name);
-
-            ResultSet rs = select.executeQuery();
-
-            // Check if the item with the given code exists
-            if (rs.next()) {
-                // Retrieve values from the ResultSet
-                String Address = rs.getString("Address");
-                this.Address.setText(Address);
-
-                String FAX = rs.getString("FAX");
-                this.FAX.setText(FAX);
-
-                String Nationality = rs.getString("Nationality");
-                this.Nationality.setText(Nationality);
-
-                String Phone = rs.getString("Phone1");
-                this.Phone.setText(Phone);
-
-                String Delegator = rs.getString("Delegator");
-                this.Delegator.setText(Delegator);
-            }
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(CustomerM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyReleased
@@ -382,20 +246,6 @@ public class CustomerListPE extends javax.swing.JFrame {
         obj.setRowFilter(RowFilter.regexFilter(Name.getText(), 1));
 
     }//GEN-LAST:event_NameKeyReleased
-
-    private void addNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addNewMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addNewMouseClicked
-
-    private void addNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewActionPerformed
-        // TODO add your handling code here:
-
-        new NewCustomer().setVisible(true);
-    }//GEN-LAST:event_addNewActionPerformed
-
-    private void FAXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAXActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FAXActionPerformed
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
         // TODO add your handling code here:
@@ -447,23 +297,11 @@ public class CustomerListPE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Address;
-    private javax.swing.JTextField Delegator;
     private javax.swing.JButton Exit;
-    private javax.swing.JTextField FAX;
     public javax.swing.JTextField Name;
-    private javax.swing.JTextField Nationality;
-    private javax.swing.JTextField Phone;
     private javax.swing.JButton Search;
-    private javax.swing.JButton addNew;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
