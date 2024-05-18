@@ -934,26 +934,27 @@ public class CustomerM extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+        int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
 
-        this.TIN.setText(Df.getValueAt(selectedIndex, 0).toString());
+        this.TIN.setText(Df.getValueAt(modelIndex, 0).toString());
 
-        String Type = Df.getValueAt(selectedIndex, 1).toString();
+        String Type = Df.getValueAt(modelIndex, 1).toString();
         if (Type.equals("Individual")) {
             this.Individual.isSelected();
         } else if (Type.equals("Corporate")) {
             this.Corporate.isSelected();
         }
 
-        this.Name.setText(Df.getValueAt(selectedIndex, 2).toString());
-        this.Delegator.setText(Df.getValueAt(selectedIndex, 3).toString());
+        this.Name.setText(Df.getValueAt(modelIndex, 2).toString());
+        this.Delegator.setText(Df.getValueAt(modelIndex, 3).toString());
 
-        String Nationality = Df.getValueAt(selectedIndex, 4).toString();
+        String Nationality = Df.getValueAt(modelIndex, 4).toString();
         this.Nationality.setSelectedItem(Nationality);
 
-        this.Email.setText(Df.getValueAt(selectedIndex, 5).toString());
-        this.Phone1.setText(Df.getValueAt(selectedIndex, 6).toString());
-        this.Phone2.setText(Df.getValueAt(selectedIndex, 7).toString());
-        this.Safety3.setText(Df.getValueAt(selectedIndex, 8).toString());
+        this.Email.setText(Df.getValueAt(modelIndex, 5).toString());
+        this.Phone1.setText(Df.getValueAt(modelIndex, 6).toString());
+        this.Phone2.setText(Df.getValueAt(modelIndex, 7).toString());
+        this.Safety3.setText(Df.getValueAt(modelIndex, 8).toString());
 
         PreparedStatement select;
 

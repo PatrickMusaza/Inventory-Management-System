@@ -396,10 +396,11 @@ public class InventoryA extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         int selectedRow = jTable1.getSelectedRow();
+        int modelIndex = jTable1.convertRowIndexToModel(selectedRow);
         DefaultTableModel st = (DefaultTableModel) jTable1.getModel();
-        this.AvgPrch.setText((String) st.getValueAt(selectedRow, 8));
-        this.CurrentQty.setText((String) st.getValueAt(selectedRow, 6));
-        this.ItemCode.setText(st.getValueAt(selectedRow, 0).toString());
+        this.AvgPrch.setText((String) st.getValueAt(modelIndex, 8));
+        this.CurrentQty.setText((String) st.getValueAt(modelIndex, 6));
+        this.ItemCode.setText(st.getValueAt(modelIndex, 0).toString());
         isNew = true;
 
         try {

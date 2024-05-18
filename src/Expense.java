@@ -634,16 +634,17 @@ public class Expense extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+        int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
 
-        this.ID.setText(Df.getValueAt(selectedIndex, 0).toString());
-        this.Name.setText(Df.getValueAt(selectedIndex, 1).toString());
-        this.Description.setText(Df.getValueAt(selectedIndex, 2).toString());
-        this.Amount.setText(Df.getValueAt(selectedIndex, 3).toString());
+        this.ID.setText(Df.getValueAt(modelIndex, 0).toString());
+        this.Name.setText(Df.getValueAt(modelIndex, 1).toString());
+        this.Description.setText(Df.getValueAt(modelIndex, 2).toString());
+        this.Amount.setText(Df.getValueAt(modelIndex, 3).toString());
 
-        String Method = Df.getValueAt(selectedIndex, 4).toString();
+        String Method = Df.getValueAt(modelIndex, 4).toString();
         this.Source.setSelectedItem(Method);
 
-        this.Ref.setText(Df.getValueAt(selectedIndex, 5).toString());
+        this.Ref.setText(Df.getValueAt(modelIndex, 5).toString());
 
     }//GEN-LAST:event_jTable1MouseClicked
 

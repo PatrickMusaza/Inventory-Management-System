@@ -569,7 +569,7 @@ public class PurchaseM extends javax.swing.JPanel {
             Connection con = Connect.getConnection();
             insert = con.prepareStatement("SELECT DATE(p.createdAt), p.Status, p.InvoiceID, p.SupplierName, pi.ItemName, pi.PurchaseQty, pi.UnitPrice, pi.TotalPrice FROM purchase p JOIN purchaseitem pi ON p.InvoiceID = pi.RefPurchase WHERE pi.ItemCode = ?");
 
-            String itemCode = jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString();
+            String itemCode = jTable2.getValueAt(jTable2.convertRowIndexToModel(jTable2.getSelectedRow()), 1).toString();
 
             insert.setString(1, itemCode);
 

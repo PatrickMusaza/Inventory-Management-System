@@ -771,7 +771,7 @@ public class ItemM extends javax.swing.JPanel {
                         Balance.setDouble(4, beginning);
 
                         Balance.executeUpdate();
-                        
+
                         insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy, Supplier) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                         insert.setString(1, generateItemCode());
@@ -865,7 +865,7 @@ public class ItemM extends javax.swing.JPanel {
                         String Safety = this.Safety.getText();
                         String Desc = this.Desc.getText();
                         String Use;
-                        String Supplier=this.Supplier.getText();
+                        String Supplier = this.Supplier.getText();
                         int index;
 
                         String Username = Login.Username.getText();
@@ -977,7 +977,6 @@ public class ItemM extends javax.swing.JPanel {
                         Balance.setString(3, "Beginning");
 
                         Balance.executeUpdate();
-                        
 
                         JOptionPane.showMessageDialog(null, "Item Updated!");
                         table_update();
@@ -1146,32 +1145,33 @@ public class ItemM extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+        int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
 
-        this.Code.setText(Df.getValueAt(selectedIndex, 0).toString());
-        this.Name.setText(Df.getValueAt(selectedIndex, 1).toString());
+        this.Code.setText(Df.getValueAt(modelIndex, 0).toString());
+        this.Name.setText(Df.getValueAt(modelIndex, 1).toString());
 
-        String Origin = Df.getValueAt(selectedIndex, 2).toString();
+        String Origin = Df.getValueAt(modelIndex, 2).toString();
         this.Origin.setSelectedItem(Origin);
 
-        String Type = Df.getValueAt(selectedIndex, 3).toString();
+        String Type = Df.getValueAt(modelIndex, 3).toString();
         this.Type.setSelectedItem(Type);
 
-        String Pkg = Df.getValueAt(selectedIndex, 4).toString();
+        String Pkg = Df.getValueAt(modelIndex, 4).toString();
         this.Pkg.setSelectedItem(Pkg);
 
-        String QTY = Df.getValueAt(selectedIndex, 5).toString();
+        String QTY = Df.getValueAt(modelIndex, 5).toString();
         this.QTY.setSelectedItem(QTY);
 
         // Remove commas from the purchase price
-        String purchasePrice = Df.getValueAt(selectedIndex, 6).toString().replaceAll(",", "");
+        String purchasePrice = Df.getValueAt(modelIndex, 6).toString().replaceAll(",", "");
         this.Purchase.setText(purchasePrice);
 
         // Remove commas from the sale price
-        String salePrice = Df.getValueAt(selectedIndex, 7).toString().replaceAll(",", "");
+        String salePrice = Df.getValueAt(modelIndex, 7).toString().replaceAll(",", "");
         this.Sale.setText(salePrice);
 
         // Remove commas from the beginning
-        String beginning = Df.getValueAt(selectedIndex, 8).toString().replaceAll(",", "");
+        String beginning = Df.getValueAt(modelIndex, 8).toString().replaceAll(",", "");
         this.Beginning.setText(beginning);
 
         PreparedStatement select;

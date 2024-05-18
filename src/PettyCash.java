@@ -621,7 +621,7 @@ public class PettyCash extends javax.swing.JPanel {
                             insert.setString(6, Amount);
 
                             insert.executeUpdate();
-                            
+
                             JOptionPane.showMessageDialog(null, "New Petty Cash Transaction Recorded");
                             table_update();
 
@@ -781,7 +781,7 @@ public class PettyCash extends javax.swing.JPanel {
                             insert.setString(6, TxnId);
 
                             insert.executeUpdate();
-                            
+
                             JOptionPane.showMessageDialog(null, "Petty Cash Transaction Updated!");
                             table_update();
 
@@ -933,15 +933,16 @@ public class PettyCash extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+        int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
 
-        String Type = Df.getValueAt(selectedIndex, 4).toString();
-        String Type1 = Df.getValueAt(selectedIndex, 5).toString();
+        String Type = Df.getValueAt(modelIndex, 4).toString();
+        String Type1 = Df.getValueAt(modelIndex, 5).toString();
 
-        this.TxnId.setText(Df.getValueAt(selectedIndex, 0).toString());
-        this.RefNo.setText(Df.getValueAt(selectedIndex, 1).toString());
-        this.Purpose.setText(Df.getValueAt(selectedIndex, 2).toString());
-        this.InvoiceNo.setText(Df.getValueAt(selectedIndex, 7).toString());
-        this.Preview.setText(Df.getValueAt(selectedIndex, 8).toString());
+        this.TxnId.setText(Df.getValueAt(modelIndex, 0).toString());
+        this.RefNo.setText(Df.getValueAt(modelIndex, 1).toString());
+        this.Purpose.setText(Df.getValueAt(modelIndex, 2).toString());
+        this.InvoiceNo.setText(Df.getValueAt(modelIndex, 7).toString());
+        this.Preview.setText(Df.getValueAt(modelIndex, 8).toString());
 
         PreparedStatement select;
 
@@ -966,11 +967,11 @@ public class PettyCash extends javax.swing.JPanel {
             }
 
             if (Type.equals("0")) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 5).toString().replace(",", ""));
+                this.Amount.setText(Df.getValueAt(modelIndex, 5).toString().replace(",", ""));
                 this.OUT.setSelected(true);
                 this.IN.setSelected(false);
             } else if (Type1.equals("0")) {
-                this.Amount.setText(Df.getValueAt(selectedIndex, 4).toString().replace(",", ""));
+                this.Amount.setText(Df.getValueAt(modelIndex, 4).toString().replace(",", ""));
                 this.IN.setSelected(true);
                 this.OUT.setSelected(false);
             }

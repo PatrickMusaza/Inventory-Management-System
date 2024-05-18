@@ -363,7 +363,8 @@ public class StockUserS extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
-        int selectedIndex = jTable1.getSelectedRow();
+        int modelIndex = jTable1.getSelectedRow();
+        int selectedIndex = jTable1.convertRowIndexToModel(modelIndex);
 
         String Item = (Df.getValueAt(selectedIndex, 0).toString());
 

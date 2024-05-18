@@ -551,7 +551,7 @@ public class Payment extends javax.swing.JPanel {
                         insert.executeUpdate();
 
                         if (!Amount.isBlank() && Method.contains("Bank")) {
-                            
+
                             insert = con.prepareStatement("INSERT INTO bank(Purpose,BIN,Balance,Bank,TxnId) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE Balance = VALUES(Balance), Bank = VALUES(Bank), TxnId = VALUES(TxnId)");
                             insert.setString(1, "Initial Amount");
                             insert.setString(2, Amount);
@@ -670,10 +670,11 @@ public class Payment extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) PYT.getModel();
         int selectedIndex = PYT.getSelectedRow();
+        int modelIndex = PYT.convertRowIndexToModel(selectedIndex);
 
-        this.Code.setText(Df.getValueAt(selectedIndex, 0).toString());
-        this.Method.setText(Df.getValueAt(selectedIndex, 1).toString());
-        this.Amount.setText(Df.getValueAt(selectedIndex, 2).toString());
+        this.Code.setText(Df.getValueAt(modelIndex, 0).toString());
+        this.Method.setText(Df.getValueAt(modelIndex, 1).toString());
+        this.Amount.setText(Df.getValueAt(modelIndex, 2).toString());
     }//GEN-LAST:event_PYTMouseClicked
 
     private void AmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmountKeyReleased

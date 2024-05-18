@@ -912,7 +912,8 @@ public class Credit extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable3.getModel();
         int selectedIndex = jTable3.getSelectedRow();
-        String CustomerID = (Df.getValueAt(selectedIndex, 0).toString());
+    int modelIndex = jTable3.convertRowIndexToModel(selectedIndex);
+        String CustomerID = (Df.getValueAt(modelIndex, 0).toString());
 
         try {
             Connection con = Connect.getConnection();

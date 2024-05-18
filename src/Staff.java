@@ -473,7 +473,8 @@ public class Staff extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // mouse clk & get data to textfeld
 
-        int r = jTable1.getSelectedRow();
+        int row = jTable1.getSelectedRow();
+        int r = jTable1.convertRowIndexToModel(row);
 
         // Check if selected row is valid
         if (r != -1 && r < jTable1.getRowCount()) {

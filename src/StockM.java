@@ -360,52 +360,53 @@ public class StockM extends javax.swing.JPanel {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:        
+        
+    DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
+    int selectedIndex = jTable1.getSelectedRow();
+    int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
 
-        DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
-        int selectedIndex = jTable1.getSelectedRow();
+    String Item = (Df.getValueAt(modelIndex, 0).toString());
 
-        String Item = (Df.getValueAt(selectedIndex, 0).toString());
+    try {
+        Connection con = Connect.getConnection();
+        PreparedStatement insert = con.prepareStatement("SELECT * FROM stock WHERE ItemCode=?");
+        insert.setString(1, Item);
 
-        try {
-            Connection con = Connect.getConnection();
-            PreparedStatement insert = con.prepareStatement("SELECT * FROM stock WHERE ItemCode=?");
-            insert.setString(1, Item);
+        ResultSet rs = insert.executeQuery();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int count = rsmd.getColumnCount();
 
-            ResultSet rs = insert.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int count = rsmd.getColumnCount();
+        DefaultTableModel Df2 = (DefaultTableModel) jTable2.getModel();
+        Df2.setRowCount(0);
 
-            DefaultTableModel Df2 = (DefaultTableModel) jTable2.getModel();
-            Df2.setRowCount(0);
+        while (rs.next()) {
+            Vector v2 = new Vector();
 
-            while (rs.next()) {
-                Vector v2 = new Vector();
+            Date createdAtDate = rs.getDate("createdAt");
+            String actionString = rs.getString("Action");
+            String itemNameString = rs.getString("ItemName");
+            double stockInDouble = rs.getDouble("StockIN");
+            double stockOutDouble = rs.getDouble("StockOut");
+            double balanceDouble = rs.getDouble("Balance");
+            double purchasePriceDouble = rs.getDouble("PurchasePrice");
+            double unitPriceDouble = rs.getDouble("UnitPrice");
+            double totalPurchasePrice = balanceDouble * purchasePriceDouble;
 
-                Date createdAtDate = rs.getDate("createdAt");
-                String actionString = rs.getString("Action");
-                String itemNameString = rs.getString("ItemName");
-                double stockInDouble = rs.getDouble("StockIN");
-                double stockOutDouble = rs.getDouble("StockOut");
-                double balanceDouble = rs.getDouble("Balance");
-                double purchasePriceDouble = rs.getDouble("PurchasePrice");
-                double unitPriceDouble = rs.getDouble("UnitPrice");
-                double totalPurchasePrice = balanceDouble * purchasePriceDouble;
+            v2.add(createdAtDate);
+            v2.add(actionString);
+            v2.add(itemNameString);
+            v2.add(formatter.format(stockInDouble));
+            v2.add(formatter.format(stockOutDouble));
+            v2.add(formatter.format(balanceDouble));
+            v2.add(formatter.format(purchasePriceDouble));
+            v2.add(formatter.format(unitPriceDouble));
+            v2.add(formatter.format(totalPurchasePrice));
 
-                v2.add(createdAtDate);
-                v2.add(actionString);
-                v2.add(itemNameString);
-                v2.add(formatter.format(stockInDouble));
-                v2.add(formatter.format(stockOutDouble));
-                v2.add(formatter.format(balanceDouble));
-                v2.add(formatter.format(purchasePriceDouble));
-                v2.add(formatter.format(unitPriceDouble));
-                v2.add(formatter.format(totalPurchasePrice));
-
-                Df2.addRow(v2);
-            }
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(StockM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Df2.addRow(v2);
         }
+    } catch (SQLException ex) {
+        java.util.logging.Logger.getLogger(StockM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
 
     }//GEN-LAST:event_jTable1MouseClicked
 
