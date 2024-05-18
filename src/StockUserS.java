@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.RowFilter;
@@ -47,6 +49,11 @@ public class StockUserS extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        startDate = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        endDate = new com.toedter.calendar.JDateChooser();
+        Filter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
 
@@ -153,6 +160,21 @@ public class StockUserS extends javax.swing.JPanel {
         jLabel22.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel22.setText("Stock Card Details");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
+        jLabel1.setText("From");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
+        jLabel2.setText("To");
+
+        Filter.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Filter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/loupe.png"))); // NOI18N
+        Filter.setText("Search");
+        Filter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -161,6 +183,19 @@ public class StockUserS extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(225, 225, 225)
+                    .addComponent(jLabel1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(endDate, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(119, 119, 119)
+                    .addComponent(Filter)
+                    .addContainerGap(225, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,6 +203,18 @@ public class StockUserS extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel22)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(5, 5, 5)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(endDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Filter))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -175,11 +222,11 @@ public class StockUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Date", "Invoice No.", "Item Name", "IN", "OUT", "Balance", "Purchase Price", "Sale Price", "Amount"
+                "Date", "Invoice No.", "Item Name", "Qty IN", "Qty OUT", "Balance", "Sale Price", "Total Amount"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -353,7 +400,6 @@ public class StockUserS extends javax.swing.JPanel {
                 v2.add(formatter.format(stockInDouble));
                 v2.add(formatter.format(stockOutDouble));
                 v2.add(formatter.format(balanceDouble));
-                v2.add(formatter.format(purchasePriceDouble));
                 v2.add(formatter.format(unitPriceDouble));
                 v2.add(formatter.format(totalPurchasePrice));
 
@@ -366,10 +412,55 @@ public class StockUserS extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void FilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FilterActionPerformed
+        // TODO add your handling code here:
+
+        Date sd = startDate.getDate();
+        Date ed = endDate.getDate();
+        if ((sd != null) && (ed == null)) {
+            SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sDate.format(startDate.getDate());
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            TableRowSorter tr = new TableRowSorter(model);
+            jTable2.setRowSorter(tr);
+            tr.setRowFilter(RowFilter.regexFilter(date.trim(), 0));
+        } else if ((sd != null) && (ed != null)) {
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(model);
+            jTable2.setRowSorter(tr);
+
+            RowFilter<DefaultTableModel, Integer> dateRangeFilter = new RowFilter<DefaultTableModel, Integer>() {
+                @Override
+                public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date startDate = sd;
+                        Date endDate = ed;
+
+                        Object value = entry.getModel().getValueAt(entry.getIdentifier(), 0);
+                        if (value != null) {
+                            Date dateValue = dateFormat.parse(value.toString());
+                            return dateValue.compareTo(startDate) >= 0 && dateValue.compareTo(endDate) <= 0;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
+            };
+
+            tr.setRowFilter(dateRangeFilter);
+        }
+    }//GEN-LAST:event_FilterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Filter;
     private javax.swing.JButton Search;
+    private com.toedter.calendar.JDateChooser endDate;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -381,6 +472,7 @@ public class StockUserS extends javax.swing.JPanel {
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField srcCode;
     private javax.swing.JTextField srcName;
+    private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
 }
