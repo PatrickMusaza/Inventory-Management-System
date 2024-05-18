@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -263,7 +264,7 @@ public class StatementC extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Method of Payment", "Invoice ID", "Customer", "Sale Date", "Release Date", "VAT", "Total Amount"
+                "Method of Payment", "Invoice ID", "Customer", "Sale Date", "Cash IN", "Cash Out", "Balance"
             }
         ) {
             Class[] types = new Class [] {
@@ -311,96 +312,116 @@ public class StatementC extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     PreparedStatement insert, totC, totB, totM;
+    NumberFormat formatter = NumberFormat.getInstance();
 
-    public void table_updates() {
+   public void table_updates() {
+    long c = 0, b = 0, m = 0, sum;
+    int count;
+    try {
+        Connection con = Connect.getConnection();
 
-        long c = 0, b = 0, m = 0, sum;
-        int count;
-        try {
-            Connection con = Connect.getConnection();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date now = new Date();
+        String today = dateFormat.format(now);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date now = new Date();
-            String today = dateFormat.format(now);
+        PreparedStatement insert = con.prepareStatement("select * from sales where not(status=?) and not(method=?) and not(Method like ?)");
+        insert.setString(1, "Refunded");
+        insert.setString(2, "");
+        insert.setString(3, "%Bank%");
 
-            insert = con.prepareStatement("select * from sales where not(status=?) and not(method=?) and not(Method like ?)");
-            insert.setString(1, "Refunded");
-            insert.setString(2, "");
-            insert.setString(3, "%Bank%");
-            //insert.setString(3, "");
+        ResultSet rs = insert.executeQuery();
+        ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+        count = rsmd.getColumnCount();
 
-            ResultSet rs = insert.executeQuery();
-            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-            count = rsmd.getColumnCount();
+        DefaultTableModel Df = (DefaultTableModel) CashTxn.getModel();
+        Df.setRowCount(0);
 
-            DefaultTableModel Df = (DefaultTableModel) CashTxn.getModel();
-            Df.setRowCount(0);
+        while (rs.next()) {
+            Vector v2 = new Vector();
 
-            while (rs.next()) {
-                Vector v2 = new Vector();
+            for (int i = 1; i <= count; i++) {
+                if (rs.getString("Type").equals("Paid") && rs.getString("Status").equals("Paid")) {
+                    v2.add(rs.getString("Method"));
+                    v2.add(rs.getString("InvoiceID"));
+                    v2.add(rs.getString("CustomerName"));
+                    v2.add(rs.getString("SaleDate"));
+                    v2.add(rs.getString("SIN"));
 
-                for (int i = 1; i <= count; i++) {
-                    if (rs.getString("Type").equals("Paid") && rs.getString("Status").equals("Paid")) {
-                        v2.add(rs.getString("Method"));
-                        v2.add(rs.getString("InvoiceID"));
-                        v2.add(rs.getString("CustomerName"));
-                        v2.add(rs.getString("SaleDate"));
-                        v2.add(rs.getString("ReleaseDate"));
-                        v2.add(rs.getString("VAT"));
-                        v2.add(rs.getString("SIN"));
-                    } else {
-
-                        v2.add(rs.getString("Method"));
-                        v2.add(rs.getString("InvoiceID"));
-                        v2.add(rs.getString("CustomerName"));
-                        v2.add(rs.getString("SaleDate"));
-                        v2.add(rs.getString("ReleaseDate"));
-                        v2.add(rs.getString("VAT"));
-                        v2.add(rs.getString("TotalAmount"));
+                    // Fetch the latest BIN (Bank In) value
+                    double cashOut = 0;
+                    PreparedStatement latestCashOut = con.prepareStatement("SELECT BIN FROM bank ORDER BY createdAt DESC LIMIT 1");
+                    ResultSet rsOut = latestCashOut.executeQuery();
+                    if (rsOut.next()) {
+                        cashOut = rsOut.getDouble("BIN");
                     }
+
+                    double cashIn = rs.getDouble("SIN");
+                    double balance = cashIn - cashOut;
+                    v2.add(formatter.format(cashOut));
+                    v2.add(formatter.format(balance));
+                } else {
+                    v2.add(rs.getString("Method"));
+                    v2.add(rs.getString("InvoiceID"));
+                    v2.add(rs.getString("CustomerName"));
+                    v2.add(rs.getString("SaleDate"));
+                    v2.add(rs.getString("TotalAmount"));
+
+                    // Fetch the latest BIN (Bank In) value
+                    double cashOut = 0;
+                    PreparedStatement latestCashOut = con.prepareStatement("SELECT BIN FROM bank ORDER BY createdAt DESC LIMIT 1");
+                    ResultSet rsOut = latestCashOut.executeQuery();
+                    if (rsOut.next()) {
+                        cashOut = rsOut.getDouble("BIN");
+                    }
+
+                    double cashIn = rs.getDouble("TotalAmount");
+                    double balance = cashIn - cashOut;
+                    v2.add(formatter.format(cashOut));
+                    v2.add(formatter.format(balance));
                 }
-
-                Df.addRow(v2);
             }
 
-            totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where (Type=?) and not(method like ?) and SaleDate=? and not(status=?)");
-            totC.setString(1, "Sale");
-            totC.setString(2, "%Bank%");
-            totC.setString(3, today);
-            totC.setString(4, "Refunded");
-
-            double amount = 0;
-            ResultSet rsC = totC.executeQuery();
-            if (rsC.next()) {
-                amount = rsC.getDouble("TotC");
-            }
-
-            totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and not(method like ?) and SaleDate=?");
-            totC.setString(1, "Paid");
-            totC.setString(2, "%Bank%");
-            totC.setString(3, today);
-
-            double SIN = 0;
-            ResultSet rsCC = totC.executeQuery();
-            if (rsCC.next()) {
-                SIN = rsCC.getDouble("SIN");
-            }
-
-            DecimalFormat df = new DecimalFormat("#,##0.00");
-            double tot = SIN + amount;
-            this.totAmount.setText(df.format(tot));
-
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(StatementC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Df.addRow(v2);
         }
 
+        PreparedStatement totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where (Type=?) and not(method like ?) and SaleDate=? and not(status=?)");
+        totC.setString(1, "Sale");
+        totC.setString(2, "%Bank%");
+        totC.setString(3, today);
+        totC.setString(4, "Refunded");
+
+        double amount = 0;
+        ResultSet rsC = totC.executeQuery();
+        if (rsC.next()) {
+            amount = rsC.getDouble("TotC");
+        }
+
+        totC = con.prepareStatement("select sum(SIN) as SIN from sales where (Type=?) and not(method like ?) and SaleDate=?");
+        totC.setString(1, "Paid");
+        totC.setString(2, "%Bank%");
+        totC.setString(3, today);
+
+        double SIN = 0;
+        ResultSet rsCC = totC.executeQuery();
+        if (rsCC.next()) {
+            SIN = rsCC.getDouble("SIN");
+        }
+
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        double tot = SIN + amount;
+        this.totAmount.setText(df.format(tot));
+
+    } catch (SQLException ex) {
+        java.util.logging.Logger.getLogger(StatementC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+}
+
 
     private void status2statusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_status2statusMouseClicked
         // TODO add your handling code here:

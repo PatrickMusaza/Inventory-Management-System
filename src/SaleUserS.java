@@ -566,8 +566,9 @@ public class SaleUserS extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
         int selectedIndex = jTable2.getSelectedRow();
+        int modelIndex = jTable2.convertRowIndexToModel(selectedIndex);
 
-        String InvoiceID = (Df.getValueAt(selectedIndex, 2).toString());
+        String InvoiceID = (Df.getValueAt(modelIndex, 2).toString());
 
         // totVAT.setText((Df.getValueAt(selectedIndex, 5).toString()));
         // totAmount.setText((Df.getValueAt(selectedIndex, 7).toString()));
@@ -862,7 +863,7 @@ public class SaleUserS extends javax.swing.JPanel {
                     String InvoiceID = (Df.getValueAt(selectedIndex, 2).toString());
                     String Customer = (Df.getValueAt(selectedIndex, 3).toString());
                     String VAT = (Df.getValueAt(selectedIndex, 7).toString());
-                    String Total = (Df.getValueAt(selectedIndex,6).toString());
+                    String Total = (Df.getValueAt(selectedIndex, 6).toString());
                     String type = null;
                     String cusID = null;
                     String PurchaseCode = null;

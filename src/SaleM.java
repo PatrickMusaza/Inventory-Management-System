@@ -1,5 +1,12 @@
 
+import java.awt.GridLayout;
 import java.io.File;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.toedter.calendar.JDateChooser;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSetMetaData;
@@ -19,6 +26,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -69,6 +78,7 @@ public class SaleM extends javax.swing.JPanel {
         endDate = new com.toedter.calendar.JDateChooser();
         jLabel9 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        ZReport = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         Approve = new javax.swing.JButton();
@@ -297,6 +307,18 @@ public class SaleM extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Invoice");
 
+        ZReport.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        ZReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/document.png"))); // NOI18N
+        ZReport.setText("Z Report");
+        ZReport.setMaximumSize(new java.awt.Dimension(92, 27));
+        ZReport.setMinimumSize(new java.awt.Dimension(92, 27));
+        ZReport.setPreferredSize(new java.awt.Dimension(92, 27));
+        ZReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ZReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -309,7 +331,7 @@ public class SaleM extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(endDate, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(endDate, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,7 +342,9 @@ public class SaleM extends javax.swing.JPanel {
                 .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(searchBetween)
-                .addGap(217, 217, 217)
+                .addGap(95, 95, 95)
+                .addComponent(ZReport, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Export)
                 .addContainerGap())
         );
@@ -341,7 +365,8 @@ public class SaleM extends javax.swing.JPanel {
                                 .addComponent(Export)
                                 .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(searchBetween)
-                                .addComponent(jLabel7)))))
+                                .addComponent(jLabel7)
+                                .addComponent(ZReport, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -412,7 +437,7 @@ public class SaleM extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Qty", "Unit Price", "Purchase Price", "Total Amount"
+                "Item Code", "Item Name", "Qty", "Measurement", "Unit Price", "Total Amount"
             }
         ) {
             Class[] types = new Class [] {
@@ -436,7 +461,7 @@ public class SaleM extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1142, Short.MAX_VALUE)
+            .addGap(0, 1152, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -450,7 +475,7 @@ public class SaleM extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 626, Short.MAX_VALUE)
+            .addGap(0, 709, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -462,7 +487,7 @@ public class SaleM extends javax.swing.JPanel {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                     .addContainerGap()))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -605,8 +630,9 @@ public class SaleM extends javax.swing.JPanel {
 
         DefaultTableModel Df = (DefaultTableModel) jTable2.getModel();
         int selectedIndex = jTable2.getSelectedRow();
+        int modelIndex = jTable2.convertRowIndexToModel(selectedIndex);
 
-        String InvoiceID = (Df.getValueAt(selectedIndex, 2).toString());
+        String InvoiceID = (Df.getValueAt(modelIndex, 2).toString());
 
         //   totVAT.setText((Df.getValueAt(selectedIndex, 6).toString()));
         //   totAmount.setText((Df.getValueAt(selectedIndex, 5).toString()));
@@ -632,8 +658,8 @@ public class SaleM extends javax.swing.JPanel {
                     v2.add(rs.getString("ItemCode"));
                     v2.add(rs.getString("ItemName"));
                     v2.add(rs.getString("SalesQty"));
+                    v2.add(rs.getString("Measurement"));
                     v2.add(formatter.format(rs.getDouble("UnitPrice")));
-                    v2.add(formatter.format(rs.getDouble("SalesPrice")));
                     v2.add(formatter.format(rs.getDouble("TotalPrice")));
                     v2.add(formatter.format(rs.getDouble("vAT")));
 
@@ -802,7 +828,7 @@ public class SaleM extends javax.swing.JPanel {
             tot = con.prepareStatement("select sum(TotalAmount) as Total, sum(VAT) as VAT from sales where SaleDate>=? and SaleDate<=? and not(status=?)");
             tot.setString(1, startDateStr);
             tot.setString(2, endDateStr);
-            tot.setString(3,"Refunded");
+            tot.setString(3, "Refunded");
             ResultSet total = tot.executeQuery();
 
             if (total.next()) {
@@ -833,7 +859,7 @@ public class SaleM extends javax.swing.JPanel {
 
             double totA = SIN + amount;
             this.totAmount.setText(String.valueOf(totA));
-            
+
             /*
             try {
             
@@ -963,7 +989,7 @@ public class SaleM extends javax.swing.JPanel {
                         Remark = rs.getString("Remark");
                     }
 
-                    if (type.equals("Sale")) {
+                    if (type.equals("Cash")) {
                         SalesTransactionEdit.Sale.setSelected(true);
                     } else if (type.equals("Credit")) {
                         SalesTransactionEdit.Credit.setSelected(true);
@@ -1059,51 +1085,50 @@ public class SaleM extends javax.swing.JPanel {
 
                         }
 
-                        PreparedStatement met=con.prepareStatement("select * from sales where InvoiceID=?");
+                        PreparedStatement met = con.prepareStatement("select * from sales where InvoiceID=?");
                         met.setString(1, InvoiceID);
-                        
+
                         String BankPaid = "Cash";
-                        
-                        ResultSet Bank=met.executeQuery();
-                        if(Bank.next()){
-                            BankPaid=Bank.getString("Method");
+
+                        ResultSet Bank = met.executeQuery();
+                        if (Bank.next()) {
+                            BankPaid = Bank.getString("Method");
                         }
-                        
-                        String CusName=Df.getValueAt(selectedIndex, 3).toString();
+
+                        String CusName = Df.getValueAt(selectedIndex, 3).toString();
                         double Tot = Double.parseDouble(Df.getValueAt(selectedIndex, 6).toString().replace(",", ""));
 
-                        
-                    if (BankPaid.contains("Bank")) {
+                        if (BankPaid.contains("Bank")) {
 
-                        MetBank = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BOUT,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
-                        MetBank.setString(1, "Refunded");
-                        MetBank.setString(2, CusName);
-                        MetBank.setString(3, Username);
-                        MetBank.setDouble(4, Tot);
-                        MetBank.setDouble(5, Tot);
-                        MetBank.setString(6, BankPaid);
-                        MetBank.setString(7, "Ref "+InvoiceID);
+                            MetBank = con.prepareStatement("insert into bank(Purpose,GivenBy,ReceivedBy,BOUT,Balance,Bank,TxnId) values (?,?,?,?,?,?,?)");
+                            MetBank.setString(1, "Refunded");
+                            MetBank.setString(2, CusName);
+                            MetBank.setString(3, Username);
+                            MetBank.setDouble(4, Tot);
+                            MetBank.setDouble(5, Tot);
+                            MetBank.setString(6, BankPaid);
+                            MetBank.setString(7, "Ref " + InvoiceID);
 
-                        MetBank.executeUpdate();
+                            MetBank.executeUpdate();
 
-                        Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
-                        Bal.setString(1, BankPaid);
+                            Bal = con.prepareStatement("select SUM(BIN) as BIN, SUM(BOUT) as BOUT from bank where bank=?");
+                            Bal.setString(1, BankPaid);
 
-                        ResultSet rss = Bal.executeQuery();
-                        double IN, OUT, bal = 0;
-                        if (rss.next()) {
-                            IN = rss.getDouble("BIN");
-                            OUT = rss.getDouble("BOUT");
-                            bal = IN - OUT;
+                            ResultSet rss = Bal.executeQuery();
+                            double IN, OUT, bal = 0;
+                            if (rss.next()) {
+                                IN = rss.getDouble("BIN");
+                                OUT = rss.getDouble("BOUT");
+                                bal = IN - OUT;
+                            }
+
+                            MetBank = con.prepareStatement("update bank set Balance=? where TxnId=?");
+                            MetBank.setDouble(1, bal);
+                            MetBank.setString(2, "Ref " + InvoiceID);
+
+                            MetBank.executeUpdate();
+
                         }
-
-                        MetBank = con.prepareStatement("update bank set Balance=? where TxnId=?");
-                        MetBank.setDouble(1, bal);
-                        MetBank.setString(2, "Ref "+InvoiceID);
-
-                        MetBank.executeUpdate();
-
-                    }
 
                         insert.executeUpdate();
 
@@ -1159,6 +1184,124 @@ public class SaleM extends javax.swing.JPanel {
         tr.setRowFilter(RowFilter.regexFilter(date.trim(), 4));
     }//GEN-LAST:event_startDateKeyReleased
 
+    private void ZReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZReportActionPerformed
+        // TODO add your handling code here:
+        JPanel datePanel = new JPanel(new GridLayout(3, 2));
+        startDateChooser = new JDateChooser();
+        endDateChooser = new JDateChooser();
+        datePanel.add(new JLabel("Start Date:"));
+        datePanel.add(startDateChooser);
+        datePanel.add(new JLabel("End Date:"));
+        datePanel.add(endDateChooser);
+
+        int result = JOptionPane.showConfirmDialog(this, datePanel, "Select Date Range",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            Date startDate = startDateChooser.getDate();
+            Date endDate = endDateChooser.getDate();
+
+            // Confirm report generation
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to generate the Z Report?",
+                    "Confirm", JOptionPane.YES_NO_OPTION);
+
+            if (startDate == null || endDate == null) {
+                JOptionPane.showMessageDialog(this, "Please select both dates.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Prompt for file path and name
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save Z Report");
+                fileChooser.setSelectedFile(new File("ZReport.pdf"));
+                int fileResult = fileChooser.showSaveDialog(this);
+
+                if (fileResult == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    String filePath = file.getAbsolutePath();
+
+                    // Ensure the file has .pdf extension
+                    if (!filePath.toLowerCase().endsWith(".pdf")) {
+                        filePath += ".pdf";
+                    }
+
+                    // Call your report generation function here
+                    generateZReport(startDate, endDate, filePath);
+                }
+            }
+        }
+    }//GEN-LAST:event_ZReportActionPerformed
+
+    private void generateZReport(Date startDate, Date endDate, String filePath) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDateStr = sdf.format(startDate);
+        String endDateStr = sdf.format(endDate);
+
+        try {
+            String query = "SELECT CreatedBy, "
+                    + "SUM(CASE WHEN Method = 'Cash' THEN TotalAmount ELSE 0 END) AS TotalCash, "
+                    + "SUM(CASE WHEN Method IS NULL THEN TotalAmount ELSE 0 END) AS TotalCreditIssued, "
+                    + "SUM(CASE WHEN Method = 'Paid' THEN TotalAmount ELSE 0 END) AS TotalCreditPaid "
+                    + "FROM sales WHERE CreatedAt BETWEEN ? AND ? GROUP BY CreatedBy";
+
+            String totalQuery = "SELECT "
+                    + "SUM(CASE WHEN Method = 'Cash' THEN TotalAmount ELSE 0 END) AS TotalCash, "
+                    + "SUM(CASE WHEN Method IS NULL THEN TotalAmount ELSE 0 END) AS TotalCreditIssued, "
+                    + "SUM(CASE WHEN Method = 'Paid' THEN TotalAmount ELSE 0 END) AS TotalCreditPaid "
+                    + "FROM sales WHERE CreatedAt BETWEEN ? AND ?";
+
+            Connection conn = Connect.getConnection();
+
+            try (PreparedStatement stmt = conn.prepareStatement(query); PreparedStatement totalStmt = conn.prepareStatement(totalQuery)) {
+                stmt.setString(1, startDateStr);
+                stmt.setString(2, endDateStr);
+                totalStmt.setString(1, startDateStr);
+                totalStmt.setString(2, endDateStr);
+
+                try (ResultSet rs = stmt.executeQuery(); ResultSet totalRs = totalStmt.executeQuery()) {
+                    try (PdfWriter writer = new PdfWriter(filePath); PdfDocument pdfDoc = new PdfDocument(writer); Document document = new Document(pdfDoc)) {
+
+                        document.add(new Paragraph("Z Report"));
+                        document.add(new Paragraph(""));
+                        document.add(new Paragraph("Date Range: " + startDateStr + " to " + endDateStr));
+                        document.add(new Paragraph(""));
+
+                        while (rs.next()) {
+                            String createdBy = rs.getString("CreatedBy");
+                            double totalCash = rs.getDouble("TotalCash");
+                            double totalCreditIssued = rs.getDouble("TotalCreditIssued");
+                            double totalCreditPaid = rs.getDouble("TotalCreditPaid");
+
+                            document.add(new Paragraph("User: " + createdBy));
+                            document.add(new Paragraph("Total Cash: " + totalCash));
+                            document.add(new Paragraph("Total Credit Issued: " + totalCreditIssued));
+                            document.add(new Paragraph("Total Credit Paid: " + totalCreditPaid));
+                            document.add(new Paragraph(""));
+                        }
+
+                        if (totalRs.next()) {
+                            double grandTotalCash = totalRs.getDouble("TotalCash");
+                            double grandTotalCreditIssued = totalRs.getDouble("TotalCreditIssued");
+                            double grandTotalCreditPaid = totalRs.getDouble("TotalCreditPaid");
+
+                            document.add(new Paragraph("Grand Totals:"));
+                            document.add(new Paragraph("Total Cash: " + grandTotalCash));
+                            document.add(new Paragraph("Total Credit Issued: " + grandTotalCreditIssued));
+                            document.add(new Paragraph("Total Credit Paid: " + grandTotalCreditPaid));
+                        }
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Report generated successfully: " + filePath);
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JDateChooser startDateChooser;
+    private JDateChooser endDateChooser;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Approve;
@@ -1168,6 +1311,7 @@ public class SaleM extends javax.swing.JPanel {
     private javax.swing.JTextField Invoice;
     private javax.swing.JButton Refresh;
     private javax.swing.JButton Refund;
+    private javax.swing.JButton ZReport;
     private javax.swing.JButton addNew;
     private com.toedter.calendar.JDateChooser endDate;
     private javax.swing.JLabel jLabel10;

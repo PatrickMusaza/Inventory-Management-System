@@ -220,7 +220,7 @@ public class StatementB extends javax.swing.JPanel {
         TxnId.setEditable(false);
 
         jLabel42.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel42.setText("Proforma Invoice No.");
+        jLabel42.setText("Receipt No.");
 
         Proof.setBackground(new java.awt.Color(0, 102, 0));
         Proof.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
@@ -541,9 +541,9 @@ public class StatementB extends javax.swing.JPanel {
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,7 +780,8 @@ public class StatementB extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         DefaultTableModel Df = (DefaultTableModel) BankTxn.getModel();
-        int selectedIndex = BankTxn.getSelectedRow();
+        int modelIndex = BankTxn.getSelectedRow();
+        int selectedIndex = BankTxn.convertRowIndexToModel(modelIndex);
 
         String Type = Df.getValueAt(selectedIndex, 4).toString();
         String Type1 = Df.getValueAt(selectedIndex, 5).toString();
@@ -1048,9 +1049,9 @@ public class StatementB extends javax.swing.JPanel {
                     String Path = this.Preview.getText();
                     double bal = 0, IN, OUT;
                     String Bank = this.Bank.getSelectedItem().toString();
-                    
+
                     if (TxnId.contains("TXN X")) {
-                        
+
                         if (input7 == true) {
 
                             try {
