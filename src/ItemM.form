@@ -43,7 +43,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" pref="239" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="211" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -168,6 +168,7 @@
                       <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -225,6 +226,7 @@
                           <Component id="jLabel18" min="-2" pref="60" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="Supplier" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -242,6 +244,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="Name" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="Supplier" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -748,48 +755,89 @@
         <Component class="javax.swing.JComboBox" name="QTY">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="41">
-                <StringItem index="0" value="Bag"/>
-                <StringItem index="1" value="Barrel"/>
-                <StringItem index="2" value="Barrel (Petroleum) (158,987 dm3)"/>
-                <StringItem index="3" value="Block"/>
-                <StringItem index="4" value="Box"/>
-                <StringItem index="5" value="Bundle"/>
-                <StringItem index="6" value="Can"/>
-                <StringItem index="7" value="Cap"/>
-                <StringItem index="8" value="CARAT"/>
-                <StringItem index="9" value="Centimeter"/>
-                <StringItem index="10" value="Cell"/>
-                <StringItem index="11" value="Cubic Meter"/>
-                <StringItem index="12" value="Dozen"/>
-                <StringItem index="13" value="Drum"/>
-                <StringItem index="14" value="Gallon"/>
-                <StringItem index="15" value="Gram"/>
-                <StringItem index="16" value="Gross"/>
-                <StringItem index="17" value="Kilo-Gramme"/>
-                <StringItem index="18" value="Kilometer"/>
-                <StringItem index="19" value="Kilowatt"/>
-                <StringItem index="20" value="Link"/>
-                <StringItem index="21" value="Liter"/>
-                <StringItem index="22" value="Megawatt Hour (1000 kW.h)"/>
-                <StringItem index="23" value="Meter"/>
-                <StringItem index="24" value="Milligram"/>
-                <StringItem index="25" value="Number"/>
-                <StringItem index="26" value="Number"/>
-                <StringItem index="27" value="Packet"/>
-                <StringItem index="28" value="Pair"/>
-                <StringItem index="29" value="Part Per Thousand"/>
-                <StringItem index="30" value="Pieces/Item [Number]"/>
-                <StringItem index="31" value="Plate"/>
-                <StringItem index="32" value="Pound"/>
-                <StringItem index="33" value="Reel"/>
-                <StringItem index="34" value="Roll"/>
-                <StringItem index="35" value="Set"/>
-                <StringItem index="36" value="Sheet"/>
-                <StringItem index="37" value="Square Meter"/>
-                <StringItem index="38" value="Tone (Metric Ton)"/>
-                <StringItem index="39" value="Tube"/>
-                <StringItem index="40" value="Yard"/>
+              <StringArray count="82">
+                <StringItem index="0" value=" Ampoule "/>
+                <StringItem index="1" value=" Bag "/>
+                <StringItem index="2" value=" Bale "/>
+                <StringItem index="3" value=" Balloon, Non-Protected "/>
+                <StringItem index="4" value=" Bar "/>
+                <StringItem index="5" value=" Barrel "/>
+                <StringItem index="6" value=" Barrel (Petroleum) (158,987 dm3) "/>
+                <StringItem index="7" value=" Basket "/>
+                <StringItem index="8" value=" Block "/>
+                <StringItem index="9" value=" Bottle Crate "/>
+                <StringItem index="10" value=" Bottle, Bulbous "/>
+                <StringItem index="11" value=" Bottle, Protected Cylindrical "/>
+                <StringItem index="12" value=" Box "/>
+                <StringItem index="13" value=" Bucket "/>
+                <StringItem index="14" value=" Bulk, Fine Particles (Powder) "/>
+                <StringItem index="15" value=" Bulk, Gas (Liquefied at Abnormal Temperature/Pressure) "/>
+                <StringItem index="16" value=" Bulk, Gas (at 1031 mbar 15&#xb0;C) "/>
+                <StringItem index="17" value=" Bulk, Liquid (at Normal Temperature/Pressure) "/>
+                <StringItem index="18" value=" Bulk, Solid, Granular Particles (Grains) "/>
+                <StringItem index="19" value=" Bulk, Solid, Large Particles (Nodules) "/>
+                <StringItem index="20" value=" Bundle "/>
+                <StringItem index="21" value=" CARAT "/>
+                <StringItem index="22" value=" Can "/>
+                <StringItem index="23" value=" Canister "/>
+                <StringItem index="24" value=" Cap "/>
+                <StringItem index="25" value=" Carton "/>
+                <StringItem index="26" value=" Cassette "/>
+                <StringItem index="27" value=" Cell "/>
+                <StringItem index="28" value=" Centimeter "/>
+                <StringItem index="29" value=" Chest "/>
+                <StringItem index="30" value=" Coil "/>
+                <StringItem index="31" value=" Container "/>
+                <StringItem index="32" value=" Cubic Meter "/>
+                <StringItem index="33" value=" Cylinder "/>
+                <StringItem index="34" value=" Dozen "/>
+                <StringItem index="35" value=" Drum "/>
+                <StringItem index="36" value=" Extra Bulk Item "/>
+                <StringItem index="37" value=" Extra Countable Item "/>
+                <StringItem index="38" value=" Gallon "/>
+                <StringItem index="39" value=" Gram "/>
+                <StringItem index="40" value=" Gross "/>
+                <StringItem index="41" value=" Hand Baggage "/>
+                <StringItem index="42" value=" Ingots "/>
+                <StringItem index="43" value=" Jar "/>
+                <StringItem index="44" value=" Jerry Can Cylindrical "/>
+                <StringItem index="45" value=" Jug "/>
+                <StringItem index="46" value=" Kilo-Gramme "/>
+                <StringItem index="47" value=" Kilometer "/>
+                <StringItem index="48" value=" Kilowatt "/>
+                <StringItem index="49" value=" Link "/>
+                <StringItem index="50" value=" Liter "/>
+                <StringItem index="51" value=" Logs, in Bundle/Bunch/Truss "/>
+                <StringItem index="52" value=" Megawatt Hour (1000 kW.h) "/>
+                <StringItem index="53" value=" Meter "/>
+                <StringItem index="54" value=" Milligram "/>
+                <StringItem index="55" value=" Mills "/>
+                <StringItem index="56" value=" Net "/>
+                <StringItem index="57" value=" Non-Exterior Packaging Unit "/>
+                <StringItem index="58" value=" Number "/>
+                <StringItem index="59" value=" Packet "/>
+                <StringItem index="60" value=" Pair "/>
+                <StringItem index="61" value=" Part Per Thousand "/>
+                <StringItem index="62" value=" Pieces/Item [Number] "/>
+                <StringItem index="63" value=" Pilot "/>
+                <StringItem index="64" value=" Pipe "/>
+                <StringItem index="65" value=" Plate "/>
+                <StringItem index="66" value=" Potton "/>
+                <StringItem index="67" value=" Pound "/>
+                <StringItem index="68" value=" Reel "/>
+                <StringItem index="69" value=" Rods, in Bundle/Bunch/Truss "/>
+                <StringItem index="70" value=" Roll "/>
+                <StringItem index="71" value=" Set "/>
+                <StringItem index="72" value=" Sheet "/>
+                <StringItem index="73" value=" Skeleton Case "/>
+                <StringItem index="74" value=" Square Meter "/>
+                <StringItem index="75" value=" TAN "/>
+                <StringItem index="76" value=" Tank, Cylindrical "/>
+                <StringItem index="77" value=" Tone (Metric Ton) "/>
+                <StringItem index="78" value=" Tray Pack "/>
+                <StringItem index="79" value=" Tube "/>
+                <StringItem index="80" value=" Wooden Box, Wooden Case "/>
+                <StringItem index="81" value=" Yard "/>
               </StringArray>
             </Property>
           </Properties>
@@ -809,6 +857,13 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Yes "/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel21">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Supplier Name"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="Supplier">
         </Component>
       </SubComponents>
     </Container>

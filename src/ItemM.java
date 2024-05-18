@@ -34,6 +34,7 @@ public class ItemM extends javax.swing.JPanel {
         CurrentStock.setEditable(false);
         Safety.setEditable(false);
         Desc.setEditable(false);
+        Supplier.setEditable(false);
         Use.setSelected(false);
         Origin.setSelectedIndex(-1);
         Type.setSelectedItem(null);
@@ -91,6 +92,8 @@ public class ItemM extends javax.swing.JPanel {
         QTY = new javax.swing.JComboBox<>();
         Safety = new javax.swing.JTextField();
         Use = new javax.swing.JCheckBox();
+        jLabel21 = new javax.swing.JLabel();
+        Supplier = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         srcCode = new javax.swing.JTextField();
@@ -264,7 +267,7 @@ public class ItemM extends javax.swing.JPanel {
             }
         });
 
-        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bag", "Barrel", "Barrel (Petroleum) (158,987 dm3)", "Block", "Box", "Bundle", "Can", "Cap", "CARAT", "Centimeter", "Cell", "Cubic Meter", "Dozen", "Drum", "Gallon", "Gram", "Gross", "Kilo-Gramme", "Kilometer", "Kilowatt", "Link", "Liter", "Megawatt Hour (1000 kW.h)", "Meter", "Milligram", "Number", "Number", "Packet", "Pair", "Part Per Thousand", "Pieces/Item [Number]", "Plate", "Pound", "Reel", "Roll", "Set", "Sheet", "Square Meter", "Tone (Metric Ton)", "Tube", "Yard" }));
+        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Ampoule ", " Bag ", " Bale ", " Balloon, Non-Protected ", " Bar ", " Barrel ", " Barrel (Petroleum) (158,987 dm3) ", " Basket ", " Block ", " Bottle Crate ", " Bottle, Bulbous ", " Bottle, Protected Cylindrical ", " Box ", " Bucket ", " Bulk, Fine Particles (Powder) ", " Bulk, Gas (Liquefied at Abnormal Temperature/Pressure) ", " Bulk, Gas (at 1031 mbar 15°C) ", " Bulk, Liquid (at Normal Temperature/Pressure) ", " Bulk, Solid, Granular Particles (Grains) ", " Bulk, Solid, Large Particles (Nodules) ", " Bundle ", " CARAT ", " Can ", " Canister ", " Cap ", " Carton ", " Cassette ", " Cell ", " Centimeter ", " Chest ", " Coil ", " Container ", " Cubic Meter ", " Cylinder ", " Dozen ", " Drum ", " Extra Bulk Item ", " Extra Countable Item ", " Gallon ", " Gram ", " Gross ", " Hand Baggage ", " Ingots ", " Jar ", " Jerry Can Cylindrical ", " Jug ", " Kilo-Gramme ", " Kilometer ", " Kilowatt ", " Link ", " Liter ", " Logs, in Bundle/Bunch/Truss ", " Megawatt Hour (1000 kW.h) ", " Meter ", " Milligram ", " Mills ", " Net ", " Non-Exterior Packaging Unit ", " Number ", " Packet ", " Pair ", " Part Per Thousand ", " Pieces/Item [Number] ", " Pilot ", " Pipe ", " Plate ", " Potton ", " Pound ", " Reel ", " Rods, in Bundle/Bunch/Truss ", " Roll ", " Set ", " Sheet ", " Skeleton Case ", " Square Meter ", " TAN ", " Tank, Cylindrical ", " Tone (Metric Ton) ", " Tray Pack ", " Tube ", " Wooden Box, Wooden Case ", " Yard " }));
         QTY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QTYActionPerformed(evt);
@@ -279,6 +282,8 @@ public class ItemM extends javax.swing.JPanel {
 
         Use.setText("Yes ");
 
+        jLabel21.setText("Supplier Name");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -292,7 +297,8 @@ public class ItemM extends javax.swing.JPanel {
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel21))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Code)
@@ -337,7 +343,8 @@ public class ItemM extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(Supplier))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -351,6 +358,10 @@ public class ItemM extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21)
+                    .addComponent(Supplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -508,7 +519,7 @@ public class ItemM extends javax.swing.JPanel {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -595,6 +606,7 @@ public class ItemM extends javax.swing.JPanel {
         this.CurrentStock.setText("");
         this.Safety.setText("");
         this.Desc.setText("");
+        this.Supplier.setText("");
         this.Use.setSelected(false);
         this.Name.requestFocus();
         generateItemCode();
@@ -760,7 +772,7 @@ public class ItemM extends javax.swing.JPanel {
 
                         Balance.executeUpdate();
                         
-                        insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy, Supplier) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                         insert.setString(1, generateItemCode());
                         insert.setString(2, Name);
@@ -777,6 +789,7 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(13, Desc);
                         insert.setString(14, Use);
                         insert.setString(15, Username);
+                        insert.setString(16, Supplier.getText());
 
                         insert.executeUpdate();
 
@@ -852,6 +865,7 @@ public class ItemM extends javax.swing.JPanel {
                         String Safety = this.Safety.getText();
                         String Desc = this.Desc.getText();
                         String Use;
+                        String Supplier=this.Supplier.getText();
                         int index;
 
                         String Username = Login.Username.getText();
@@ -896,7 +910,7 @@ public class ItemM extends javax.swing.JPanel {
                         }
 
                         Connection con = Connect.getConnection();
-                        insert = con.prepareStatement("update item set ItemName=?,UseBarcode=?,Origin=?,ItemType=?,PkgUnit=?,QtyUnit=?,PurchaseUnit=?,SalePrice=?,TaxType=?,BeginningStock=?,SafetyStock=?,Description=?,Active=?, createdBy=? where ItemCode=?");
+                        insert = con.prepareStatement("update item set ItemName=?,UseBarcode=?,Origin=?,ItemType=?,PkgUnit=?,QtyUnit=?,PurchaseUnit=?,SalePrice=?,TaxType=?,BeginningStock=?,SafetyStock=?,Description=?,Active=?, createdBy=?,Supplier=? where ItemCode=?");
                         stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=?,StockIN=?,SubTotal=? where ItemCode=? and Action=?");
                         insert.setString(1, Name);
                         insert.setString(2, Barcode);
@@ -912,7 +926,8 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(12, Desc);
                         insert.setString(13, Use);
                         insert.setString(14, Username);
-                        insert.setString(15, id);
+                        insert.setString(15, Supplier);
+                        insert.setString(16, id);
 
                         stock.setString(1, Name);
                         stock.setDouble(2, Double.parseDouble(Sale));
@@ -999,6 +1014,7 @@ public class ItemM extends javax.swing.JPanel {
         CurrentStock.setEditable(false);
         Safety.setEditable(false);
         Desc.setEditable(false);
+        Supplier.setEditable(false);
         Use.setSelected(false);
         Origin.setSelectedIndex(-1);
         Type.setSelectedItem(null);
@@ -1193,6 +1209,9 @@ public class ItemM extends javax.swing.JPanel {
                 String description = rs.getString("Description");
                 this.Desc.setText(description);
 
+                String Supplier = rs.getString("Supplier");
+                this.Supplier.setText(Supplier);
+
                 String active = rs.getString("Active");
                 if (active.equals("Yes")) {
                     this.Use.setSelected(true);
@@ -1226,6 +1245,7 @@ public class ItemM extends javax.swing.JPanel {
     private javax.swing.JTextField Safety;
     private javax.swing.JTextField Sale;
     private javax.swing.JButton Search;
+    private javax.swing.JTextField Supplier;
     private javax.swing.JComboBox<String> Tax;
     private javax.swing.JComboBox<String> Type;
     private javax.swing.JCheckBox Use;
@@ -1241,6 +1261,7 @@ public class ItemM extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
