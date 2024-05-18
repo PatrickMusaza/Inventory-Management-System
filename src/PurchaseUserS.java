@@ -666,9 +666,9 @@ public class PurchaseUserS extends javax.swing.JPanel {
                         Total = rs.getString("TotalAmount");
                     }
 
-                    if (type.equals("Purchase")) {
+                    if (type.equals("Cash")) {
                         PurchaseRegistrationEdit.Purchase.setSelected(true);
-                    } else if (type.equals("Debt")) {
+                    } else if (type.equals("Credit")) {
                         PurchaseRegistrationEdit.Purchase.setSelected(false);
                     }
 

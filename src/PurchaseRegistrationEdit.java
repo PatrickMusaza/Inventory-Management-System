@@ -219,7 +219,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         AddItem = new javax.swing.JButton();
-        Confirm = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -330,7 +329,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jLabel2.setText("Sale Type");
+        jLabel2.setText("Purchase Type");
 
         jLabel3.setText("Supplier ID");
 
@@ -342,7 +341,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
         jLabel8.setText("Remark");
 
-        Purchase.setText("Purchase");
+        Purchase.setText("Cash");
         Purchase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PurchaseActionPerformed(evt);
@@ -404,7 +403,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
         Method.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        Debtor.setText("Debtor");
+        Debtor.setText("Credit");
         Debtor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DebtorActionPerformed(evt);
@@ -541,16 +540,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
             }
         });
 
-        Confirm.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        Confirm.setForeground(new java.awt.Color(0, 153, 51));
-        Confirm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/verified.png"))); // NOI18N
-        Confirm.setText("Confirm");
-        Confirm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -560,8 +549,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(AddItem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Confirm)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -570,8 +557,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(AddItem)
-                    .addComponent(Confirm))
+                    .addComponent(AddItem))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -890,7 +876,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
             boolean type1 = Debtor.isSelected();
             JFrame frame = new JFrame();
             if ((type == false) && (type1 == false)) {
-                JOptionPane.showMessageDialog(frame, "Please Select whether it is Purchase or Debt.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Please Select whether it is Cash or Credit.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (input.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Please Enter Customer ID.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (input1 == null) {
@@ -916,7 +902,7 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
                 if (PurchaseRegistrationEdit.Purchase.isSelected()) {
                     Purchase = "Purchase";
                 } else if (PurchaseRegistrationEdit.Debtor.isSelected()) {
-                    Purchase = "Debt";
+                    Purchase = "Credit";
                 }
 
                 java.sql.Date sqlReleaseDate = new java.sql.Date(ReleaseDate.getTime());
@@ -1019,10 +1005,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
     private void SupplierIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SupplierIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SupplierIDActionPerformed
-
-    private void ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ConfirmActionPerformed
 
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddItemActionPerformed
         // TODO add your handling code here:
@@ -1592,7 +1574,6 @@ public class PurchaseRegistrationEdit extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddItem;
-    private javax.swing.JButton Confirm;
     public static javax.swing.JRadioButton Debtor;
     private javax.swing.JButton DeleteAll;
     private javax.swing.JButton Exit;
