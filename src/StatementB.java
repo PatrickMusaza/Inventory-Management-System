@@ -846,7 +846,6 @@ public class StatementB extends javax.swing.JPanel {
         this.TxnId.setEditable(true);
         this.InvoiceNo.setEditable(true);
         this.Preview.setText("Uknown File Path");
-        this.Bank.setSelectedIndex(1);
 
         generateTxnCode();
         isNew = true;
@@ -888,7 +887,7 @@ public class StatementB extends javax.swing.JPanel {
                 } else if (input8.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please Enter Transaction ID.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (input9.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please Enter Transaction Invoice No", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please Enter Transaction Receipt No", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
                     String Purpose = this.Reason.getText();
@@ -1037,7 +1036,7 @@ public class StatementB extends javax.swing.JPanel {
                 } else if (input8.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please Enter Transaction ID.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (input9.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please Enter Transaction Invoice No", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please Enter Transaction Receipt No", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
                     String Purpose = this.Reason.getText();
