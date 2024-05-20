@@ -235,7 +235,7 @@ public class HomeUserS extends javax.swing.JFrame {
     private void stockFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockFrameActionPerformed
         // TODO add your handling code here:
 
-        StockM StockUser = new StockM();
+        StockUserS StockUser = new StockUserS();
         jpload.jPanelLoader(MainFrame, StockUser);
         this.stockFrame.setForeground(Color.GREEN);
         this.customerFrame.setForeground(Color.WHITE);
