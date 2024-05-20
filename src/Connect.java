@@ -19,8 +19,8 @@ public class Connect {
     public static Connection con;
 
     public static final String dbName = "ivm";
-    public static final String username = "root";
-    public static final String password = "";
+    public static final String username = "Administrator";
+    public static final String password = "g@Secur!";
     public static final String createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS " + dbName;
 
     private static final String WAMP_PROCESS_NAME = "mysqld";
