@@ -129,14 +129,14 @@ public class StockUserS extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Item Code", "Item Name", "Safety Qty", "Beginning Stock", "Purchase", "Sales", "Current Stock", "Purchase Price", "Stock Amount"
+                "Item Code", "Item Name", "Safety Qty", "Beginning Stock", "Purchase", "Sales", "Current Stock", "Stock Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -281,8 +281,8 @@ public class StockUserS extends javax.swing.JPanel {
 
         try {
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from stock where not(SafetyQty=?)");
-            insert.setString(1, "");
+            insert = con.prepareStatement("select * from stock where (Action=?)");
+            insert.setString(1, "Beginning");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
@@ -303,7 +303,7 @@ public class StockUserS extends javax.swing.JPanel {
                     v2.add(formatter.format(rs.getDouble("Purchase")));
                     v2.add(formatter.format(rs.getDouble("Sales")));
                     v2.add(formatter.format(rs.getDouble("CurrentStock")));
-                    v2.add(formatter.format(rs.getDouble("PurchasePrice")));
+                    //v2.add(formatter.format(rs.getDouble("PurchasePrice")));
                     //      v2.add(formatter.format(rs.getDouble("UnitPrice")));
                     v2.add(formatter.format(rs.getDouble("StockAmount")));
                     //v2.add(rs.getString("reportOn"));

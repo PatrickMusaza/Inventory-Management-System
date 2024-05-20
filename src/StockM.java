@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -279,8 +277,8 @@ public class StockM extends javax.swing.JPanel {
 
         try {
             Connection con = Connect.getConnection();
-            insert = con.prepareStatement("select * from stock where not(SafetyQty=?)");
-            insert.setString(1, "");
+            insert = con.prepareStatement("select * from stock where (Action=?)");
+            insert.setString(1, "Beginning");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
