@@ -267,7 +267,16 @@ public class ItemM extends javax.swing.JPanel {
             }
         });
 
-        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Ampoule ", " Bag ", " Bale ", " Balloon, Non-Protected ", " Bar ", " Barrel ", " Barrel (Petroleum) (158,987 dm3) ", " Basket ", " Block ", " Bottle Crate ", " Bottle, Bulbous ", " Bottle, Protected Cylindrical ", " Box ", " Bucket ", " Bulk, Fine Particles (Powder) ", " Bulk, Gas (Liquefied at Abnormal Temperature/Pressure) ", " Bulk, Gas (at 1031 mbar 15°C) ", " Bulk, Liquid (at Normal Temperature/Pressure) ", " Bulk, Solid, Granular Particles (Grains) ", " Bulk, Solid, Large Particles (Nodules) ", " Bundle ", " CARAT ", " Can ", " Canister ", " Cap ", " Carton ", " Cassette ", " Cell ", " Centimeter ", " Chest ", " Coil ", " Container ", " Cubic Meter ", " Cylinder ", " Dozen ", " Drum ", " Extra Bulk Item ", " Extra Countable Item ", " Gallon ", " Gram ", " Gross ", " Hand Baggage ", " Ingots ", " Jar ", " Jerry Can Cylindrical ", " Jug ", " Kilo-Gramme ", " Kilometer ", " Kilowatt ", " Link ", " Liter ", " Logs, in Bundle/Bunch/Truss ", " Megawatt Hour (1000 kW.h) ", " Meter ", " Milligram ", " Mills ", " Net ", " Non-Exterior Packaging Unit ", " Number ", " Packet ", " Pair ", " Part Per Thousand ", " Pieces/Item [Number] ", " Pilot ", " Pipe ", " Plate ", " Potton ", " Pound ", " Reel ", " Rods, in Bundle/Bunch/Truss ", " Roll ", " Set ", " Sheet ", " Skeleton Case ", " Square Meter ", " TAN ", " Tank, Cylindrical ", " Tone (Metric Ton) ", " Tray Pack ", " Tube ", " Wooden Box, Wooden Case ", " Yard " }));
+        QTY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ampoule", "Bag", "Bale", "Balloon, Non-Protected", "Bar", "Barrel", "Barrel (Petroleum) (158,987 dm3)", "Basket", "Block", "Bottle Crate", "Bottle, Bulbous", "Bottle, Protected Cylindrical", "Box", "Bucket", "Bulk, Fine Particles (Powder)", "Bulk, Gas (Liquefied at Abnormal Temperature/Pressure)", "Bulk, Gas (at 1031 mbar 15°C)", "Bulk, Liquid (at Normal Temperature/Pressure)", "Bulk, Solid, Granular Particles (Grains)", "Bulk, Solid, Large Particles (Nodules)", "Bundle", "CARAT", "Can", "Canister", "Cap", "Carton", "Cassette", "Cell", "Centimeter", "Chest", "Coil", "Container", "Cubic Meter", "Cylinder", "Dozen", "Drum", "Extra Bulk Item", "Extra Countable Item", "Gallon", "Gram", "Gross", "Hand Baggage", "Ingots", "Jar", "Jerry Can Cylindrical", "Jug", "Kilo-Gramme", "Kilometer", "Kilowatt", "Link", "Liter", "Logs, in Bundle/Bunch/Truss", "Megawatt Hour (1000 kW.h)", "Meter", "Milligram", "Mills", "Net", "Non-Exterior Packaging Unit", "Number", "Packet", "Pair", "Part Per Thousand", "Pieces/Item [Number]", "Pilot", "Pipe", "Plate", "Potton", "Pound", "Reel", "Rods, in Bundle/Bunch/Truss", "Roll", "Set", "Sheet", "Skeleton Case", "Square Meter", "TAN", "Tank, Cylindrical", "Tone (Metric Ton)", "Tray Pack", "Tube", "Wooden Box, Wooden Case", "Yard" }));
+        QTY.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+                QTYAncestorMoved(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         QTY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QTYActionPerformed(evt);
@@ -1229,6 +1238,10 @@ public class ItemM extends javax.swing.JPanel {
     private void PkgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PkgActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PkgActionPerformed
+
+    private void QTYAncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_QTYAncestorMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_QTYAncestorMoved
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
