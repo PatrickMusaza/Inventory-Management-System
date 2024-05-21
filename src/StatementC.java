@@ -31,7 +31,7 @@ import java.sql.Timestamp;
  * @author Patrick
  */
 public class StatementC extends javax.swing.JPanel {
-    
+
     JpanelLoaderMain jpload = new JpanelLoaderMain();
     String Met = "Cash";
 
@@ -41,29 +41,29 @@ public class StatementC extends javax.swing.JPanel {
     public StatementC() {
         initComponents();
         this.status2.requestFocus();
-        
+
         table_updates();
         PaymentMethod();
-        
+
     }
-    
+
     private void PaymentMethod() {
         try {
             Connection con = Connect.getConnection();
-            
+
             PreparedStatement Method = con.prepareStatement("SELECT Method FROM Payment WHERE not(Method LIKE ?)");
             Method.setString(1, "%bank%");
-            
+
             ResultSet met = Method.executeQuery();
             List<String> methods = new ArrayList<>();
-            
+
             while (met.next()) {
                 String method = met.getString("Method");
                 methods.add(method);
             }
-            
+
             this.Method.setModel(new DefaultComboBoxModel<>(methods.toArray(new String[0])));
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(StatementC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -318,9 +318,9 @@ public class StatementC extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     PreparedStatement insert, totC, totB, totM;
-    
+
     NumberFormat formatter = NumberFormat.getInstance();
-    
+
     public void table_updates() {
         try {
             Connection con = Connect.getConnection();
@@ -349,7 +349,7 @@ public class StatementC extends javax.swing.JPanel {
 
             // Query to fetch bank records
             PreparedStatement bankStmt = con.prepareStatement(
-                    "SELECT 'bank' as source, Bank, TxnId, GivenBy, ReceivedBy, CreatedAt, BIN as CashOut FROM bank WHERE CreatedAt <= NOW() AND NOT(BIN=?) and not Purpose=? ORDER BY CreatedAt ASC");
+                    "SELECT 'bank' as source, Bank, TxnId, GivenBy, ReceivedBy, CreatedAt, BIN as CashOut FROM bank WHERE CreatedAt <= NOW() AND NOT(BIN=?) AND NOT Purpose=? ORDER BY CreatedAt ASC");
             bankStmt.setString(1, "");
             bankStmt.setString(2, "Initial Amount");
             ResultSet bankRs = bankStmt.executeQuery();
@@ -368,6 +368,25 @@ public class StatementC extends javax.swing.JPanel {
                 records.add(row);
             }
 
+            // Query to fetch expense records with Cash source
+            PreparedStatement expenseStmt = con.prepareStatement(
+                    "SELECT 'Expense' as source, Source, ID, Name, CreatedAt, Amount as CashOut FROM expense WHERE Source='Cash' ORDER BY CreatedAt ASC");
+            ResultSet expenseRs = expenseStmt.executeQuery();
+
+            // Iterate through expense records and add to combined list
+            while (expenseRs.next()) {
+                Vector<Object> row = new Vector<>();
+                row.add(expenseRs.getString("Source"));
+                row.add(expenseRs.getString("ID"));
+                row.add(expenseRs.getString("Name"));
+                row.add(expenseRs.getDate("CreatedAt"));
+                row.add(0.0); // No cash in for expenses
+                row.add(expenseRs.getDouble("CashOut"));
+                row.add(-expenseRs.getDouble("CashOut")); // Initial balance, will be updated later
+                row.add(expenseRs.getTimestamp("CreatedAt"));
+                records.add(row);
+            }
+
             // Sort the combined list by CreatedAt timestamp
             records.sort(new Comparator<Vector<Object>>() {
                 @Override
@@ -381,7 +400,7 @@ public class StatementC extends javax.swing.JPanel {
             // Update the DefaultTableModel with combined and sorted records
             DefaultTableModel tableModel = (DefaultTableModel) CashTxn.getModel();
             tableModel.setRowCount(0);
-            
+
             double runningBalance = 0;
             for (Vector<Object> record : records) {
                 double cashIn = (double) record.get(4);
@@ -390,10 +409,11 @@ public class StatementC extends javax.swing.JPanel {
                 record.set(6, runningBalance);
 
                 // Format the numbers before adding to the table
+                DecimalFormat formatter = new DecimalFormat("#,##0.00");
                 record.set(4, formatter.format(cashIn));
                 record.set(5, formatter.format(cashOut));
                 record.set(6, formatter.format(runningBalance));
-                
+
                 tableModel.addRow(new Vector<>(record.subList(0, 7))); // Exclude the CreatedAt timestamp
             }
 
@@ -406,7 +426,7 @@ public class StatementC extends javax.swing.JPanel {
                     "SELECT SUM(TotalAmount) AS TotC FROM sales WHERE Type='Sale' AND NOT method LIKE '%Bank%' AND SaleDate=? AND NOT status='Refunded' ORDER BY CreatedAt ASC");
             totC.setString(1, today);
             ResultSet rsC = totC.executeQuery();
-            
+
             double amount = 0;
             if (rsC.next()) {
                 amount = rsC.getDouble("TotC");
@@ -417,22 +437,21 @@ public class StatementC extends javax.swing.JPanel {
                     "SELECT SUM(SIN) AS SIN FROM sales WHERE Type='Paid' AND NOT method LIKE '%Bank%' AND SaleDate=? ORDER BY CreatedAt ASC");
             totC.setString(1, today);
             ResultSet rsCC = totC.executeQuery();
-            
+
             double SIN = 0;
             if (rsCC.next()) {
                 SIN = rsCC.getDouble("SIN");
             }
-            
+
             DecimalFormat df = new DecimalFormat("#,##0.00");
             double tot = SIN + amount;
             totAmount.setText(df.format(runningBalance));
-            
+
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(StatementC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
     }
-    
+
 
     private void status2statusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_status2statusMouseClicked
         // TODO add your handling code here:
@@ -442,7 +461,7 @@ public class StatementC extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         String Method = this.status2.getSelectedItem().toString();
-        
+
         switch (Method) {
             case "Cash On Hand": {
                 StatementC stC = new StatementC();
@@ -479,18 +498,18 @@ public class StatementC extends javax.swing.JPanel {
         File file = createExcelFile();
         exportToCSV(CashTxn, file);
     }//GEN-LAST:event_Export2ExportActionPerformed
-    
+
     private static File createExcelFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save CSV File");
-        
+
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files (*.csv)", "csv");
         fileChooser.setFileFilter(filter);
-        
+
         int userSelection = fileChooser.showSaveDialog(null);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
-            
+
             String filePath = fileToSave.getAbsolutePath();
             if (!filePath.toLowerCase().endsWith(".csv")) {
                 fileToSave = new File(filePath + ".csv");
@@ -500,7 +519,7 @@ public class StatementC extends javax.swing.JPanel {
             return null;
         }
     }
-    
+
     private static void exportToCSV(JTable table, File file) {
         FileWriter writer = null;
         try {
@@ -544,7 +563,7 @@ public class StatementC extends javax.swing.JPanel {
             }
         }
     }
-    
+
 
     private void searchBetweensearchBetweenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchBetweensearchBetweenMouseClicked
         // TODO add your handling code here:
@@ -552,12 +571,11 @@ public class StatementC extends javax.swing.JPanel {
 
     private void searchBetweensearchBetweenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBetweensearchBetweenActionPerformed
         // TODO add your handling code here:
-
         long c = 0, b = 0, m = 0, sum;
         try {
             Date sd = startDate.getDate();
             Date ed = endDate.getDate();
-            
+
             if (sd != null && ed != null) {
                 Connection con = Connect.getConnection();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -593,7 +611,7 @@ public class StatementC extends javax.swing.JPanel {
                 // Query to fetch bank records within the date range
                 PreparedStatement bankStmt = con.prepareStatement(
                         "SELECT 'bank' as source, Bank, TxnId, GivenBy, ReceivedBy, CreatedAt, BIN as CashOut "
-                        + "FROM bank WHERE CreatedAt <= NOW() AND CreatedAt >= ? AND CreatedAt <= ? AND NOT(BIN=?) AND NOT Purpose=?"
+                        + "FROM bank WHERE CreatedAt >= ? AND CreatedAt <= ? AND NOT(BIN=?) AND NOT Purpose=? "
                         + "ORDER BY CreatedAt ASC");
                 bankStmt.setString(1, startDateStr);
                 bankStmt.setString(2, endDateStr);
@@ -615,6 +633,27 @@ public class StatementC extends javax.swing.JPanel {
                     records.add(row);
                 }
 
+                // Query to fetch expense records with Cash source within the date range
+                PreparedStatement expenseStmt = con.prepareStatement(
+                        "SELECT 'Expense' as source, Source, ID, Name, CreatedAt, Amount as CashOut FROM expense WHERE Source='Cash' AND CreatedAt >= ? AND CreatedAt <= ? ORDER BY CreatedAt ASC");
+                expenseStmt.setString(1, startDateStr);
+                expenseStmt.setString(2, endDateStr);
+                ResultSet expenseRs = expenseStmt.executeQuery();
+
+                // Iterate through expense records and add to combined list
+                while (expenseRs.next()) {
+                    Vector<Object> row = new Vector<>();
+                    row.add(expenseRs.getString("Source"));
+                    row.add(expenseRs.getString("ID"));
+                    row.add(expenseRs.getString("Name"));
+                    row.add(expenseRs.getDate("CreatedAt"));
+                    row.add(0.0); // No cash in for expenses
+                    row.add(expenseRs.getDouble("CashOut"));
+                    row.add(-expenseRs.getDouble("CashOut")); // Initial balance, will be updated later
+                    row.add(expenseRs.getTimestamp("CreatedAt"));
+                    records.add(row);
+                }
+
                 // Sort the combined list by CreatedAt timestamp
                 records.sort(new Comparator<Vector<Object>>() {
                     @Override
@@ -628,7 +667,7 @@ public class StatementC extends javax.swing.JPanel {
                 // Update the DefaultTableModel with combined and sorted records
                 DefaultTableModel tableModel = (DefaultTableModel) CashTxn.getModel();
                 tableModel.setRowCount(0);
-                
+
                 NumberFormat formatter = NumberFormat.getInstance();
                 double runningBalance = 0;
                 for (Vector<Object> record : records) {
@@ -641,7 +680,7 @@ public class StatementC extends javax.swing.JPanel {
                     record.set(4, formatter.format(cashIn));
                     record.set(5, formatter.format(cashOut));
                     record.set(6, formatter.format(runningBalance));
-                    
+
                     tableModel.addRow(new Vector<>(record.subList(0, 7))); // Exclude the CreatedAt timestamp
                 }
 
@@ -652,7 +691,7 @@ public class StatementC extends javax.swing.JPanel {
                 totC.setString(1, startDateStr);
                 totC.setString(2, endDateStr);
                 ResultSet rsC = totC.executeQuery();
-                
+
                 double amount = 0;
                 if (rsC.next()) {
                     amount = rsC.getDouble("TotC");
@@ -665,12 +704,12 @@ public class StatementC extends javax.swing.JPanel {
                 totC.setString(1, startDateStr);
                 totC.setString(2, endDateStr);
                 ResultSet rsCC = totC.executeQuery();
-                
+
                 double SIN = 0;
                 if (rsCC.next()) {
                     SIN = rsCC.getDouble("SIN");
                 }
-                
+
                 DecimalFormat df = new DecimalFormat("#,##0.00");
                 double tot = SIN + amount;
                 totAmount.setText(df.format(runningBalance));
@@ -693,29 +732,29 @@ public class StatementC extends javax.swing.JPanel {
     }//GEN-LAST:event_CashTxnMousePressed
 
     private void MethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MethodActionPerformed
-        
+
         this.totAmount.setText("");
-        
+
         try {
             // TODO add your handling code here:
             DefaultTableModel src = (DefaultTableModel) CashTxn.getModel();
             TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(src);
             CashTxn.setRowSorter(obj);
             obj.setRowFilter(RowFilter.regexFilter(Method.getSelectedItem().toString(), 0));
-            
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date now = new Date();
             String today = dateFormat.format(now);
-            
+
             Connection con = Connect.getConnection();
-            
+
             totC = con.prepareStatement("select sum(TotalAmount) as TotC from sales where not(status=?) and method=? and SaleDate>=? and SaleDate<=? and not(method LIKE ?)");
             totC.setString(1, "Refunded");
             totC.setString(2, Method.getSelectedItem().toString());
             totC.setString(3, today);
             totC.setString(4, today);
             totC.setString(5, "%Bank%");
-            
+
             String amount = null;
             ResultSet rsC = totC.executeQuery();
             if (rsC.next()) {
@@ -727,16 +766,16 @@ public class StatementC extends javax.swing.JPanel {
             totC.setString(3, today);
             totC.setString(4, today);
             totC.setString(5, "%Bank%");
-            
+
             String amount1 = null;
             ResultSet rsC1 = totC.executeQuery();
             if (rsC1.next()) {
                 amount1 = rsC1.getString("TotC");
             }
             double tot = Double.parseDouble(amount) + Double.parseDouble(amount1);
-            
+
             this.totAmount.setText(String.valueOf(tot));
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(StatementC.class.getName()).log(Level.SEVERE, null, ex);
         }

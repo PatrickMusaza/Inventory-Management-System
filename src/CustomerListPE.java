@@ -167,7 +167,8 @@ public class CustomerListPE extends javax.swing.JFrame {
 
             Connection con = Connect.getConnection();
 
-            insert = con.prepareStatement("select * from item");
+            insert = con.prepareStatement("select * from item where Supplier in(select distinct supplier from item where not supplier=?)");
+            insert.setString(1, "");
 
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
