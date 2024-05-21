@@ -619,6 +619,7 @@ public class ItemM extends javax.swing.JPanel {
         CurrentStock.setEditable(false);
         Safety.setEditable(true);
         Desc.setEditable(true);
+        Supplier.setEditable(true);
         Origin.setSelectedIndex(0);
         Type.setSelectedIndex(0);
         Pkg.setSelectedIndex(0);
