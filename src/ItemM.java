@@ -17,7 +17,7 @@ import javax.swing.table.TableRowSorter;
  * @author Patrick
  */
 public class ItemM extends javax.swing.JPanel {
-    
+
     private boolean isNew = false;
 
     /**
@@ -25,7 +25,7 @@ public class ItemM extends javax.swing.JPanel {
      */
     public ItemM() {
         initComponents();
-        
+
         Name.setEditable(false);
         Barcode.setSelected(false);
         Purchase.setEditable(false);
@@ -41,9 +41,9 @@ public class ItemM extends javax.swing.JPanel {
         Pkg.setSelectedItem(null);
         QTY.setSelectedItem(null);
         Tax.setSelectedItem(null);
-        
+
         table_update();
-        
+
     }
 
     /**
@@ -524,7 +524,7 @@ public class ItemM extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     PreparedStatement insert, stock, Current, Balance;
-    
+
     public final String generateItemCode() {
         String Code = "";
         try {
@@ -532,7 +532,7 @@ public class ItemM extends javax.swing.JPanel {
             if (con != null) {
                 PreparedStatement statement = con.prepareStatement("SELECT COUNT(ItemCode) FROM item");
                 ResultSet result = statement.executeQuery();
-                
+
                 if (result.next()) {
                     int count = result.getInt(1);
                     Code = "ITM " + (1000 + count + 1);
@@ -544,30 +544,30 @@ public class ItemM extends javax.swing.JPanel {
         }
         return Code;
     }
-    
+
     private void table_update() {
-        
+
         int count;
-        
+
         try {
             Connection con = Connect.getConnection();
-            
+
             insert = con.prepareStatement("select * from item");
-            
+
             ResultSet rs = insert.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
             count = rsmd.getColumnCount();
-            
+
             DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
             Df.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v2 = new Vector();
-                
+
                 NumberFormat formatter = NumberFormat.getInstance();
-                
+
                 for (int i = 1; i <= count; i++) {
-                    
+
                     v2.add(rs.getString("ItemCode"));
                     v2.add(rs.getString("ItemName"));
                     v2.add(rs.getString("Origin"));
@@ -577,18 +577,18 @@ public class ItemM extends javax.swing.JPanel {
                     v2.add(formatter.format(rs.getDouble("PurchaseUnit")));
                     v2.add(formatter.format(rs.getDouble("SalePrice")));
                     v2.add(formatter.format(rs.getDouble("BeginningStock")));
-                    
+
                 }
-                
+
                 Df.addRow(v2);
             }
-            
+
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
 
     private void addNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addNewMouseClicked
         // TODO add your handling code here:
@@ -611,7 +611,7 @@ public class ItemM extends javax.swing.JPanel {
         this.Name.requestFocus();
         generateItemCode();
         isNew = true;
-        
+
         Name.setEditable(true);
         Purchase.setEditable(true);
         Sale.setEditable(true);
@@ -640,9 +640,9 @@ public class ItemM extends javax.swing.JPanel {
             }
         } else {
             int selectedRow = jTable1.getSelectedRow();
-            
+
             if (isNew && selectedRow < 0) {
-                
+
                 String input1 = this.Name.getText().trim();
                 String input2 = this.Purchase.getText().trim();
                 String input3 = this.Sale.getText().trim();
@@ -659,7 +659,7 @@ public class ItemM extends javax.swing.JPanel {
                 } else if (input5.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please Enter Item Safety Stock.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
+
                     String Name = this.Name.getText();
                     String Barcode;
                     String Origin;
@@ -675,62 +675,62 @@ public class ItemM extends javax.swing.JPanel {
                     String Use;
                     int index;
                     String Code = this.Code.getText();
-                    
+
                     String Username = Login.Username.getText();
-                    
+
                     this.generateItemCode();
-                    
+
                     this.Code.setEditable(false);
-                    
+
                     index = this.Origin.getSelectedIndex();
                     Origin = this.Origin.getItemAt(index);
-                    
+
                     index = this.Type.getSelectedIndex();
                     Type = this.Type.getItemAt(index);
-                    
+
                     index = this.Pkg.getSelectedIndex();
                     Pkg = this.Pkg.getItemAt(index);
-                    
+
                     index = this.QTY.getSelectedIndex();
                     QTY = this.QTY.getItemAt(index);
-                    
+
                     index = this.Tax.getSelectedIndex();
                     Tax = this.Tax.getItemAt(index);
-                    
+
                     if (this.Barcode.isSelected()) {
                         Barcode = "Yes";
                     } else {
                         Barcode = "No";
                     }
-                    
+
                     if (this.Use.isSelected()) {
                         Use = "Yes";
                     } else {
                         Use = "No";
                     }
-                    
+
                     if (this.Purchase == null) {
                         Purchase = "0.0";
                     } else {
                         Purchase = this.Purchase.getText();
                     }
-                    
+
                     if (this.Sale == null) {
                         Sale = "0.0";
                     } else {
                         Sale = this.Sale.getText();
                     }
-                    
+
                     try {
-                        
+
                         Connection con = Connect.getConnection();
-                        
+
                         double beginning = Double.parseDouble(Beginning);
                         double purchase = Double.parseDouble(Purchase);
                         double subtotal = beginning * purchase;
-                        
+
                         stock = con.prepareStatement("INSERT INTO stock (ItemCode, ItemName, SafetyQty, BeginningStock, UnitPrice, PurchasePrice, Action, StockIN, SubTotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                        
+
                         stock.setString(1, generateItemCode());
                         stock.setString(2, Name);
                         stock.setString(3, Safety);
@@ -740,41 +740,41 @@ public class ItemM extends javax.swing.JPanel {
                         stock.setString(7, "Beginning");
                         stock.setDouble(8, beginning);
                         stock.setDouble(9, subtotal);
-                        
+
                         stock.executeUpdate();
-                        
+
                         CurrentStock currentStock = new CurrentStock();
                         double current = currentStock.getCurrentStock(generateItemCode())[0];
                         double amount = currentStock.getCurrentStock(generateItemCode())[1];
-                        
+
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
                         Current.setDouble(1, current);
                         Current.setDouble(2, amount);
                         Current.setString(3, generateItemCode());
-                        
+
                         Current.executeUpdate();
                         Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
                         Balance.setString(1, Code);
-                        
+
                         ResultSet Bal = Balance.executeQuery();
                         double StockIN, StockOUT, Balan = 0;
-                        
+
                         if (Bal.next()) {
                             StockIN = Bal.getDouble("StockIN");
                             StockOUT = Bal.getDouble("StockOUT");
                             Balan = StockIN - StockOUT;
                         }
-                        
+
                         Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=? and StockIn=?");
                         Balance.setDouble(1, Balan);
                         Balance.setString(2, Code);
                         Balance.setString(3, "Beginning");
                         Balance.setDouble(4, beginning);
-                        
+
                         Balance.executeUpdate();
-                        
+
                         insert = con.prepareStatement("insert into item (ItemCode,ItemName,UseBarcode,Origin,ItemType,PkgUnit,QtyUnit,PurchaseUnit,SalePrice,TaxType,BeginningStock,SafetyStock,Description,Active, createdBy, Supplier) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                        
+
                         insert.setString(1, generateItemCode());
                         insert.setString(2, Name);
                         insert.setString(3, Barcode);
@@ -791,18 +791,18 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(14, Use);
                         insert.setString(15, Username);
                         insert.setString(16, Supplier.getText());
-                        
+
                         insert.executeUpdate();
-                        
+
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
                         Current.setDouble(1, current);
                         Current.setString(2, Code);
-                        
+
                         Current.executeUpdate();
-                        
+
                         JOptionPane.showMessageDialog(null, "New Item Recorded");
                         table_update();
-                        
+
                         this.Code.setText("");
                         this.Name.setText("");
                         this.Barcode.setSelected(false);
@@ -815,13 +815,13 @@ public class ItemM extends javax.swing.JPanel {
                         this.Use.setSelected(false);
                         this.Name.requestFocus();
                         generateItemCode();
-                        
+
                     } catch (SQLException ex) {
                         java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                     }
                 }
             } else {
-                
+
                 Name.setEditable(true);
                 Purchase.setEditable(true);
                 Sale.setEditable(true);
@@ -829,7 +829,7 @@ public class ItemM extends javax.swing.JPanel {
                 CurrentStock.setEditable(false);
                 Safety.setEditable(true);
                 Desc.setEditable(true);
-                
+
                 String input1 = this.Name.getText().trim();
                 String input2 = this.Purchase.getText().trim();
                 String input3 = this.Sale.getText().trim();
@@ -846,12 +846,12 @@ public class ItemM extends javax.swing.JPanel {
                 } else if (input5.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please Enter Item Safety Stock.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
+
                     DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
                     int selectedIndex = jTable1.getSelectedRow();
-                    
+
                     try {
-                        
+
                         String id = Df.getValueAt(selectedIndex, 0).toString();
                         String Name = this.Name.getText();
                         String Barcode;
@@ -868,48 +868,48 @@ public class ItemM extends javax.swing.JPanel {
                         String Use;
                         String Supplier = this.Supplier.getText();
                         int index;
-                        
+
                         String Username = Login.Username.getText();
-                        
+
                         index = this.Origin.getSelectedIndex();
                         Origin = this.Origin.getItemAt(index);
-                        
+
                         index = this.Type.getSelectedIndex();
                         Type = this.Type.getItemAt(index);
-                        
+
                         index = this.Pkg.getSelectedIndex();
                         Pkg = this.Pkg.getItemAt(index);
-                        
+
                         index = this.QTY.getSelectedIndex();
                         QTY = this.QTY.getItemAt(index);
-                        
+
                         index = this.Tax.getSelectedIndex();
                         Tax = this.Tax.getItemAt(index);
-                        
+
                         if (this.Barcode.isSelected()) {
                             Barcode = "Yes";
                         } else {
                             Barcode = "No";
                         }
-                        
+
                         if (this.Use.isSelected()) {
                             Use = "Yes";
                         } else {
                             Use = "No";
                         }
-                        
+
                         if (this.Purchase == null) {
                             Purchase = "0.0";
                         } else {
                             Purchase = this.Purchase.getText();
                         }
-                        
+
                         if (this.Sale == null) {
                             Sale = "0.0";
                         } else {
                             Sale = this.Sale.getText();
                         }
-                        
+
                         Connection con = Connect.getConnection();
                         insert = con.prepareStatement("update item set ItemName=?,UseBarcode=?,Origin=?,ItemType=?,PkgUnit=?,QtyUnit=?,PurchaseUnit=?,SalePrice=?,TaxType=?,BeginningStock=?,SafetyStock=?,Description=?,Active=?, createdBy=?,Supplier=? where ItemCode=?");
                         stock = con.prepareStatement("update stock set ItemName=?,UnitPrice=?,BeginningStock=?,SafetyQty=?,PurchasePrice=?,StockIN=?,SubTotal=? where ItemCode=? and Action=?");
@@ -929,7 +929,7 @@ public class ItemM extends javax.swing.JPanel {
                         insert.setString(14, Username);
                         insert.setString(15, Supplier);
                         insert.setString(16, id);
-                        
+
                         stock.setString(1, Name);
                         stock.setDouble(2, Double.parseDouble(Sale));
                         stock.setDouble(3, Double.parseDouble(Beginning));
@@ -939,49 +939,49 @@ public class ItemM extends javax.swing.JPanel {
                         stock.setDouble(7, Double.parseDouble(Beginning) * Double.parseDouble(Purchase));
                         stock.setString(8, id);
                         stock.setString(9, "Beginning");
-                        
+
                         insert.executeUpdate();
                         stock.executeUpdate();
-                        
+
                         CurrentStock currentStock = new CurrentStock();
                         double current = currentStock.getCurrentStock(id)[0];
                         double amount = currentStock.getCurrentStock(id)[1];
-                        
+
                         Current = con.prepareStatement("update stock set CurrentStock=?, StockAmount=? where ItemCode=?");
                         Current.setDouble(1, current);
                         Current.setDouble(2, amount);
                         Current.setString(3, id);
-                        
+
                         Current.executeUpdate();
-                        
+
                         Current = con.prepareStatement("update item set CurrentStock=? where ItemCode=?");
                         Current.setDouble(1, current);
                         Current.setString(2, id);
-                        
+
                         Current.executeUpdate();
-                        
+
                         Balance = con.prepareStatement("select Sum(StockIN) as StockIN, sum(StockOut) as StockOUT from stock where ItemCode=?");
                         Balance.setString(1, id);
-                        
+
                         ResultSet Bal = Balance.executeQuery();
                         double StockIN, StockOUT, Balan = 0;
-                        
+
                         if (Bal.next()) {
                             StockIN = Bal.getDouble("StockIN");
                             StockOUT = Bal.getDouble("StockOUT");
                             Balan = StockIN - StockOUT;
                         }
-                        
+
                         Balance = con.prepareStatement("update stock set Balance=? where ItemCode=? and Action=?");
                         Balance.setDouble(1, Balan);
                         Balance.setString(2, id);
                         Balance.setString(3, "Beginning");
-                        
+
                         Balance.executeUpdate();
-                        
+
                         JOptionPane.showMessageDialog(null, "Item Updated!");
                         table_update();
-                        
+
                         this.Code.setText("");
                         this.Name.setText("");
                         this.Barcode.setSelected(false);
@@ -994,7 +994,7 @@ public class ItemM extends javax.swing.JPanel {
                         this.Use.setSelected(false);
                         this.Code.requestFocus();
                         generateItemCode();
-                        
+
                     } catch (SQLException ex) {
                         java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                     }
@@ -1036,11 +1036,11 @@ public class ItemM extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         char c = evt.getKeyChar();
-        
+
         if (!Character.isDigit(c) && c != '.') {
             evt.consume();
         }
-        
+
         if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
             evt.consume();
         }
@@ -1055,7 +1055,7 @@ public class ItemM extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         char c = evt.getKeyChar();
-        
+
         if (!Character.isDigit(c)) {
             evt.consume();
         }
@@ -1065,11 +1065,11 @@ public class ItemM extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         char c = evt.getKeyChar();
-        
+
         if (!Character.isDigit(c) && c != '.') {
             evt.consume();
         }
-        
+
         if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
             evt.consume();
         }
@@ -1079,11 +1079,11 @@ public class ItemM extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         char c = evt.getKeyChar();
-        
+
         if (!Character.isDigit(c) && c != '.') {
             evt.consume();
         }
-        
+
         if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
             evt.consume();
         }
@@ -1102,11 +1102,11 @@ public class ItemM extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         char c = evt.getKeyChar();
-        
+
         if (!Character.isDigit(c) && c != '.') {
             evt.consume();
         }
-        
+
         if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
             evt.consume();
         }
@@ -1147,19 +1147,19 @@ public class ItemM extends javax.swing.JPanel {
         DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
         int modelIndex = jTable1.convertRowIndexToModel(selectedIndex);
-        
+
         this.Code.setText(Df.getValueAt(modelIndex, 0).toString());
         this.Name.setText(Df.getValueAt(modelIndex, 1).toString());
-        
+
         String Origin = Df.getValueAt(modelIndex, 2).toString();
         this.Origin.setSelectedItem(Origin);
-        
+
         String Type = Df.getValueAt(modelIndex, 3).toString();
         this.Type.setSelectedItem(Type);
-        
+
         String Pkg = Df.getValueAt(modelIndex, 4).toString();
         this.Pkg.setSelectedItem(Pkg);
-        
+
         String QTY = Df.getValueAt(modelIndex, 5).toString();
         this.QTY.setSelectedItem(QTY);
 
@@ -1174,18 +1174,18 @@ public class ItemM extends javax.swing.JPanel {
         // Remove commas from the beginning
         String beginning = Df.getValueAt(modelIndex, 8).toString().replaceAll(",", "");
         this.Beginning.setText(beginning);
-        
+
         PreparedStatement select;
-        
+
         try {
-            
+
             String Code = this.Code.getText();
-            
+
             Connection con = Connect.getConnection();
-            
-            select = con.prepareStatement("SELECT UseBarcode, TaxType, CurrentStock, SafetyStock, Description, Active FROM item WHERE ItemCode = ?");
+
+            select = con.prepareStatement("SELECT UseBarcode, TaxType, CurrentStock, SafetyStock, Description, Active, Supplier FROM item WHERE ItemCode = ?");
             select.setString(1, Code);
-            
+
             ResultSet rs = select.executeQuery();
 
             // Check if the item with the given code exists
@@ -1197,25 +1197,22 @@ public class ItemM extends javax.swing.JPanel {
                 } else {
                     this.Barcode.setSelected(false);
                 }
-                
+
                 String taxType = rs.getString("TaxType");
                 this.Tax.setSelectedItem(taxType);
-                
+
                 String currentStock = rs.getString("CurrentStock");
                 this.CurrentStock.setText(currentStock);
-                
+
                 String safetyStock = rs.getString("SafetyStock");
                 this.Safety.setText(safetyStock);
-                
+
                 String description = rs.getString("Description");
                 this.Desc.setText(description);
-                
+
                 String Supplier = rs.getString("Supplier");
-                if (Supplier == null) {
-                    this.Supplier.setText("");
-                } else {
-                    this.Supplier.setText(Supplier);
-                }
+                this.Supplier.setText(Supplier);
+
                 String active = rs.getString("Active");
                 if (active.equals("Yes")) {
                     this.Use.setSelected(true);
@@ -1223,7 +1220,7 @@ public class ItemM extends javax.swing.JPanel {
                     this.Use.setSelected(false);
                 }
             }
-            
+
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(ItemM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
