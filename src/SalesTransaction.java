@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -402,7 +403,11 @@ public class SalesTransaction extends javax.swing.JFrame {
 
         SaleDate.setOpaque(false);
 
-        TotalAmount.setEditable(false);
+        TotalAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TotalAmountKeyTyped(evt);
+            }
+        });
 
         jLabel6.setText("Customer Name");
 
@@ -896,7 +901,7 @@ public class SalesTransaction extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(frame, "Please Enter Release Date.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
 
-                this.totalAmount();
+             //   this.totalAmount();
 
                 String InvoiceID = this.InvoiceID.getText();
                 String CustomerID = this.CustomerID.getText();
@@ -1227,6 +1232,8 @@ public class SalesTransaction extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
+        this.TotalAmount.setEditable(false);
+        
         new ItemList().setVisible(true);
         totalAmount();
 
@@ -1569,6 +1576,21 @@ public class SalesTransaction extends javax.swing.JFrame {
         this.Method.setSelectedItem(null);
         this.Method.setVisible(false);
     }//GEN-LAST:event_CreditActionPerformed
+
+    private void TotalAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TotalAmountKeyTyped
+        // TODO add your handling code here:
+        
+        char c = evt.getKeyChar();
+
+        if (!Character.isDigit(c) && c != '.') {
+            evt.consume();
+        }
+
+        if (c == '.' && ((JTextField) evt.getSource()).getText().contains(".")) {
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_TotalAmountKeyTyped
 
     /**
      * @param args the command line arguments

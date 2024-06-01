@@ -70,7 +70,7 @@ public class ManagementM extends javax.swing.JPanel {
         jLabel1.setText("HAPPY LIGHT TECH LTD");
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 24)); // NOI18N
-        jLabel2.setText("EBM V1");
+        jLabel2.setText("SOFTWARE V1");
 
         DynamicDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         DynamicDate.setForeground(new java.awt.Color(0, 102, 102));
@@ -85,7 +85,7 @@ public class ManagementM extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 397, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
                 .addComponent(DynamicDate, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

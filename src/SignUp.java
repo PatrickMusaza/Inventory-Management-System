@@ -68,7 +68,7 @@ public class SignUp extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("MetricHPE", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("EBM Application");
+        jLabel10.setText("HLT Application");
 
         login.setForeground(new java.awt.Color(0, 102, 102));
         login.setText("Login");

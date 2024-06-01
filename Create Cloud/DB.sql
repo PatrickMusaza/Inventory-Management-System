@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS ivm.item (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ItemCode TEXT,
     ItemName TEXT,
+    Supplier TEXT,
     UseBarcode TEXT,
     Origin TEXT,
     ItemType TEXT,
