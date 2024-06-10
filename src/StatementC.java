@@ -330,7 +330,7 @@ public class StatementC extends javax.swing.JPanel {
 
             // Query to fetch sales records
             PreparedStatement salesStmt = con.prepareStatement(
-                    "SELECT 'sale' as source, Method, InvoiceID, CustomerName, SaleDate, TotalAmount as CashIn, SIN, CreatedAt FROM sales WHERE NOT status='Refunded' AND Method NOT LIKE '%Bank%' ORDER BY CreatedAt ASC");
+                    "SELECT 'sale' as source, Method, InvoiceID, CustomerName, SaleDate, CASE WHEN SIN IS NOT NULL AND SIN <> '' THEN SIN ELSE TotalAmount END as CashIn, SIN, CreatedAt FROM sales WHERE NOT status = 'Refunded' AND Method NOT LIKE '%Bank%' ORDER BY CreatedAt ASC");
             ResultSet salesRs = salesStmt.executeQuery();
 
             // Iterate through sales records and add to combined list
